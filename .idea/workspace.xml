@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5a727f20-1c25-4a18-9402-e0bcb9f632b2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/images/space.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/images/space50.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README-React.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +31,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -47,6 +45,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\code_react\react-homepage-demo" />
       <recent name="D:\code_react\react-homepage-demo\src" />
     </key>
   </component>
@@ -86,7 +85,7 @@
       <workItem from="1585377189001" duration="2562000" />
       <workItem from="1585426404472" duration="12029000" />
       <workItem from="1585453537830" duration="1941000" />
-      <workItem from="1585465704891" duration="4614000" />
+      <workItem from="1585465704891" duration="4812000" />
     </task>
     <servers />
   </component>
@@ -110,22 +109,22 @@
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
     <state x="1283" y="360" key="FileChooserDialogImpl/0.0.2194.1153@0.0.2194.1153" timestamp="1585427369433" />
-    <state width="1363" height="248" key="GridCell.Tab.0.bottom" timestamp="1585467515869">
+    <state width="1363" height="248" key="GridCell.Tab.0.bottom" timestamp="1585472543311">
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
-    <state width="1363" height="248" key="GridCell.Tab.0.bottom/0.0.2194.1153@0.0.2194.1153" timestamp="1585467515869" />
-    <state width="1363" height="248" key="GridCell.Tab.0.center" timestamp="1585467515869">
+    <state width="1363" height="248" key="GridCell.Tab.0.bottom/0.0.2194.1153@0.0.2194.1153" timestamp="1585472543311" />
+    <state width="1363" height="248" key="GridCell.Tab.0.center" timestamp="1585472543311">
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
-    <state width="1363" height="248" key="GridCell.Tab.0.center/0.0.2194.1153@0.0.2194.1153" timestamp="1585467515869" />
-    <state width="1363" height="248" key="GridCell.Tab.0.left" timestamp="1585467515869">
+    <state width="1363" height="248" key="GridCell.Tab.0.center/0.0.2194.1153@0.0.2194.1153" timestamp="1585472543311" />
+    <state width="1363" height="248" key="GridCell.Tab.0.left" timestamp="1585472543311">
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
-    <state width="1363" height="248" key="GridCell.Tab.0.left/0.0.2194.1153@0.0.2194.1153" timestamp="1585467515869" />
-    <state width="1363" height="248" key="GridCell.Tab.0.right" timestamp="1585467515869">
+    <state width="1363" height="248" key="GridCell.Tab.0.left/0.0.2194.1153@0.0.2194.1153" timestamp="1585472543311" />
+    <state width="1363" height="248" key="GridCell.Tab.0.right" timestamp="1585472543311">
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
-    <state width="1363" height="248" key="GridCell.Tab.0.right/0.0.2194.1153@0.0.2194.1153" timestamp="1585467515869" />
+    <state width="1363" height="248" key="GridCell.Tab.0.right/0.0.2194.1153@0.0.2194.1153" timestamp="1585472543311" />
     <state x="1011" y="261" key="SettingsEditor" timestamp="1585033333975">
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
