@@ -1,38 +1,110 @@
 .App {
-  text-align: center;
+    text-align: center;
+}
+
+.CopyRightLink {
+    font: 12px/1.5 tahoma, arial, 'Hiragino Sans GB', '\5b8b\4f53', sans-serif;
+    font-size: 14px;
+    font-family: tahoma, arial, 'Hiragino Sans GB';
+    text-align: right;
+    display: flex;
+    float: right;
+    white-space: nowrap;
+    color: whitesmoke;
+    margin: 8px 4px;
+    position: absolute;
+    right: 18px;
+    padding: 10px;
+}
+
+.PageHeader {
+    z-index: -3;
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    height: 5vh;
+    display: flex;
+    background-color: black;
+}
+
+.PageFooter {
+    z-index: -3;
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    height: 5vh;
+    display: flex;
+    background-color: #161616;
+}
+
+.AppBackground {
+    /*background-position: center;*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: auto;*/
+    z-index: -3;
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    border: 0;
+    height: 90vh;
+    margin: 0;
+    display: flex;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    max-height: 5000px;
+    align-items: center;
+    background-size: cover;
+    background-position: center center;
+    background-image: url("./images/space50.jpg");
+    transform: translate3d(0px, 0px, 0px);
+    vertical-align: bottom;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        background-color: lightblue;
+    }
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #0f282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    backgroundColor: rgba(0, 0, 0, .3);
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

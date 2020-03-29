@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5a727f20-1c25-4a18-9402-e0bcb9f632b2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/images/space.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/space50.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,7 +33,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -43,6 +43,12 @@
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2019.3.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\code_react\react-homepage-demo\src" />
+    </key>
   </component>
   <component name="RunManager" selected="npm.npm start">
     <configuration name="Debug Application" type="JavascriptDebugType" uri="http://localhost:3000">
@@ -76,6 +82,11 @@
       <workItem from="1585217764421" duration="80000" />
       <workItem from="1585354582875" duration="18000" />
       <workItem from="1585357843612" duration="606000" />
+      <workItem from="1585375869835" duration="1043000" />
+      <workItem from="1585377189001" duration="2562000" />
+      <workItem from="1585426404472" duration="12029000" />
+      <workItem from="1585453537830" duration="1941000" />
+      <workItem from="1585465704891" duration="4614000" />
     </task>
     <servers />
   </component>
@@ -95,33 +106,37 @@
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
     <state x="934" y="260" key="#Options/0.0.2194.1153@0.0.2194.1153" timestamp="1585033568334" />
-    <state x="1283" y="360" key="FileChooserDialogImpl" timestamp="1585033245845">
+    <state x="1283" y="360" key="FileChooserDialogImpl" timestamp="1585427369433">
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
-    <state x="1283" y="360" key="FileChooserDialogImpl/0.0.2194.1153@0.0.2194.1153" timestamp="1585033245845" />
-    <state width="1365" height="229" key="GridCell.Tab.0.bottom" timestamp="1585049540502">
+    <state x="1283" y="360" key="FileChooserDialogImpl/0.0.2194.1153@0.0.2194.1153" timestamp="1585427369433" />
+    <state width="1363" height="248" key="GridCell.Tab.0.bottom" timestamp="1585467515869">
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
-    <state width="1365" height="229" key="GridCell.Tab.0.bottom/0.0.2194.1153@0.0.2194.1153" timestamp="1585049540502" />
-    <state width="1365" height="229" key="GridCell.Tab.0.center" timestamp="1585049540502">
+    <state width="1363" height="248" key="GridCell.Tab.0.bottom/0.0.2194.1153@0.0.2194.1153" timestamp="1585467515869" />
+    <state width="1363" height="248" key="GridCell.Tab.0.center" timestamp="1585467515869">
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
-    <state width="1365" height="229" key="GridCell.Tab.0.center/0.0.2194.1153@0.0.2194.1153" timestamp="1585049540502" />
-    <state width="1365" height="229" key="GridCell.Tab.0.left" timestamp="1585049540502">
+    <state width="1363" height="248" key="GridCell.Tab.0.center/0.0.2194.1153@0.0.2194.1153" timestamp="1585467515869" />
+    <state width="1363" height="248" key="GridCell.Tab.0.left" timestamp="1585467515869">
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
-    <state width="1365" height="229" key="GridCell.Tab.0.left/0.0.2194.1153@0.0.2194.1153" timestamp="1585049540502" />
-    <state width="1365" height="229" key="GridCell.Tab.0.right" timestamp="1585049540502">
+    <state width="1363" height="248" key="GridCell.Tab.0.left/0.0.2194.1153@0.0.2194.1153" timestamp="1585467515869" />
+    <state width="1363" height="248" key="GridCell.Tab.0.right" timestamp="1585467515869">
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
-    <state width="1365" height="229" key="GridCell.Tab.0.right/0.0.2194.1153@0.0.2194.1153" timestamp="1585049540502" />
+    <state width="1363" height="248" key="GridCell.Tab.0.right/0.0.2194.1153@0.0.2194.1153" timestamp="1585467515869" />
     <state x="1011" y="261" key="SettingsEditor" timestamp="1585033333975">
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
     <state x="1011" y="261" key="SettingsEditor/0.0.2194.1153@0.0.2194.1153" timestamp="1585033333975" />
-    <state x="1035" y="199" width="612" height="804" key="find.popup" timestamp="1585040302906">
+    <state x="1035" y="199" width="612" height="804" key="find.popup" timestamp="1585428077973">
       <screen x="0" y="0" width="2194" height="1153" />
     </state>
-    <state x="1035" y="199" width="612" height="804" key="find.popup/0.0.2194.1153@0.0.2194.1153" timestamp="1585040302906" />
+    <state x="1035" y="199" width="612" height="804" key="find.popup/0.0.2194.1153@0.0.2194.1153" timestamp="1585428077973" />
+    <state x="811" y="283" key="run.anything.popup" timestamp="1585449203178">
+      <screen x="0" y="0" width="2194" height="1153" />
+    </state>
+    <state x="811" y="283" key="run.anything.popup/0.0.2194.1153@0.0.2194.1153" timestamp="1585449203178" />
   </component>
 </project>
