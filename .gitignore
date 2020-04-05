@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# WebStorm project
+.idea/workspace.xml
+package-lock.json
+package.json
