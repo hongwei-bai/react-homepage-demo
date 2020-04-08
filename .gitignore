@@ -25,4 +25,4 @@ yarn-error.log*
 # WebStorm project
 .idea/workspace.xml
 package-lock.json
-package.json
+#package.json
