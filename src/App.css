@@ -6,7 +6,8 @@ ul {
 
 .App {
     position: absolute;
-    height: 100%;
+    overflow: auto;
+    height: 100%; /*Along with attribute:'position: absolute', it solved white bar issue when there is a vertical scroll bar. */
     background-color: black;
 }
 
@@ -34,20 +35,19 @@ Form {
     font-family: 'Abel', cursive;
     background-color: black;
     width: 100%;
-    bottom: 0;
 }
 
 .Footer {
     width: 100%;
-    bottom: 0;
+    background-color: black;
+    text-align: right;
 }
 
 .Footer a {
+    background-color: black;
     font-family: 'ZCOOL XiaoWei', serif;
-    float: right;
     color: antiquewhite;
     font-size: 10pt;
-    padding-bottom: 0.6em;
     padding-right: 1em;
 }
 

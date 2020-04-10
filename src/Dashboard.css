@@ -1,0 +1,13 @@
+.Dashboard {
+    background-color: black;
+    padding-top: 0.4em;
+    padding-bottom: 5em;
+    justify-content: center;
+    display: flex;
+}
+
+@media only screen and (max-width: 1200px) {
+    .Dashboard {
+        display: block;
+    }
+}
