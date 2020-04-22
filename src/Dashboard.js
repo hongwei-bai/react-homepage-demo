@@ -16,11 +16,13 @@ const dataDashboard = {
 };
 
 const flightUpdate = [
-    "FLPN: YSCB/YSSY", <br/>,
-    "CULIN9 CULIN Y59 RIVET RIVET3", <br/>,
-    "RTE: TARAL, FL200", <br/>,
-    "Fuel: 5128 Kgs/11305.3 lbs", <br/>,
-    "ILS: 109.50/155°", <br/>
+    "CYCLE 1801", <br/>,
+    "ADEP ", <a href="https://www.crc.id.au/xplane/charts/DAPS-2020-FEB-27/Canberra%20(YSCB).pdf">YSCB🔗</a>, <br/>,
+    "DEPRWY RW35", <br/>,
+    "SID CULIN9", <br/>,
+    "ADES ", <a href="https://www.crc.id.au/xplane/charts/DAPS-2020-FEB-27/Sydney%20Kingsford%20Smith%20(YSSY).pdf">YSSY🔗</a>, <br/>,
+    "DESRWY RW07", <br/>,
+    "STAR ODALE6"
 ]
 
 class Dashboard extends React.Component {
@@ -164,7 +166,7 @@ class Dashboard extends React.Component {
             <ul className="Dashboard">
                 <li>
                     <Card style={{
-                        width: '20rem',
+                        width: '18rem',
                         height: '100%',
                         marginLeft: 'auto',
                         marginRight: 'auto',
@@ -178,7 +180,7 @@ class Dashboard extends React.Component {
                                 <p>
                                     +Cases/+Deaths/Cases/Deaths/Tests
                                 </p>
-                                <p>
+                                <p className="Covid19Data">
                                     Australia:
                                     <span className="Today">+{this.state.dataCovid19.Australia.NewConfirmed}/+
                                         {this.state.dataCovid19.Australia.NewDeaths}</span>/
@@ -236,7 +238,7 @@ class Dashboard extends React.Component {
                 </li>
                 <li>
                     <Card style={{
-                        width: '20rem',
+                        width: '18rem',
                         height: '100%',
                         marginLeft: 'auto',
                         marginRight: 'auto',
@@ -255,7 +257,7 @@ class Dashboard extends React.Component {
                 </li>
                 <li>
                     <Card style={{
-                        width: '20rem',
+                        width: '18rem',
                         height: '100%',
                         marginLeft: 'auto',
                         marginRight: 'auto',

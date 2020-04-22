@@ -6,6 +6,10 @@
     display: flex;
 }
 
+.Covid19Data {
+    font-size: 0.9em;
+}
+
 .Today {
     font-weight: bold;
     color: red;

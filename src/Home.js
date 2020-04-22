@@ -14,18 +14,10 @@ import imgExercise from './images/man-running.jpg';
 import imgFlight from './images/boeing-737-cockpit.jpg';
 
 function Home() {
-    const flightUpdate = [
-        "FLPN: YSCB/YSSY", <br/>,
-        "CULIN9 CULIN Y59 RIVET RIVET3", <br/>,
-        "RTE: TARAL, FL200", <br/>,
-        "Fuel: 5128 Kgs/11305.3 lbs", <br/>,
-        "ILS: 109.50/155°", <br/>
-    ]
-
     const dataDashboard = [
         {image: imgConv19, title: "Coronavirus(COVID-19)", update: "Australia: No data!"},
         {image: imgExercise, title: "Exercise", update: "Walk today: 2669"},
-        {image: imgFlight, title: "Flight Simulation", update: flightUpdate}
+        {image: imgFlight, title: "Flight Simulation", update: ""}
     ];
 
     return (
