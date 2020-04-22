@@ -31,13 +31,52 @@ class Dashboard extends React.Component {
                 Australia: {
                     NewConfirmed: 0,
                     NewDeaths: 0,
-                    NewRecovered: 0
+                    Confirmed: 0,
+                    Deaths: 0,
+                    Tests: 0
                 },
                 China: {
                     NewConfirmed: 0,
                     NewDeaths: 0,
-                    NewRecovered: 0
+                    Confirmed: 0,
+                    Deaths: 0,
+                    Tests: 0
                 },
+                Denmark: {
+                    NewConfirmed: 0,
+                    NewDeaths: 0,
+                    Confirmed: 0,
+                    Deaths: 0,
+                    Tests: 0
+                },
+                Japan: {
+                    NewConfirmed: 0,
+                    NewDeaths: 0,
+                    Confirmed: 0,
+                    Deaths: 0,
+                    Tests: 0
+                },
+                US: {
+                    NewConfirmed: 0,
+                    NewDeaths: 0,
+                    Confirmed: 0,
+                    Deaths: 0,
+                    Tests: 0
+                },
+                Italy: {
+                    NewConfirmed: 0,
+                    NewDeaths: 0,
+                    Confirmed: 0,
+                    Deaths: 0,
+                    Tests: 0
+                },
+                Singapore: {
+                    NewConfirmed: 0,
+                    NewDeaths: 0,
+                    Confirmed: 0,
+                    Deaths: 0,
+                    Tests: 0
+                }
             },
         }
     }
@@ -48,22 +87,66 @@ class Dashboard extends React.Component {
             redirect: 'follow'
         };
 
-        fetch("https://api.covid19api.com/summary", requestOptions)
+        fetch("https://corona.lmao.ninja/v2/countries?sort=country", requestOptions)
             .then(response => response.json())
             .then(
                 result => {
-                    let dataAustralia = result['Countries'].filter(item => item['Country'] === 'Australia')[0]
-                    let dataChina = result['Countries'].filter(item => item['Country'] === 'China')[0]
+                    let dataAustralia = result.filter(item => item['country'] === 'Australia')[0]
+                    let dataChina = result.filter(item => item['country'] === 'China')[0]
+                    let dataDenmark = result.filter(item => item['country'] === 'Denmark')[0]
+                    let dataJapan = result.filter(item => item['country'] === 'Japan')[0]
+                    let dataUS = result.filter(item => item['country'] === 'USA')[0]
+                    let dataItaly = result.filter(item => item['country'] === 'Italy')[0]
+                    let dataSingapore = result.filter(item => item['country'] === 'Singapore')[0]
                     let data = {
                         Australia: {
-                            NewConfirmed: dataAustralia['NewConfirmed'],
-                            NewDeaths: dataAustralia['NewDeaths'],
-                            NewRecovered: dataAustralia['NewRecovered']
+                            NewConfirmed: dataAustralia['todayCases'],
+                            NewDeaths: dataAustralia['todayDeaths'],
+                            Confirmed: dataAustralia['cases'],
+                            Deaths: dataAustralia['deaths'],
+                            Tests: dataAustralia['tests']
                         },
                         China: {
-                            NewConfirmed: dataChina['NewConfirmed'],
-                            NewDeaths: dataChina['NewDeaths'],
-                            NewRecovered: dataChina['NewRecovered']
+                            NewConfirmed: dataChina['todayCases'],
+                            NewDeaths: dataChina['todayDeaths'],
+                            Confirmed: dataChina['cases'],
+                            Deaths: dataChina['deaths'],
+                            Tests: dataChina['tests']
+                        },
+                        Denmark: {
+                            NewConfirmed: dataDenmark['todayCases'],
+                            NewDeaths: dataDenmark['todayDeaths'],
+                            Confirmed: dataDenmark['cases'],
+                            Deaths: dataDenmark['deaths'],
+                            Tests: dataDenmark['tests']
+                        },
+                        Japan: {
+                            NewConfirmed: dataJapan['todayCases'],
+                            NewDeaths: dataJapan['todayDeaths'],
+                            Confirmed: dataJapan['cases'],
+                            Deaths: dataJapan['deaths'],
+                            Tests: dataJapan['tests']
+                        },
+                        US: {
+                            NewConfirmed: dataUS['todayCases'],
+                            NewDeaths: dataUS['todayDeaths'],
+                            Confirmed: dataUS['cases'],
+                            Deaths: dataUS['deaths'],
+                            Tests: dataUS['tests']
+                        },
+                        Italy: {
+                            NewConfirmed: dataItaly['todayCases'],
+                            NewDeaths: dataItaly['todayDeaths'],
+                            Confirmed: dataItaly['cases'],
+                            Deaths: dataItaly['deaths'],
+                            Tests: dataItaly['tests']
+                        },
+                        Singapore: {
+                            NewConfirmed: dataSingapore['todayCases'],
+                            NewDeaths: dataSingapore['todayDeaths'],
+                            Confirmed: dataSingapore['cases'],
+                            Deaths: dataSingapore['deaths'],
+                            Tests: dataSingapore['tests']
                         }
                     }
                     this.setState({dataCovid19: data});
@@ -81,7 +164,7 @@ class Dashboard extends React.Component {
             <ul className="Dashboard">
                 <li>
                     <Card style={{
-                        width: '18rem',
+                        width: '20rem',
                         height: '100%',
                         marginLeft: 'auto',
                         marginRight: 'auto',
@@ -93,19 +176,58 @@ class Dashboard extends React.Component {
                             <Card.Title>{dataDashboard.covid19.title}</Card.Title>
                             <Card.Text>
                                 <p>
-                                    New/Confirmed/Death/Recovered
+                                    +Cases/+Deaths/Cases/Deaths/Tests
                                 </p>
                                 <p>
                                     Australia:
-                                    {this.state.dataCovid19.Australia.NewConfirmed}/
-                                    {this.state.dataCovid19.Australia.NewDeaths}/
-                                    {this.state.dataCovid19.Australia.NewRecovered}
-                                </p>
-                                <p>
+                                    <span className="Today">+{this.state.dataCovid19.Australia.NewConfirmed}/+
+                                        {this.state.dataCovid19.Australia.NewDeaths}</span>/
+                                    {this.state.dataCovid19.Australia.Confirmed}/
+                                    {this.state.dataCovid19.Australia.Deaths}/
+                                    <span className="Test">{this.state.dataCovid19.Australia.Tests}</span>
+                                    <br/>
                                     China:
-                                    {this.state.dataCovid19.China.NewConfirmed}/
-                                    {this.state.dataCovid19.China.NewDeaths}/
-                                    {this.state.dataCovid19.China.NewRecovered}
+                                    <span className="Today">+{this.state.dataCovid19.China.NewConfirmed}/+
+                                        {this.state.dataCovid19.China.NewDeaths}</span>/
+                                    {this.state.dataCovid19.China.Confirmed}/
+                                    {this.state.dataCovid19.China.Deaths}/
+                                    <span className="Test">{this.state.dataCovid19.China.Tests}</span>
+                                    <br/>
+                                    Denmark:
+                                    <span className="Today">+{this.state.dataCovid19.Denmark.NewConfirmed}/+
+                                        {this.state.dataCovid19.Denmark.NewDeaths}</span>/
+                                    {this.state.dataCovid19.Denmark.Confirmed}/
+                                    {this.state.dataCovid19.Denmark.Deaths}/
+                                    <span className="Test">{this.state.dataCovid19.Denmark.Tests}</span>
+                                    <br/>
+                                    Japan:
+                                    <span className="Today">+{this.state.dataCovid19.Japan.NewConfirmed}/+
+                                        {this.state.dataCovid19.Japan.NewDeaths}</span>/
+                                    {this.state.dataCovid19.Japan.Confirmed}/
+                                    {this.state.dataCovid19.Japan.Deaths}/
+                                    <span className="Test">{this.state.dataCovid19.Japan.Tests}</span>
+                                    <br/>
+                                    US:
+                                    <span className="Today">+{this.state.dataCovid19.US.NewConfirmed}/+
+                                        {this.state.dataCovid19.US.NewDeaths}</span>/
+                                    {this.state.dataCovid19.US.Confirmed}/
+                                    {this.state.dataCovid19.US.Deaths}/
+                                    <span className="Test">{this.state.dataCovid19.US.Tests}</span>
+                                    <br/>
+                                    Italy:
+                                    <span className="Today">+{this.state.dataCovid19.Italy.NewConfirmed}/+
+                                        {this.state.dataCovid19.Italy.NewDeaths}</span>/
+                                    {this.state.dataCovid19.Italy.Confirmed}/
+                                    {this.state.dataCovid19.Italy.Deaths}/
+                                    <span className="Test">{this.state.dataCovid19.Italy.Tests}</span>
+                                    <br/>
+                                    Singapore:
+                                    <span className="Today">+{this.state.dataCovid19.Singapore.NewConfirmed}/+
+                                        {this.state.dataCovid19.Singapore.NewDeaths}</span>/
+                                    {this.state.dataCovid19.Singapore.Confirmed}/
+                                    {this.state.dataCovid19.Singapore.Deaths}/
+                                    <span className="Test">{this.state.dataCovid19.Singapore.Tests}</span>
+                                    <br/>
                                 </p>
                             </Card.Text>
                             <Button variant="primary">Details</Button>
@@ -114,7 +236,7 @@ class Dashboard extends React.Component {
                 </li>
                 <li>
                     <Card style={{
-                        width: '18rem',
+                        width: '20rem',
                         height: '100%',
                         marginLeft: 'auto',
                         marginRight: 'auto',
@@ -133,7 +255,7 @@ class Dashboard extends React.Component {
                 </li>
                 <li>
                     <Card style={{
-                        width: '18rem',
+                        width: '20rem',
                         height: '100%',
                         marginLeft: 'auto',
                         marginRight: 'auto',

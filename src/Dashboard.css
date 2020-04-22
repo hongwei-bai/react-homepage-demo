@@ -6,6 +6,16 @@
     display: flex;
 }
 
+.Today {
+    font-weight: bold;
+    color: red;
+}
+
+.Test {
+    font-style: italic;
+    color: darkgreen;
+}
+
 @media only screen and (max-width: 1200px) {
     .Dashboard {
         display: block;
