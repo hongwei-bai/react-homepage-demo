@@ -1,0 +1,31 @@
+.DemoRoot {
+    background-color: white;
+}
+
+.DemoContent {
+    color: black;
+    padding-top: 0.5%;
+    padding-bottom: 3%;
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.DemoDiagram {
+    padding-top: 0.4em;
+    padding-bottom: 5em;
+    min-height: 200px;
+    justify-content: center;
+    display: flex;
+}
+
+.DemoLinks {
+    list-style: disc;
+}
+
+.ql-editor {
+    min-height: 20em;
+}
+
+.DemoPreview {
+    border: 1em darkblue;
+}

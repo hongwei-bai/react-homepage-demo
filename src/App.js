@@ -10,18 +10,36 @@ import {
 } from "react-router-dom";
 import Home from "./Home";
 import About from "./About";
+import FlowChatDemo from "./demo/FlowChatDemo"
+import QuillDemo from "./demo/QuillDemo";
+import UserInfo from "./demo/UserInfo";
+import BlogEntryEdit from "./blogs/BlogEntryEdit";
+import BlogList from "./blogs/BlogList";
+import Blog from "./blogs/Blog";
+
+let domainName = "localhost:8082";
+let applicationName = "hongwei-homepage-service"
+let prod = "https://" + window.domainName + "/" + window.applicationName
+let debug = "http://localhost:8082"
+
+window.baseUrl = debug
 
 function App() {
     return (
         <Router>
             <div>
                 <Switch>
-                    <Route path="/about">
-                        <About/>
-                    </Route>
-                    <Route path="/">
-                        <Home/>
-                    </Route>
+                    <Route exact path="/" component={Home}/>
+                    <Route exact path="/blog" component={BlogList}/>
+                    <Route path="/blog/category/:categories" component={BlogList}/>
+                    <Route path="/blog/tag/:tags" component={BlogList}/>
+                    <Route path="/blog/entry/:id" component={Blog}/>
+                    <Route path="/blog/edit/:id" component={BlogEntryEdit}/>
+                    <Route path="/blog/new" component={BlogEntryEdit}/>
+                    <Route path="/about" component={About}/>
+                    <Route path="/demo/rdm" component={FlowChatDemo}/>
+                    <Route path="/demo/quill" component={QuillDemo}/>
+                    <Route path="/demo/info" component={UserInfo}/>
                 </Switch>
             </div>
         </Router>
