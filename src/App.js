@@ -5,8 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {
     BrowserRouter as Router,
     Switch,
-    Route,
-    Link
+    Route
 } from "react-router-dom";
 import Home from "./Home";
 import About from "./About";
@@ -17,12 +16,12 @@ import BlogEntryEdit from "./blogs/BlogEntryEdit";
 import BlogList from "./blogs/BlogList";
 import Blog from "./blogs/Blog";
 
-let domainName = "localhost:8082";
+let domainName = "127.0.0.1";
 let applicationName = "hongwei-homepage-service"
 let prod = "https://" + window.domainName + "/" + window.applicationName
 let debug = "http://localhost:8082"
 
-window.baseUrl = debug
+window.baseUrl = prod
 
 function App() {
     return (

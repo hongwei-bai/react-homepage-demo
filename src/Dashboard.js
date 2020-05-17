@@ -5,16 +5,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {Button, Card} from 'react-bootstrap';
 
-import imgCovid19 from './images/covid-19-coronavirus-epidemic-wuhan-2019-ncov.jpg';
-import imgExercise from './images/man-running.jpg';
-import imgFlight from './images/boeing-737-cockpit.jpg';
+import imgCovid19 from './images/covid19_banner.jpg';
+import imgBlog from './images/blog_banner.jpg';
 
 import Cookies from 'universal-cookie';
 
 const dataDashboard = {
-    covid19: {image: imgCovid19, title: "Coronavirus(COVID-19)"},
-    exercise: {image: imgExercise, title: "Exercise"},
-    flightsim: {image: imgFlight, title: "Flight Simulation"}
+    covid19: {image: imgCovid19, title: "COVID-19"},
+    // exercise: {image: imgExercise, title: "Exercise"},
+    // flightsim: {image: imgFlight, title: "Flight Simulation"},
+    blog: {image: imgBlog, title: "BLOG"}
 };
 
 const cookies = new Cookies();
@@ -106,7 +106,7 @@ class Dashboard extends React.Component {
         let NSWCases = 0;
         let VICCases = 0;
 
-        fetch("http://hongwei-test.top/hongwei-homepage-service/covid19/querybystate.do?days=1", requestOptions)
+        fetch(window.baseUrl + "/covid19/querybystate.do?days=1", requestOptions)
             .then(response => response.json())
             .then(
                 result => {
@@ -228,7 +228,7 @@ class Dashboard extends React.Component {
                                 <Card.Text>
                                     Loading...
                                 </Card.Text>
-                                <Button variant="primary">Details</Button>
+                                <Button variant="primary" disabled>Details</Button>
                             </Card.Body>
                         </Card>
                     </li>
@@ -241,32 +241,13 @@ class Dashboard extends React.Component {
                             marginTop: '0.1em',
                             marginBottom: '0.1em'
                         }}>
-                            <Card.Img variant="top" src={dataDashboard.exercise.image}/>
+                            <Card.Img variant="top" src={dataDashboard.blog.image}/>
                             <Card.Body>
-                                <Card.Title>{dataDashboard.exercise.title}</Card.Title>
+                                <Card.Title>{dataDashboard.blog.title}</Card.Title>
                                 <Card.Text>
-                                    No data!
+                                    Basic functions are in alpha test.
                                 </Card.Text>
-                                <Button variant="primary">Details</Button>
-                            </Card.Body>
-                        </Card>
-                    </li>
-                    <li>
-                        <Card style={{
-                            width: '18rem',
-                            height: '100%',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            marginTop: '0.1em',
-                            marginBottom: '0.1em'
-                        }}>
-                            <Card.Img variant="top" src={dataDashboard.flightsim.image}/>
-                            <Card.Body>
-                                <Card.Title>{dataDashboard.flightsim.title}</Card.Title>
-                                <Card.Text>
-                                    {flightUpdate}
-                                </Card.Text>
-                                <Button variant="primary">Details</Button>
+                                <Button variant="primary" onClick={() => thisPtr.redirectToBlog()}>Details</Button>
                             </Card.Body>
                         </Card>
                     </li>
@@ -281,6 +262,7 @@ class Dashboard extends React.Component {
             VICStr = "-"
             byStateCaption = ""
         }
+        const thisPtr = this
         return (
             <ul className="Dashboard">
                 <li>
@@ -296,10 +278,10 @@ class Dashboard extends React.Component {
                         <Card.Body>
                             <Card.Title>{dataDashboard.covid19.title}</Card.Title>
                             <Card.Text>
-                                <p>
+                                <span>
                                     +Cases/+Deaths/Cases/Deaths/Tests
-                                </p>
-                                <p className="Covid19Data">
+                                </span>
+                                <span className="Covid19Data">
                                     Australia:
                                     <span className="Today">+{this.state.dataCovid19.Australia.NewConfirmed}/+
                                         {this.state.dataCovid19.Australia.NewDeaths}</span>/
@@ -307,10 +289,8 @@ class Dashboard extends React.Component {
                                     {this.state.dataCovid19.Australia.Deaths}/
                                     <span className="Test">{this.state.dataCovid19.Australia.Tests}</span>
                                     <br/>
-                                    <nbsp/>
                                     -
                                     NSW:{NSWStr} {byStateCaption}<br/>
-                                    <nbsp/>
                                     - Victoria:{VICStr}<br/>
                                     China:
                                     <span className="Today">+{this.state.dataCovid19.China.NewConfirmed}/+
@@ -354,9 +334,9 @@ class Dashboard extends React.Component {
                                     {this.state.dataCovid19.Singapore.Deaths}/
                                     <span className="Test">{this.state.dataCovid19.Singapore.Tests}</span>
                                     <br/>
-                                </p>
+                                </span>
                             </Card.Text>
-                            <Button variant="primary">Details</Button>
+                            <Button variant="primary" disabled>Details</Button>
                         </Card.Body>
                     </Card>
                 </li>
@@ -369,37 +349,22 @@ class Dashboard extends React.Component {
                         marginTop: '0.1em',
                         marginBottom: '0.1em'
                     }}>
-                        <Card.Img variant="top" src={dataDashboard.exercise.image}/>
+                        <Card.Img variant="top" src={dataDashboard.blog.image}/>
                         <Card.Body>
-                            <Card.Title>{dataDashboard.exercise.title}</Card.Title>
+                            <Card.Title>{dataDashboard.blog.title}</Card.Title>
                             <Card.Text>
-                                No data!
+                                Basic functions are in alpha test.
                             </Card.Text>
-                            <Button variant="primary">Details</Button>
-                        </Card.Body>
-                    </Card>
-                </li>
-                <li>
-                    <Card style={{
-                        width: '18rem',
-                        height: '100%',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        marginTop: '0.1em',
-                        marginBottom: '0.1em'
-                    }}>
-                        <Card.Img variant="top" src={dataDashboard.flightsim.image}/>
-                        <Card.Body>
-                            <Card.Title>{dataDashboard.flightsim.title}</Card.Title>
-                            <Card.Text>
-                                {flightUpdate}
-                            </Card.Text>
-                            <Button variant="primary">Details</Button>
+                            <Button variant="primary" onClick={() => thisPtr.redirectToBlog()}>Details</Button>
                         </Card.Body>
                     </Card>
                 </li>
             </ul>
         );
+    }
+
+    redirectToBlog() {
+        this.props.history.push("/blog")
     }
 }
 

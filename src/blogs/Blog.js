@@ -1,16 +1,12 @@
 import React from 'react';
 import './Blog.css';
-import Button from "@material-ui/core/Button";
+import Button from "react-bootstrap/Button";
 
 class Blog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: "Untitled post",
-            created: "",
-            modified: "",
-            owner: "",
-            htmlContent: ""
+            data: {}
         }
         this.goBack = this.goBack.bind(this);
     }
@@ -25,12 +21,9 @@ class Blog extends React.Component {
             .then(response => response.json())
             .then(
                 result => {
+                    console.log("content: " + result.data.content)
                     this.setState({
-                        title: result.data.title,
-                        htmlContent: result.data.content,
-                        created: new Date(result.data.createDate).toLocaleDateString(),
-                        modified: new Date(result.data.modifyDate).toLocaleString(),
-                        owner: result.data.owner
+                        data: result.data
                     })
                 }
             )
@@ -49,21 +42,30 @@ class Blog extends React.Component {
         this.props.history.goBack();
     }
 
+    edit(thisPtr) {
+        thisPtr.props.history.push("/blog/edit/" + thisPtr.state.data.id)
+    }
+
     render() {
+        const thisPtr = this
+
+
         return <div className="BlogRoot">
             <br/>
-            <h3>{this.state.title}</h3>
-            <p>created by {this.state.owner} on {this.state.created},  last modified: {this.state.modified}</p>
+            <h3>{this.state.data.title}</h3>
+            <p>created by {this.state.data.owner} on {new Date(this.state.data.createDate).toLocaleDateString()}, last
+                modified: {new Date(this.state.data.modifyDate).toLocaleString()}</p>
             <br/>
             <br/>
-            <div className="Container" dangerouslySetInnerHTML={{__html: this.state.htmlContent}}></div>
+            <div className="Container" dangerouslySetInnerHTML={{__html: this.state.data.content}}></div>
             <br/>
 
-            <Button variant="contained" color="primary" onClick={() => {
+            <Button variant="primary" onClick={() => {
                 this.goBack()
-            }}>
-                Back
-            </Button>&nbsp;
+            }}>Back</Button>{' '}&nbsp;
+            <Button variant="outline-primary" onClick={() => {
+                thisPtr.edit(thisPtr)
+            }}>Edit</Button>{' '}&nbsp;
             <br/><br/>
         </div>
     }

@@ -3,3 +3,11 @@
     padding-left: 10%;
     padding-right: 10%;
 }
+
+.Container {
+    line-height: 1.05em
+}
+
+Button {
+    min-width: 70px;
+}

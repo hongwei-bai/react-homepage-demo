@@ -1,0 +1,33 @@
+.BlogListBanner {
+    width: 100%;
+    height: auto;
+    background-image: url("../images/blog_banner_full.jpg");
+}
+
+.BlogListRoot ul li {
+    /*margin: 2px 0.4%;*/
+    margin: auto;
+    max-width: 800px;
+    cursor: pointer;
+}
+
+.BlogSearch {
+    margin: auto;
+    max-width: 800px;
+}
+
+@media only screen and (max-width: 801px) {
+    li {
+        max-width: 90%;
+    }
+
+    .BlogSearch {
+        max-width: 99%;
+    }
+}
+
+.BlogListRoot {
+    color: black;
+    background-color: whitesmoke;
+    padding: 2px 2%;
+}

@@ -1,0 +1,7 @@
+.Card {
+    color: whitesmoke;
+    background-color: gray;
+    padding: 2%;
+    margin-top: 1%;
+    border-radius: 0.2em;
+}
