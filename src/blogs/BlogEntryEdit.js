@@ -168,7 +168,7 @@ class BlogEntryEdit extends React.Component {
                 result => {
                     console.log("post result: " + result)
                     this.setState({post: "Post"})
-                    this.props.history.push("/blog/entry")
+                    this.props.history.push("/blog")
                 }
             )
             .catch(error => {

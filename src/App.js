@@ -16,13 +16,13 @@ import BlogEntryEdit from "./blogs/BlogEntryEdit";
 import BlogList from "./blogs/BlogList";
 import Blog from "./blogs/Blog";
 
-let domainName = "127.0.0.1";
-let applicationName = "hongwei-homepage-service"
-let prod = "https://" + window.domainName + "/" + window.applicationName
-let debug = "http://localhost:8082"
-let debugWar = "http://localhost:8080/hongwei-homepage-service-1.0-SNAPSHOT"
-
-window.baseUrl = debugWar
+const domainNameLocalhost = "127.0.0.1";
+const domainName = "hongwei-test.top";
+const applicationName = "hongwei-homepage-service"
+const prod = "https://" + domainName + "/" + applicationName
+const debug = "http://localhost:8082"
+const debugWar = "http://localhost:8080/hongwei-homepage-service-1.0-SNAPSHOT"
+window.baseUrl = prod
 
 function App() {
     return (

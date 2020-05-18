@@ -279,7 +279,7 @@ class Dashboard extends React.Component {
                             <Card.Title>{dataDashboard.covid19.title}</Card.Title>
                             <Card.Text>
                                 <span>
-                                    +Cases/+Deaths/Cases/Deaths/Tests
+                                    +Cases/+Deaths/Cases/Deaths/Tests<br/>
                                 </span>
                                 <span className="Covid19Data">
                                     Australia:
