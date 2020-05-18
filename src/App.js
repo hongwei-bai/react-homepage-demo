@@ -20,8 +20,9 @@ let domainName = "127.0.0.1";
 let applicationName = "hongwei-homepage-service"
 let prod = "https://" + window.domainName + "/" + window.applicationName
 let debug = "http://localhost:8082"
+let debugWar = "http://localhost:8080/hongwei-homepage-service-1.0-SNAPSHOT"
 
-window.baseUrl = prod
+window.baseUrl = debugWar
 
 function App() {
     return (
