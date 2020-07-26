@@ -12,15 +12,48 @@ import Dashboard from "./Dashboard";
 class Home extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            loggedIn: false,
+            loggedInUser: "hongwei",
+            username: "",
+            password: ""
+        }
+        this.onUsernameChange = this.onUsernameChange.bind(this)
+        this.onPasswordChange = this.onPasswordChange.bind(this)
+        this.login = this.login.bind(this)
+        this.logout = this.logout.bind(this)
     }
 
-    login() {
-        let username = 
-        console.log("login run!")
+    onUsernameChange(event) {
+        this.setState({
+            username: event.target.value
+        })
+    }
+
+    onPasswordChange(event) {
+        this.setState({
+            password: event.target.value
+        })
+    }
+
+    login(event) {
+        // alert("submit username: " + this.state.username + "/" + this.state.password)
+        // event.preventDefault()
+        this.setState({
+            loggedIn: true,
+            loggedInUser: this.state.username,
+            username: "",
+            password: ""
+        })
     }
 
     logout() {
-        console.log("logout run!")
+        this.setState({
+            loggedIn: false,
+            loggedInUser: "",
+            username: "",
+            password: ""
+        })
     }
 
     render() {
@@ -37,28 +70,30 @@ class Home extends React.Component {
                         <h1>Welcome</h1>
                     </li>
                     <li className="Main">
-                        <Form className="Logout">
-                            Hello admin <Button variant="link" onClick={this.logout}>Logout</Button>
-                        </Form>
-                        <Form className="Login">
+                        {this.state.loggedIn && <form className="Logout" onSubmit={this.logout}>
+                            Hello {this.state.loggedInUser} <Button variant="link" type="submit">Logout</Button>
+                        </form>}
+                        {!this.state.loggedIn && <form className="Login" onSubmit={this.login}>
                             <Row>
                                 <Col xs={9}>
                                     <Form.Group className="FormGroupUsername" controlId="formUsername">
-                                        <Form.Control type="username" placeholder="Username/Guest code"/>
+                                        <Form.Control type="username" onChange={this.onUsernameChange}
+                                                      placeholder="Username/Guest code"/>
                                     </Form.Group>
                                 </Col>
                                 <Col xs={2}>
-                                    <Button variant="primary" onClick={this.login}>Go</Button>
+                                    <Button variant="primary" type="submit">Go</Button>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col xs={9}>
                                     <Form.Group className="FormGroupUsername" controlId="formUsername">
-                                        <Form.Control type="password" placeholder="Password"/>
+                                        <Form.Control type="password" onChange={this.onPasswordChange}
+                                                      placeholder="Password"/>
                                     </Form.Group>
                                 </Col>
                             </Row>
-                        </Form>
+                        </form>}
                         <Dashboard history={this.props.history}/>
                     </li>
                     <li className="Footer">
