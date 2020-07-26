@@ -14,6 +14,15 @@ class Home extends React.Component {
         super(props);
     }
 
+    login() {
+        let username = 
+        console.log("login run!")
+    }
+
+    logout() {
+        console.log("logout run!")
+    }
+
     render() {
         return (
             <div className="App">
@@ -28,6 +37,9 @@ class Home extends React.Component {
                         <h1>Welcome</h1>
                     </li>
                     <li className="Main">
+                        <Form className="Logout">
+                            Hello admin <Button variant="link" onClick={this.logout}>Logout</Button>
+                        </Form>
                         <Form className="Login">
                             <Row>
                                 <Col xs={9}>
@@ -36,7 +48,7 @@ class Home extends React.Component {
                                     </Form.Group>
                                 </Col>
                                 <Col xs={2}>
-                                    <Button variant="primary" type="submit">Go</Button>
+                                    <Button variant="primary" onClick={this.login}>Go</Button>
                                 </Col>
                             </Row>
                             <Row>

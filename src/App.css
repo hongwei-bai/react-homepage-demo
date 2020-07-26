@@ -57,10 +57,21 @@ Form {
         max-width: 280px;
         margin: auto;
     }
+
     .FormGroupUsername {
         max-width: 200px;
         padding: 0 0 0 0;
     }
+}
+
+.Logout {
+    margin: 1em auto;
+    padding-left: 6em;
+    display: flex;
+    color: whitesmoke;
+    justify-content: space-evenly;
+    max-width: 300px;
+    align-items: center;
 }
 
 .Main {
