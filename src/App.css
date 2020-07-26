@@ -25,10 +25,42 @@ ul {
     width: 100%;
 }
 
+.Banner {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.App ul li {
+    position: relative;
+    left: 0%;
+}
+
+@media only screen and (max-width: 800px) {
+    .App ul li {
+        left: 5%;
+    }
+}
+
 Form {
-    max-width: 450px;
+    max-width: 440px;
     margin: auto;
-    horiz-align: center;
+}
+
+.FormGroupUsername {
+    max-width: 350px;
+    padding: 0 0 0 7em;
+}
+
+@media only screen and (max-width: 580px) {
+    Form {
+        max-width: 280px;
+        margin: auto;
+    }
+    .FormGroupUsername {
+        max-width: 200px;
+        padding: 0 0 0 0;
+    }
 }
 
 .Main {
@@ -51,11 +83,3 @@ Form {
     padding-right: 1em;
 }
 
-.FormGroupUsername {
-    display: flex;
-    padding: 2em;
-}
-
-.FormGroupUsername Button {
-    margin-left: 1em;
-}

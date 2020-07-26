@@ -6,6 +6,21 @@
     display: flex;
 }
 
+.Dashboard li {
+    margin-left: 0.05em;
+    margin-right: 0.05em;
+}
+
+@media only screen and (max-width: 800px) {
+    .Dashboard {
+        display: block;
+    }
+
+    .Dashboard li {
+        margin-bottom: 0.2em;
+    }
+}
+
 .Covid19Data {
     font-size: 0.9em;
 }
@@ -20,8 +35,4 @@
     color: darkgreen;
 }
 
-@media only screen and (max-width: 1200px) {
-    .Dashboard {
-        display: block;
-    }
-}
+

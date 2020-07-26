@@ -13,8 +13,9 @@ class ItemEntryCard extends React.Component {
     render() {
         const id = this.props.data.id
         return <div className="Card" onClick={e => this.onOpenEntry(e, id)}>
-            <h4>{this.props.data.title}</h4>
+            <h6>{this.props.data.title}</h6>
             <p>by {this.props.data.owner} on {new Date(this.props.data.createDate).toLocaleString()}</p>
+            <div className="BottomLine"/>
         </div>
     }
 }

@@ -4,7 +4,7 @@ import bannerBgW from './images/space.webp';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import {Button, Card} from 'react-bootstrap';
+import {Button, Card, Col, Row} from 'react-bootstrap';
 import Form from "react-bootstrap/Form";
 import ImageWebp from './components/ImageWebp/ImageWebp';
 import Dashboard from "./Dashboard";
@@ -29,10 +29,23 @@ class Home extends React.Component {
                     </li>
                     <li className="Main">
                         <Form className="Login">
-                            <Form.Group className="FormGroupUsername" controlId="formUsername">
-                                <Form.Control type="username" placeholder="Username/Guest code"/>
-                                <Button variant="primary" type="submit">Go</Button>
-                            </Form.Group>
+                            <Row>
+                                <Col xs={9}>
+                                    <Form.Group className="FormGroupUsername" controlId="formUsername">
+                                        <Form.Control type="username" placeholder="Username/Guest code"/>
+                                    </Form.Group>
+                                </Col>
+                                <Col xs={2}>
+                                    <Button variant="primary" type="submit">Go</Button>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={9}>
+                                    <Form.Group className="FormGroupUsername" controlId="formUsername">
+                                        <Form.Control type="password" placeholder="Password"/>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
                         </Form>
                         <Dashboard history={this.props.history}/>
                     </li>

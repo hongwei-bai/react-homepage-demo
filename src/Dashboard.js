@@ -36,6 +36,7 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {
             loaded: false,
+            isNew: false,
             dataCovid19: {
                 Australia: {
                     NewConfirmed: 0,
@@ -114,16 +115,16 @@ class Dashboard extends React.Component {
                     AuTime = result['ausDataByStatePerDays'][0]['timeFrom'];
                     NSWCases = result['ausDataByStatePerDays'][0]['NSW'];
                     VICCases = result['ausDataByStatePerDays'][0]['VIC'];
-                    this.fetchWorld(AuDate, AuTime, NSWCases, VICCases)
+                    this.fetchWorld(AuDate, AuTime, NSWCases, VICCases, result['isNewData'])
                 }
             )
             .catch(error => {
                 console.log('error', error)
-                this.fetchWorld("API not available!", "", 0, 0)
+                this.fetchWorld("API not available!", "", 0, 0, true)
             });
     }
 
-    fetchWorld(lAuDate, lAuTime, lNSWCases, lVICCases) {
+    fetchWorld(lAuDate, lAuTime, lNSWCases, lVICCases, isNew) {
         const requestOptions = {
             method: 'GET',
             redirect: 'follow'
@@ -197,6 +198,15 @@ class Dashboard extends React.Component {
                     this.setState({loaded: true})
                     this.setState({dataCovid19: data});
                     this.render();
+
+                    console.log("isNew: " + isNew)
+                    this.setState({isNew: isNew})
+                    if (!isNew) {
+                        const timer = setTimeout(() => {
+                            this.getSummary()
+                            clearTimeout(timer);
+                        }, 5000);
+                    }
                 }
             )
             .catch(error => console.log('error', error));
@@ -262,6 +272,11 @@ class Dashboard extends React.Component {
             VICStr = "-"
             byStateCaption = ""
         }
+        let loadAgainCation = ""
+        console.log("this.state.isNew: " + this.state.isNew)
+        if (!this.state.isNew) {
+            loadAgainCation = " (cache)"
+        }
         const thisPtr = this
         return (
             <ul className="Dashboard">
@@ -290,7 +305,8 @@ class Dashboard extends React.Component {
                                     <span className="Test">{this.state.dataCovid19.Australia.Tests}</span>
                                     <br/>
                                     -
-                                    NSW:{NSWStr} {byStateCaption}<br/>
+                                    {/*NSW:{NSWStr} {byStateCaption}<br/>*/}
+                                    NSW:{NSWStr} {loadAgainCation}<br/>
                                     - Victoria:{VICStr}<br/>
                                     China:
                                     <span className="Today">+{this.state.dataCovid19.China.NewConfirmed}/+
