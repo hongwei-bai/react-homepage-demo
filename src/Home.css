@@ -1,0 +1,117 @@
+ul {
+    display: block;
+    list-style: none;
+    padding: 0;
+}
+
+.Banner h1 {
+    font-size: 10vmin;
+    font-family: 'Oleo Script', cursive;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 5%;
+    color: lightgoldenrodyellow;
+}
+
+.Banner img {
+    width: 100%;
+}
+
+.Banner {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.App ul li {
+    position: relative;
+    left: 0%;
+}
+
+@media only screen and (max-width: 800px) {
+    .App ul li {
+        left: 5%;
+    }
+}
+
+Form {
+    max-width: 440px;
+    margin: auto;
+}
+
+.Login {
+    margin-top: 1.5em;
+}
+
+.FormGroupUsername, .FormGroupPassword {
+    max-width: 350px;
+    padding: 0 0 0 7em;
+    margin-bottom: 1em;
+}
+
+.FormGroupUsername {
+    margin-bottom: 1em;
+}
+
+.FormGroupPassword {
+    margin-bottom: 0.1em;
+}
+
+.LoginError {
+    color: red;
+    font-size: 0.8em;
+    padding: 0 0 0 9em;
+    max-width: fit-content;
+}
+
+.Dashboard {
+    margin-top: 0.6em;
+}
+
+@media only screen and (max-width: 580px) {
+    Form {
+        max-width: 280px;
+        margin: auto;
+    }
+
+    .FormGroupUsername, .FormGroupPassword {
+        max-width: 200px;
+        padding: 0;
+    }
+
+    .LoginError {
+        padding: 0;
+    }
+}
+
+.Logout {
+    margin: 1em auto;
+    padding-left: 6em;
+    display: flex;
+    color: whitesmoke;
+    justify-content: space-evenly;
+    max-width: 300px;
+    align-items: center;
+}
+
+.Main {
+    font-family: 'Abel', cursive;
+    background-color: black;
+    width: 100%;
+}
+
+.Footer {
+    width: 100%;
+    background-color: black;
+    text-align: right;
+}
+
+.Footer a {
+    background-color: black;
+    font-family: 'ZCOOL XiaoWei', serif;
+    color: antiquewhite;
+    font-size: 10pt;
+    padding-right: 1em;
+}
+

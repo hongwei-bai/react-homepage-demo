@@ -25,6 +25,13 @@ const debug = "http://localhost:8080"
 const debugWar = "http://localhost:8080/hongwei-homepage-service-1.0-SNAPSHOT"
 window.baseUrl = prodWeb
 
+const applicationNameAuth = "service-application-auth"
+const prodWebAuth = "https://" + domainName + "/" + applicationNameAuth
+window.baseUrlAuth = debug
+
+window.tmpToken = "2C1693473CDAAD7E62EEB99C41027D0A"
+window.token = ""
+
 function App() {
     return (
         <Router>

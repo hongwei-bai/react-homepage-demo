@@ -1,20 +1,23 @@
 import React from 'react';
 import bannerBg from './images/space.jpg';
 import bannerBgW from './images/space.webp';
-import './App.css';
+import './Home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {Button, Card, Col, Row} from 'react-bootstrap';
 import Form from "react-bootstrap/Form";
 import ImageWebp from './components/ImageWebp/ImageWebp';
 import Dashboard from "./Dashboard";
+import {md5} from './utils/md5'
+import {signature} from './utils/SignUtils'
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             loggedIn: false,
-            loggedInUser: "hongwei",
+            loggedInUser: "",
+            logInError: "",
             username: "",
             password: ""
         }
@@ -36,24 +39,61 @@ class Home extends React.Component {
         })
     }
 
-    login(event) {
-        // alert("submit username: " + this.state.username + "/" + this.state.password)
-        // event.preventDefault()
-        this.setState({
-            loggedIn: true,
-            loggedInUser: this.state.username,
-            username: "",
-            password: ""
-        })
+    login() {
+        const userName = this.state.username
+        const passwordHash = md5(this.state.password).toUpperCase()
+        let argsObj = {
+            userName: userName,
+            passwordHash: passwordHash
+        }
+        const args = JSON.stringify(argsObj)
+        const sign = signature(args, window.tmpToken)
+
+        const requestOptions = {
+            method: 'POST',
+            redirect: 'follow'
+        };
+
+        fetch(window.baseUrlAuth + "/auth/login.do?"
+            + "userName=" + userName
+            + "&passwordHash=" + passwordHash
+            + "&sign=" + sign, requestOptions)
+            .then(response => response.json())
+            .then(
+                result => {
+                    const code = result['code']
+                    if (code == 200) {
+                        this.setState({
+                            loggedIn: true,
+                            loggedInUser: this.state.username,
+                            username: "",
+                            password: ""
+                        })
+                        window.token = result['data']['token']
+                    } else {
+                        this.setState({
+                            loggedIn: false,
+                            logInError: result['msg']
+                        })
+                        window.token = ""
+                    }
+                }
+            )
+            .catch(error => {
+                console.log('error', error)
+            });
     }
 
     logout() {
         this.setState({
             loggedIn: false,
             loggedInUser: "",
+            logInError: "",
             username: "",
             password: ""
         })
+        window.token = ""
+        this.render()
     }
 
     render() {
@@ -71,7 +111,7 @@ class Home extends React.Component {
                     </li>
                     <li className="Main">
                         {this.state.loggedIn && <form className="Logout" onSubmit={this.logout}>
-                            Hello {this.state.loggedInUser} <Button variant="link" type="submit">Logout</Button>
+                            Hello {this.state.loggedInUser} <Button variant="link" onClick={this.logout}>Logout</Button>
                         </form>}
                         {!this.state.loggedIn && <form className="Login" onSubmit={this.login}>
                             <Row>
@@ -82,17 +122,22 @@ class Home extends React.Component {
                                     </Form.Group>
                                 </Col>
                                 <Col xs={2}>
-                                    <Button variant="primary" type="submit">Go</Button>
+                                    <Button variant="primary" onClick={this.login}>Go</Button>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col xs={9}>
-                                    <Form.Group className="FormGroupUsername" controlId="formUsername">
+                                    <Form.Group className="FormGroupPassword" controlId="formPassword">
                                         <Form.Control type="password" onChange={this.onPasswordChange}
                                                       placeholder="Password"/>
                                     </Form.Group>
                                 </Col>
                             </Row>
+                            {this.state.logInError != "" && <Row>
+                                <Col xs={9}>
+                                    <p className="LoginError">{this.state.logInError}</p>
+                                </Col>
+                            </Row>}
                         </form>}
                         <Dashboard history={this.props.history}/>
                     </li>

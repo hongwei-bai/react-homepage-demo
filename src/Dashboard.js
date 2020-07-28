@@ -7,6 +7,9 @@ import {Button, Card} from 'react-bootstrap';
 
 import imgCovid19 from './images/covid19_banner.jpg';
 import imgBlog from './images/blog_banner.jpg';
+import imgAdmin from './images/admin_banner.jpg';
+import imgPhoto from './images/photo_banner.jpg';
+import imgECommerce from './images/ecommerce_banner.jpg';
 
 import Cookies from 'universal-cookie';
 
@@ -14,22 +17,13 @@ const dataDashboard = {
     covid19: {image: imgCovid19, title: "COVID-19"},
     // exercise: {image: imgExercise, title: "Exercise"},
     // flightsim: {image: imgFlight, title: "Flight Simulation"},
+    admin: {image: imgAdmin, title: "Administration"},
+    ecommerce: {image: imgECommerce, title: "E-Commerce Catalogs"},
+    photo: {image: imgPhoto, title: "Photo gallery"},
     blog: {image: imgBlog, title: "BLOG"}
 };
 
 const cookies = new Cookies();
-
-const flightUpdate = [
-    "CYCLE 1801", <br/>,
-    "ADEP ", <a href="https://www.crc.id.au/xplane/charts/DAPS-2020-FEB-27/Canberra%20(YSCB).pdf">YSCB🔗</a>, <br/>,
-    "DEPRWY RW35", <br/>,
-    "SID CULIN9", <br/>,
-    "ADES ",
-    <a href="https://www.crc.id.au/xplane/charts/DAPS-2020-FEB-27/Sydney%20Kingsford%20Smith%20(YSSY).pdf">YSSY🔗</a>,
-    <br/>,
-    "DESRWY RW07", <br/>,
-    "STAR ODALE6"
-]
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -50,41 +44,6 @@ class Dashboard extends React.Component {
                     VIC: 0
                 },
                 China: {
-                    NewConfirmed: 0,
-                    NewDeaths: 0,
-                    Confirmed: 0,
-                    Deaths: 0,
-                    Tests: 0
-                },
-                Denmark: {
-                    NewConfirmed: 0,
-                    NewDeaths: 0,
-                    Confirmed: 0,
-                    Deaths: 0,
-                    Tests: 0
-                },
-                Japan: {
-                    NewConfirmed: 0,
-                    NewDeaths: 0,
-                    Confirmed: 0,
-                    Deaths: 0,
-                    Tests: 0
-                },
-                US: {
-                    NewConfirmed: 0,
-                    NewDeaths: 0,
-                    Confirmed: 0,
-                    Deaths: 0,
-                    Tests: 0
-                },
-                Italy: {
-                    NewConfirmed: 0,
-                    NewDeaths: 0,
-                    Confirmed: 0,
-                    Deaths: 0,
-                    Tests: 0
-                },
-                Singapore: {
                     NewConfirmed: 0,
                     NewDeaths: 0,
                     Confirmed: 0,
@@ -135,11 +94,6 @@ class Dashboard extends React.Component {
                 result => {
                     let dataAustralia = result.filter(item => item['country'] === 'Australia')[0]
                     let dataChina = result.filter(item => item['country'] === 'China')[0]
-                    let dataDenmark = result.filter(item => item['country'] === 'Denmark')[0]
-                    let dataJapan = result.filter(item => item['country'] === 'Japan')[0]
-                    let dataUS = result.filter(item => item['country'] === 'USA')[0]
-                    let dataItaly = result.filter(item => item['country'] === 'Italy')[0]
-                    let dataSingapore = result.filter(item => item['country'] === 'Singapore')[0]
                     let data = {
                         Australia: {
                             NewConfirmed: dataAustralia['todayCases'],
@@ -159,47 +113,11 @@ class Dashboard extends React.Component {
                             Deaths: dataChina['deaths'],
                             Tests: dataChina['tests']
                         },
-                        Denmark: {
-                            NewConfirmed: dataDenmark['todayCases'],
-                            NewDeaths: dataDenmark['todayDeaths'],
-                            Confirmed: dataDenmark['cases'],
-                            Deaths: dataDenmark['deaths'],
-                            Tests: dataDenmark['tests']
-                        },
-                        Japan: {
-                            NewConfirmed: dataJapan['todayCases'],
-                            NewDeaths: dataJapan['todayDeaths'],
-                            Confirmed: dataJapan['cases'],
-                            Deaths: dataJapan['deaths'],
-                            Tests: dataJapan['tests']
-                        },
-                        US: {
-                            NewConfirmed: dataUS['todayCases'],
-                            NewDeaths: dataUS['todayDeaths'],
-                            Confirmed: dataUS['cases'],
-                            Deaths: dataUS['deaths'],
-                            Tests: dataUS['tests']
-                        },
-                        Italy: {
-                            NewConfirmed: dataItaly['todayCases'],
-                            NewDeaths: dataItaly['todayDeaths'],
-                            Confirmed: dataItaly['cases'],
-                            Deaths: dataItaly['deaths'],
-                            Tests: dataItaly['tests']
-                        },
-                        Singapore: {
-                            NewConfirmed: dataSingapore['todayCases'],
-                            NewDeaths: dataSingapore['todayDeaths'],
-                            Confirmed: dataSingapore['cases'],
-                            Deaths: dataSingapore['deaths'],
-                            Tests: dataSingapore['tests']
-                        }
                     }
                     this.setState({loaded: true})
                     this.setState({dataCovid19: data});
                     this.render();
 
-                    console.log("isNew: " + isNew)
                     this.setState({isNew: isNew})
                     if (!isNew) {
                         const timer = setTimeout(() => {
@@ -242,6 +160,7 @@ class Dashboard extends React.Component {
                             </Card.Body>
                         </Card>
                     </li>
+
                     <li>
                         <Card style={{
                             width: '18rem',
@@ -273,7 +192,6 @@ class Dashboard extends React.Component {
             byStateCaption = ""
         }
         let loadAgainCation = ""
-        console.log("this.state.isNew: " + this.state.isNew)
         if (!this.state.isNew) {
             loadAgainCation = " (cache)"
         }
@@ -304,9 +222,7 @@ class Dashboard extends React.Component {
                                     {this.state.dataCovid19.Australia.Deaths}/
                                     <span className="Test">{this.state.dataCovid19.Australia.Tests}</span>
                                     <br/>
-                                    -
-                                    {/*NSW:{NSWStr} {byStateCaption}<br/>*/}
-                                    NSW:{NSWStr} {loadAgainCation}<br/>
+                                    - NSW:{NSWStr} {loadAgainCation}<br/>
                                     - Victoria:{VICStr}<br/>
                                     China:
                                     <span className="Today">+{this.state.dataCovid19.China.NewConfirmed}/+
@@ -315,44 +231,63 @@ class Dashboard extends React.Component {
                                     {this.state.dataCovid19.China.Deaths}/
                                     <span className="Test">{this.state.dataCovid19.China.Tests}</span>
                                     <br/>
-                                    Denmark:
-                                    <span className="Today">+{this.state.dataCovid19.Denmark.NewConfirmed}/+
-                                        {this.state.dataCovid19.Denmark.NewDeaths}</span>/
-                                    {this.state.dataCovid19.Denmark.Confirmed}/
-                                    {this.state.dataCovid19.Denmark.Deaths}/
-                                    <span className="Test">{this.state.dataCovid19.Denmark.Tests}</span>
-                                    <br/>
-                                    Japan:
-                                    <span className="Today">+{this.state.dataCovid19.Japan.NewConfirmed}/+
-                                        {this.state.dataCovid19.Japan.NewDeaths}</span>/
-                                    {this.state.dataCovid19.Japan.Confirmed}/
-                                    {this.state.dataCovid19.Japan.Deaths}/
-                                    <span className="Test">{this.state.dataCovid19.Japan.Tests}</span>
-                                    <br/>
-                                    US:
-                                    <span className="Today">+{this.state.dataCovid19.US.NewConfirmed}/+
-                                        {this.state.dataCovid19.US.NewDeaths}</span>/
-                                    {this.state.dataCovid19.US.Confirmed}/
-                                    {this.state.dataCovid19.US.Deaths}/
-                                    <span className="Test">{this.state.dataCovid19.US.Tests}</span>
-                                    <br/>
-                                    Italy:
-                                    <span className="Today">+{this.state.dataCovid19.Italy.NewConfirmed}/+
-                                        {this.state.dataCovid19.Italy.NewDeaths}</span>/
-                                    {this.state.dataCovid19.Italy.Confirmed}/
-                                    {this.state.dataCovid19.Italy.Deaths}/
-                                    <span className="Test">{this.state.dataCovid19.Italy.Tests}</span>
-                                    <br/>
-                                    Singapore:
-                                    <span className="Today">+{this.state.dataCovid19.Singapore.NewConfirmed}/+
-                                        {this.state.dataCovid19.Singapore.NewDeaths}</span>/
-                                    {this.state.dataCovid19.Singapore.Confirmed}/
-                                    {this.state.dataCovid19.Singapore.Deaths}/
-                                    <span className="Test">{this.state.dataCovid19.Singapore.Tests}</span>
-                                    <br/>
                                 </span>
                             </Card.Text>
                             <Button variant="primary" disabled>Details</Button>
+                        </Card.Body>
+                    </Card>
+                </li>
+                <li>
+                    <Card style={{
+                        width: '18rem',
+                        height: '100%',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        marginTop: '0.1em',
+                        marginBottom: '0.1em'
+                    }}>
+                        <Card.Img variant="top" src={dataDashboard.admin.image}/>
+                        <Card.Body>
+                            <Card.Title>{dataDashboard.admin.title}</Card.Title>
+                            <Card.Text>
+                            </Card.Text>
+                            <Button variant="primary" onClick={() => thisPtr.redirectToBlog()}>Details</Button>
+                        </Card.Body>
+                    </Card>
+                </li>
+                <li>
+                    <Card style={{
+                        width: '18rem',
+                        height: '100%',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        marginTop: '0.1em',
+                        marginBottom: '0.1em'
+                    }}>
+                        <Card.Img variant="top" src={dataDashboard.ecommerce.image}/>
+                        <Card.Body>
+                            <Card.Title>{dataDashboard.ecommerce.title}</Card.Title>
+                            <Card.Text>
+                            </Card.Text>
+                            <Button variant="primary" onClick={() => thisPtr.redirectToBlog()}>Details</Button>
+                        </Card.Body>
+                    </Card>
+                </li>
+                <li>
+                    <Card style={{
+                        width: '18rem',
+                        height: '100%',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        marginTop: '0.1em',
+                        marginBottom: '0.1em'
+                    }}>
+                        <Card.Img variant="top" src={dataDashboard.photo.image}/>
+                        <Card.Body>
+                            <Card.Title>{dataDashboard.photo.title}</Card.Title>
+                            <Card.Text>
+                            </Card.Text>
+                            <Button variant="primary" onClick={() => thisPtr.redirectToBlog()}>Details</Button>
                         </Card.Body>
                     </Card>
                 </li>
