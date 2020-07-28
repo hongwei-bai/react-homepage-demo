@@ -10,6 +10,7 @@ import imgBlog from './images/blog_banner.jpg';
 import imgAdmin from './images/admin_banner.jpg';
 import imgPhoto from './images/photo_banner.jpg';
 import imgECommerce from './images/ecommerce_banner.jpg';
+import imgCv from './images/cv_banner.jpg';
 
 import Cookies from 'universal-cookie';
 
@@ -20,7 +21,8 @@ const dataDashboard = {
     admin: {image: imgAdmin, title: "Administration"},
     ecommerce: {image: imgECommerce, title: "E-Commerce Catalogs"},
     photo: {image: imgPhoto, title: "Photo gallery"},
-    blog: {image: imgBlog, title: "BLOG"}
+    blog: {image: imgBlog, title: "BLOG"},
+    cv: {image: imgCv, title: "Resume"}
 };
 
 const cookies = new Cookies();
@@ -160,7 +162,82 @@ class Dashboard extends React.Component {
                             </Card.Body>
                         </Card>
                     </li>
-
+                    <li>
+                        <Card style={{
+                            width: '18rem',
+                            height: '100%',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: '0.1em',
+                            marginBottom: '0.1em'
+                        }}>
+                            <Card.Img variant="top" src={dataDashboard.admin.image}/>
+                            <Card.Body>
+                                <Card.Title>{dataDashboard.admin.title}</Card.Title>
+                                <Card.Text>
+                                    In construction...
+                                </Card.Text>
+                                <Button variant="primary" disabled>Details</Button>
+                            </Card.Body>
+                        </Card>
+                    </li>
+                    <li>
+                        <Card style={{
+                            width: '18rem',
+                            height: '100%',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: '0.1em',
+                            marginBottom: '0.1em'
+                        }}>
+                            <Card.Img variant="top" src={dataDashboard.ecommerce.image}/>
+                            <Card.Body>
+                                <Card.Title>{dataDashboard.ecommerce.title}</Card.Title>
+                                <Card.Text>
+                                    Coming soon...
+                                </Card.Text>
+                                <Button variant="primary" disabled>Details</Button>
+                            </Card.Body>
+                        </Card>
+                    </li>
+                    <li>
+                        <Card style={{
+                            width: '18rem',
+                            height: '100%',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: '0.1em',
+                            marginBottom: '0.1em'
+                        }}>
+                            <Card.Img variant="top" src={dataDashboard.photo.image}/>
+                            <Card.Body>
+                                <Card.Title>{dataDashboard.photo.title}</Card.Title>
+                                <Card.Text>
+                                    Coming soon...
+                                </Card.Text>
+                                <Button variant="primary" disabled>Details</Button>
+                            </Card.Body>
+                        </Card>
+                    </li>
+                    <li>
+                        <Card style={{
+                            width: '18rem',
+                            height: '100%',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: '0.1em',
+                            marginBottom: '0.1em'
+                        }}>
+                            <Card.Img variant="top" src={dataDashboard.cv.image}/>
+                            <Card.Body>
+                                <Card.Title>{dataDashboard.cv.title}</Card.Title>
+                                <Card.Text>
+                                    Coming soon...
+                                </Card.Text>
+                                <Button variant="primary" disabled>Details</Button>
+                            </Card.Body>
+                        </Card>
+                    </li>
                     <li>
                         <Card style={{
                             width: '18rem',
@@ -250,8 +327,9 @@ class Dashboard extends React.Component {
                         <Card.Body>
                             <Card.Title>{dataDashboard.admin.title}</Card.Title>
                             <Card.Text>
+                                In construction...
                             </Card.Text>
-                            <Button variant="primary" onClick={() => thisPtr.redirectToBlog()}>Details</Button>
+                            <Button variant="primary" disabled>Details</Button>
                         </Card.Body>
                     </Card>
                 </li>
@@ -268,8 +346,9 @@ class Dashboard extends React.Component {
                         <Card.Body>
                             <Card.Title>{dataDashboard.ecommerce.title}</Card.Title>
                             <Card.Text>
+                                Coming soon...
                             </Card.Text>
-                            <Button variant="primary" onClick={() => thisPtr.redirectToBlog()}>Details</Button>
+                            <Button variant="primary" disabled>Details</Button>
                         </Card.Body>
                     </Card>
                 </li>
@@ -286,8 +365,28 @@ class Dashboard extends React.Component {
                         <Card.Body>
                             <Card.Title>{dataDashboard.photo.title}</Card.Title>
                             <Card.Text>
+                                Coming soon...
                             </Card.Text>
-                            <Button variant="primary" onClick={() => thisPtr.redirectToBlog()}>Details</Button>
+                            <Button variant="primary" disabled>Details</Button>
+                        </Card.Body>
+                    </Card>
+                </li>
+                <li>
+                    <Card style={{
+                        width: '18rem',
+                        height: '100%',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        marginTop: '0.1em',
+                        marginBottom: '0.1em'
+                    }}>
+                        <Card.Img variant="top" src={dataDashboard.cv.image}/>
+                        <Card.Body>
+                            <Card.Title>{dataDashboard.cv.title}</Card.Title>
+                            <Card.Text>
+                                Coming soon...
+                            </Card.Text>
+                            <Button variant="primary" disabled>Details</Button>
                         </Card.Body>
                     </Card>
                 </li>

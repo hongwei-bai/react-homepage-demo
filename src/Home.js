@@ -18,6 +18,7 @@ class Home extends React.Component {
             loggedIn: false,
             loggedInUser: "",
             logInError: "",
+            showPasswordField: false,
             username: "",
             password: ""
         }
@@ -25,12 +26,39 @@ class Home extends React.Component {
         this.onPasswordChange = this.onPasswordChange.bind(this)
         this.login = this.login.bind(this)
         this.logout = this.logout.bind(this)
+        this.onKeyup = this.onKeyup.bind(this)
+    }
+
+    onKeyup(event) {
+        if (event.keyCode === 13) {
+            this.login()
+        }
     }
 
     onUsernameChange(event) {
         this.setState({
             username: event.target.value
         })
+
+        if (this.isValidGuestCode(event.target.value)) {
+            this.setState({
+                showPasswordField: false
+            })
+        } else {
+            this.setState({
+                showPasswordField: true
+            })
+        }
+    }
+
+    //e.g. gwq7&jb-ja
+    // Assume a standard guest code starts with 'g' and has length of 10.
+    // Don't show password field if user type guest code from 'gxx'.
+    isValidGuestCode(str) {
+        if (str.startsWith("g") && str.length <= 10) {
+            return true
+        }
+        return false
     }
 
     onPasswordChange(event) {
@@ -118,7 +146,8 @@ class Home extends React.Component {
                                 <Col xs={9}>
                                     <Form.Group className="FormGroupUsername" controlId="formUsername">
                                         <Form.Control type="username" onChange={this.onUsernameChange}
-                                                      placeholder="Username/Guest code"/>
+                                                      placeholder="Username/Guest code" tabindex="1"
+                                                      onKeyUp={this.onKeyup}/>
                                     </Form.Group>
                                 </Col>
                                 <Col xs={2}>
@@ -127,10 +156,11 @@ class Home extends React.Component {
                             </Row>
                             <Row>
                                 <Col xs={9}>
+                                    {this.state.showPasswordField &&
                                     <Form.Group className="FormGroupPassword" controlId="formPassword">
                                         <Form.Control type="password" onChange={this.onPasswordChange}
-                                                      placeholder="Password"/>
-                                    </Form.Group>
+                                                      placeholder="Password" tabindex="2" onKeyUp={this.onKeyup}/>
+                                    </Form.Group>}
                                 </Col>
                             </Row>
                             {this.state.logInError != "" && <Row>
