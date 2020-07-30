@@ -10,7 +10,7 @@
 .Dashboard li {
     margin-left: 0.05em;
     margin-right: 0.05em;
-    margin-bottom: 0.1em;
+    margin-bottom: 0.5em;
 }
 
 @media only screen and (max-width: 800px) {

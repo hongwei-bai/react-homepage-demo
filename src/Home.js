@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Card, Col, Row} from 'react-bootstrap';
 import Form from "react-bootstrap/Form";
 import ImageWebp from './components/ImageWebp/ImageWebp';
-import Dashboard from "./Dashboard";
+import Dashboard from "./dashboard/Dashboard";
 import {md5} from './utils/md5'
 import {signature} from './utils/SignUtils'
 
@@ -139,14 +139,15 @@ class Home extends React.Component {
                     </li>
                     <li className="Main">
                         {this.state.loggedIn && <form className="Logout" onSubmit={this.logout}>
-                            Hello {this.state.loggedInUser} <Button variant="link" onClick={this.logout}>Logout</Button>
+                            Hello {this.state.loggedInUser} <Button variant="link"
+                                                                    onClick={this.logout}>Logout</Button>
                         </form>}
                         {!this.state.loggedIn && <form className="Login" onSubmit={this.login}>
                             <Row>
                                 <Col xs={9}>
                                     <Form.Group className="FormGroupUsername" controlId="formUsername">
                                         <Form.Control type="username" onChange={this.onUsernameChange}
-                                                      placeholder="Username/Guest code" tabindex="1"
+                                                      placeholder="Username/Guest code" tabIndex="1"
                                                       onKeyUp={this.onKeyup}/>
                                     </Form.Group>
                                 </Col>
@@ -159,7 +160,7 @@ class Home extends React.Component {
                                     {this.state.showPasswordField &&
                                     <Form.Group className="FormGroupPassword" controlId="formPassword">
                                         <Form.Control type="password" onChange={this.onPasswordChange}
-                                                      placeholder="Password" tabindex="2" onKeyUp={this.onKeyup}/>
+                                                      placeholder="Password" tabIndex="2" onKeyUp={this.onKeyup}/>
                                     </Form.Group>}
                                 </Col>
                             </Row>

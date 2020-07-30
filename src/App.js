@@ -15,6 +15,7 @@ import UserInfo from "./demo/UserInfo";
 import BlogEntryEdit from "./blogs/BlogEntryEdit";
 import BlogList from "./blogs/BlogList";
 import Blog from "./blogs/Blog";
+import UserList from "./admin/UserList";
 
 const domainNameLocalhost = "127.0.0.1:8080";
 const domainName = "hongwei-test.top";
@@ -38,6 +39,7 @@ function App() {
             <div>
                 <Switch>
                     <Route exact path="/" component={Home}/>
+                    <Route exact path="/admin" component={UserList}/>
                     <Route exact path="/blog" component={BlogList}/>
                     <Route path="/blog/category/:categories" component={BlogList}/>
                     <Route path="/blog/tag/:tags" component={BlogList}/>

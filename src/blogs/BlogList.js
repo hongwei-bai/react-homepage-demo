@@ -7,6 +7,7 @@ import deepPurple from "@material-ui/core/colors/deepPurple";
 import ItemEntryCard from "./ItemEntryCard";
 import {FormControl, InputGroup} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+import {withRouter} from 'react-router-dom';
 
 const styles = {
     root: {
@@ -82,5 +83,5 @@ class BlogList extends React.Component {
     }
 }
 
-export default withStyles(styles)(BlogList);
+export default withRouter(withStyles(styles)(BlogList));
 // export default BlogList;
