@@ -1,0 +1,21 @@
+{
+    "samp": {
+        "index":{
+            "logout":"退出"
+        },
+        "policyEngine": {
+            "title": "策略中心",
+            "nasClients": {
+                "title": "NAS客户端",
+                "listTitle": "Nas客户端列表",
+                "item": {
+                    "nasName": "NAS名字",
+                    "startNASIp": "NAS起始IP",
+                    "endNASIp": "NAS结束IP",
+                    "description": "描述",
+                    "dm_attributes": "DM属性"
+                }
+            }
+        }
+    }
+}

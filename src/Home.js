@@ -10,11 +10,26 @@ import ImageWebp from './components/ImageWebp/ImageWebp';
 import Dashboard from "./dashboard/Dashboard";
 import {md5} from './utils/md5'
 import {signature} from './utils/SignUtils'
+import intl from 'react-intl-universal';
+import locales from './multi-lang/Locale'
+import {Provider} from "react-redux";
+import { createStore } from 'redux';
+const store = createStore(todos, ['Use Redux']);
+
+function todos(state = [], action) {
+    switch (action.type) {
+        case 'ADD_TODO':
+            return state.concat([action.text])
+        default:
+            return state
+    }
+}
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            antdLang: locales.en_US,  // 修改antd  组件的国际化
             loggedIn: false,
             loggedInUser: "",
             logInError: "",
@@ -124,60 +139,74 @@ class Home extends React.Component {
         this.render()
     }
 
+    loadLocales(lang = 'en-US') {
+        intl.init({
+            currentLocale: lang,  // 设置初始语音
+            locales,
+        }).then(() => {
+            this.setState({
+                antdLang: lang === 'zh-CN' ? locales.zh_CN : locales.en_US
+            });
+        });
+    }
+
     render() {
         return (
-            <div className="App">
-                <link rel="stylesheet"
-                      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
-                <link href="https://fonts.googleapis.com/css2?family=Oleo+Script&display=swap" rel="stylesheet"/>
-                <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet"/>
-                <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet"/>
-                <ul>
-                    <li className="Banner">
-                        <ImageWebp srcWebp={bannerBgW} src={bannerBg}/>
-                        <h1>Welcome</h1>
-                    </li>
-                    <li className="Main">
-                        {this.state.loggedIn && <form className="Logout" onSubmit={this.logout}>
-                            Hello {this.state.loggedInUser} <Button variant="link"
-                                                                    onClick={this.logout}>Logout</Button>
-                        </form>}
-                        {!this.state.loggedIn && <form className="Login" onSubmit={this.login}>
-                            <Row>
-                                <Col xs={9}>
-                                    <Form.Group className="FormGroupUsername" controlId="formUsername">
-                                        <Form.Control type="username" onChange={this.onUsernameChange}
-                                                      placeholder="Username/Guest code" tabIndex="1"
-                                                      onKeyUp={this.onKeyup}/>
-                                    </Form.Group>
-                                </Col>
-                                <Col xs={2}>
-                                    <Button variant="primary" onClick={this.login}>Go</Button>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={9}>
-                                    {this.state.showPasswordField &&
-                                    <Form.Group className="FormGroupPassword" controlId="formPassword">
-                                        <Form.Control type="password" onChange={this.onPasswordChange}
-                                                      placeholder="Password" tabIndex="2" onKeyUp={this.onKeyup}/>
-                                    </Form.Group>}
-                                </Col>
-                            </Row>
-                            {this.state.logInError != "" && <Row>
-                                <Col xs={9}>
-                                    <p className="LoginError">{this.state.logInError}</p>
-                                </Col>
-                            </Row>}
-                        </form>}
-                        <Dashboard history={this.props.history}/>
-                    </li>
-                    <li className="Footer">
-                        <a className="Footer" align="right" href="http://www.beian.miit.gov.cn" target="_blank"
-                           rel="noopener noreferrer">互联网ICP备案号: 京ICP备20008547号-1</a>
-                    </li>
-                </ul>
-            </div>
+            <Provider store={store} locale={this.state.antdLang}>
+                <div className="App">
+                    <link rel="stylesheet"
+                          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
+                    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script&display=swap" rel="stylesheet"/>
+                    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet"/>
+                    <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet"/>
+                    <ul>
+                        <li className="Banner">
+                            <ImageWebp srcWebp={bannerBgW} src={bannerBg}/>
+                            <h1>Welcome</h1>
+                            <h1>{intl.get("samp.policyEngine.nasClients.title")}</h1>
+                        </li>
+                        <li className="Main">
+                            {this.state.loggedIn && <form className="Logout" onSubmit={this.logout}>
+                                Hello {this.state.loggedInUser} <Button variant="link"
+                                                                        onClick={this.logout}>Logout</Button>
+                            </form>}
+                            {!this.state.loggedIn && <form className="Login" onSubmit={this.login}>
+                                <Row>
+                                    <Col xs={9}>
+                                        <Form.Group className="FormGroupUsername" controlId="formUsername">
+                                            <Form.Control type="username" onChange={this.onUsernameChange}
+                                                          placeholder="Username/Guest code" tabIndex="1"
+                                                          onKeyUp={this.onKeyup}/>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col xs={2}>
+                                        <Button variant="primary" onClick={this.login}>Go</Button>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col xs={9}>
+                                        {this.state.showPasswordField &&
+                                        <Form.Group className="FormGroupPassword" controlId="formPassword">
+                                            <Form.Control type="password" onChange={this.onPasswordChange}
+                                                          placeholder="Password" tabIndex="2" onKeyUp={this.onKeyup}/>
+                                        </Form.Group>}
+                                    </Col>
+                                </Row>
+                                {this.state.logInError != "" && <Row>
+                                    <Col xs={9}>
+                                        <p className="LoginError">{this.state.logInError}</p>
+                                    </Col>
+                                </Row>}
+                            </form>}
+                            <Dashboard history={this.props.history}/>
+                        </li>
+                        <li className="Footer">
+                            <a className="Footer" align="right" href="http://www.beian.miit.gov.cn" target="_blank"
+                               rel="noopener noreferrer">互联网ICP备案号: 京ICP备20008547号-1</a>
+                        </li>
+                    </ul>
+                </div>
+            </Provider>
         )
     }
 }
