@@ -202,7 +202,7 @@ class Home extends React.Component {
                         </li>
                         <li className="Footer">
                             <a className="Footer" align="right" href="http://www.beian.miit.gov.cn" target="_blank"
-                               rel="noopener noreferrer">互联网ICP备案号: 京ICP备20008547号-1</a>
+                               rel="noopener noreferrer">互联网ICP备案号: 京ICP备20008547号-2</a>
                         </li>
                     </ul>
                 </div>

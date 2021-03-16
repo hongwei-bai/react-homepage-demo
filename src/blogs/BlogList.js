@@ -52,6 +52,9 @@ class BlogList extends React.Component {
 
     componentDidMount() {
         this.fetchBlogList()
+
+        // cache
+        console.log("info", "11111111111111 test: " + this.props.location.action)
     }
 
     render() {

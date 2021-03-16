@@ -18,7 +18,7 @@ import Blog from "./blogs/Blog";
 import UserList from "./admin/UserList";
 
 const domainNameLocalhost = "127.0.0.1:8080";
-const domainName = "hongwei-test.top";
+const domainName = "39.100.128.234";//"hongwei-test.top";
 const applicationName = "hongwei-homepage-service"
 const prod = "http://" + domainNameLocalhost + "/" + applicationName
 const prodWeb = "https://" + domainName + "/" + applicationName

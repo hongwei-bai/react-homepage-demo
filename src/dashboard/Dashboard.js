@@ -37,15 +37,15 @@ const dataDashboard = [
             actionButton: "Details"
         }
     },
-    {
-        data: {
-            image: imgECommerce,
-            title: "E-Commerce Catalogs",
-            content: "Coming soon...",
-            enabled: false,
-            actionButton: "Details"
-        }
-    },
+    // {
+    //     data: {
+    //         image: imgECommerce,
+    //         title: "E-Commerce Catalogs",
+    //         content: "Coming soon...",
+    //         enabled: false,
+    //         actionButton: "Details"
+    //     }
+    // },
     {
         data: {
             image: imgPhoto,
