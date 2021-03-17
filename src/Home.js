@@ -9,11 +9,11 @@ import Form from "react-bootstrap/Form";
 import ImageWebp from './components/ImageWebp/ImageWebp';
 import Dashboard from "./dashboard/Dashboard";
 import {md5} from './utils/md5'
-import {signature} from './utils/SignUtils'
 import intl from 'react-intl-universal';
 import locales from './multi-lang/Locale'
 import {Provider} from "react-redux";
-import { createStore } from 'redux';
+import {createStore} from 'redux';
+
 const store = createStore(todos, ['Use Redux']);
 
 function todos(state = [], action) {
@@ -42,11 +42,19 @@ class Home extends React.Component {
         this.login = this.login.bind(this)
         this.logout = this.logout.bind(this)
         this.onKeyup = this.onKeyup.bind(this)
+        this.onKeydown = this.onKeydown.bind(this)
     }
 
     onKeyup(event) {
+        event.preventDefault();
         if (event.keyCode === 13) {
             this.login()
+        }
+    }
+
+    onKeydown(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
         }
     }
 
@@ -66,13 +74,16 @@ class Home extends React.Component {
         }
     }
 
-    //e.g. gwq7&jb-ja
-    // Assume a standard guest code starts with 'g' and has length of 10.
-    // Don't show password field if user type guest code from 'gxx'.
+    //e.g. g:wq7CjbYja
+    // Assume a standard guest code starts with 'g:' and has length of 10.
+    // Don't show password field if user type guest code from 'g:xx'.
     isValidGuestCode(str) {
-        if (str.startsWith("g") && str.length <= 10) {
+        if (str.startsWith("g") && str.length === 1) {
+            return true
+        } else if (str.startsWith("g:") && str.length <= 10) {
             return true
         }
+
         return false
     }
 
@@ -84,45 +95,53 @@ class Home extends React.Component {
 
     login() {
         const userName = this.state.username
-        const passwordHash = md5(this.state.password).toUpperCase()
-        let argsObj = {
-            userName: userName,
-            passwordHash: passwordHash
+        let userCredentials
+        if (userName.startsWith("g:")) {
+            userCredentials = {
+                guestCode: userName
+            }
+        } else {
+            userCredentials = {
+                userName: userName,
+                credential: md5(this.state.password).toUpperCase()
+            }
         }
-        const args = JSON.stringify(argsObj)
-        const sign = signature(args, window.tmpToken)
 
-        const requestOptions = {
+        fetch(window.baseUrlAuth + "/authenticate", {
             method: 'POST',
-            redirect: 'follow'
-        };
-
-        fetch(window.baseUrlAuth + "/auth/login.do?"
-            + "userName=" + userName
-            + "&passwordHash=" + passwordHash
-            + "&sign=" + sign, requestOptions)
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(userCredentials) // body data type must match "Content-Type" header
+        })
             .then(response => response.json())
             .then(
                 result => {
-                    const code = result['code']
-                    if (code == 200) {
+                    const jwt = result['jwt']
+                    if (jwt != null) {
+                        this.writeCredentials(userName, jwt)
                         this.setState({
                             loggedIn: true,
-                            loggedInUser: this.state.username,
+                            loggedInUser: userName,
                             username: "",
                             password: ""
                         })
-                        window.token = result['data']['token']
                     } else {
+                        this.clearCredentials()
                         this.setState({
                             loggedIn: false,
-                            logInError: result['msg']
+                            logInError: 'Log in failed.'
                         })
-                        window.token = ""
                     }
                 }
             )
             .catch(error => {
+                this.clearCredentials()
                 console.log('error', error)
             });
     }
@@ -135,7 +154,7 @@ class Home extends React.Component {
             username: "",
             password: ""
         })
-        window.token = ""
+        this.clearCredentials()
         this.render()
     }
 
@@ -148,6 +167,71 @@ class Home extends React.Component {
                 antdLang: lang === 'zh-CN' ? locales.zh_CN : locales.en_US
             });
         });
+    }
+
+    componentDidMount() {
+        this.refreshLoginStatus();
+    }
+
+    refreshLoginStatus() {
+        let [user, jwt] = this.readCredentials()
+        if (user != null && user.length > 0
+            && jwt != null && jwt.length > 0) {
+            this.setState({
+                loggedIn: true,
+                loggedInUser: user
+            })
+        } else {
+            this.setState({
+                loggedIn: false
+            })
+        }
+    }
+
+    clearCredentials() {
+        this.setCookie("user", "", 1)
+        this.setCookie("jwt", "", 1)
+    }
+
+    writeCredentials(user, jwt) {
+        this.setCookie("user", user, 7)
+        this.setCookie("jwt", jwt, 7)
+    }
+
+    readCredentials() {
+        console.log("cookie:" + document.cookie)
+        return [this.getCookie("user"), this.getCookie("jwt")]
+    }
+
+    getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    setCookie(cname, cvalue, exdays) {
+        let d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    getGreeting() {
+        if (this.state.loggedInUser.startsWith("g:")) {
+            return "Hello guest "
+        } else {
+            return "Hello " + this.state.loggedInUser
+        }
     }
 
     render() {
@@ -167,16 +251,17 @@ class Home extends React.Component {
                         </li>
                         <li className="Main">
                             {this.state.loggedIn && <form className="Logout" onSubmit={this.logout}>
-                                Hello {this.state.loggedInUser} <Button variant="link"
-                                                                        onClick={this.logout}>Logout</Button>
+                                {this.getGreeting()} <Button variant="link"
+                                                             onClick={this.logout}>Logout</Button>
                             </form>}
                             {!this.state.loggedIn && <form className="Login" onSubmit={this.login}>
                                 <Row>
                                     <Col xs={9}>
-                                        <Form.Group className="FormGroupUsername" controlId="formUsername">
+                                        <Form.Group id="loginForm" className="FormGroupUsername"
+                                                    controlId="formUsername">
                                             <Form.Control type="username" onChange={this.onUsernameChange}
                                                           placeholder="Username/Guest code" tabIndex="1"
-                                                          onKeyUp={this.onKeyup}/>
+                                                          onKeyUp={this.onKeyup} onKeyDown={this.onKeydown}/>
                                         </Form.Group>
                                     </Col>
                                     <Col xs={2}>
@@ -188,7 +273,8 @@ class Home extends React.Component {
                                         {this.state.showPasswordField &&
                                         <Form.Group className="FormGroupPassword" controlId="formPassword">
                                             <Form.Control type="password" onChange={this.onPasswordChange}
-                                                          placeholder="Password" tabIndex="2" onKeyUp={this.onKeyup}/>
+                                                          placeholder="Password" tabIndex="2"
+                                                          onKeyUp={this.onKeyup} onKeyDown={this.onKeydown}/>
                                         </Form.Group>}
                                     </Col>
                                 </Row>
