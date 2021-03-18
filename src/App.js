@@ -16,9 +16,10 @@ import BlogEntryEdit from "./blogs/BlogEntryEdit";
 import BlogList from "./blogs/BlogList";
 import Blog from "./blogs/Blog";
 import UserList from "./admin/UserList";
+import FileUploadPage from "./summer/FileUploadPage";
 
 const domainNameLocalhost = "127.0.0.1:8080";
-const domainName = "39.100.128.234";//"hongwei-test.top";
+const domainName = "hongwei-test1.top";
 const applicationName = "hongwei-homepage-service"
 const prod = "http://" + domainNameLocalhost + "/" + applicationName
 const prodWeb = "https://" + domainName + "/" + applicationName
@@ -29,7 +30,11 @@ window.baseUrl = prodWeb
 const applicationNameAuth = "application-service-authentication"
 const prodAuth = "https://" + domainName + "/" + applicationNameAuth
 const debugAuth = "http://" + domainNameLocalhost
-window.baseUrlAuth = debugAuth
+window.baseUrlAuth = prodAuth
+
+// window.baseFileServer = "http://localhost:8080/"
+const prodFileServer = "https://" + domainName + "/application-file-server"
+window.baseFileServer = prodFileServer
 
 function App() {
     return (
@@ -48,6 +53,7 @@ function App() {
                     <Route path="/demo/rdm" component={FlowChatDemo}/>
                     <Route path="/demo/quill" component={QuillDemo}/>
                     <Route path="/demo/info" component={UserInfo}/>
+                    <Route path="/summer/upload" component={FileUploadPage}/>
                 </Switch>
             </div>
         </Router>

@@ -9,6 +9,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
     "node-sass": "^4.14.1",
     "prop-types": "latest",
@@ -31,7 +32,8 @@
     "redux": "^4.0.5",
     "store": "^2.0.12",
     "storm-react-diagrams": "^5.2.1",
-    "universal-cookie": "^4.0.3"
+    "universal-cookie": "^4.0.3",
+    "use-file-picker": "^0.2.1"
   },
   "scripts": {
     "start": "react-scripts start",

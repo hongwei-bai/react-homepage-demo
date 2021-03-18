@@ -107,7 +107,7 @@ class Home extends React.Component {
             }
         }
 
-        fetch(window.baseUrlAuth + "/authenticate", {
+        fetch(window.baseUrlAuth + "/authenticate.do", {
             method: 'POST',
             cache: 'no-cache',
             credentials: 'same-origin',
