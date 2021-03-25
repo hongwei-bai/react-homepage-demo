@@ -23,7 +23,7 @@ class Blog extends React.Component {
             .then(response => response.json())
             .then(
                 result => {
-                    console.log("content: " + result.data.content)
+                    // console.log("content: " + result.data.content)
                     store.dispatch(loadBlogEntry(id, result.data))
                     this.setState({
                         data: result.data,

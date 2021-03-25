@@ -55,11 +55,19 @@ const blogReducer = (state = initialState, action) => {
                 blogEntries: entries
             }
         case BLOG_ENTRY_LOAD:
+            if (DEBUG) {
+                console.log("blogReducer: cache size: " + visitedList.length)
+                console.log("blogReducer: REACT_APP_BLOG_MAX_CACHE: " + process.env.REACT_APP_BLOG_MAX_CACHE)
+                console.log("blogReducer: will delete: " + visitedList.length > process.env.REACT_APP_BLOG_MAX_CACHE)
+            }
             if (visitedList.hasOwnProperty(action.id)) {
                 visitedList.delete(action.id)
             } else if (visitedList.length > process.env.REACT_APP_BLOG_MAX_CACHE) {
                 let rmvId = visitedList.pop()
                 entries.delete(rmvId)
+                if (DEBUG) {
+                    console.log("blogReducer: add id: " + action.id + ", rmv id: " + rmvId)
+                }
             }
             visitedList.unshift(action.id)
             entries.set(action.id, action.entry)
