@@ -18,23 +18,9 @@ import Blog from "./blogs/Blog";
 import UserList from "./admin/UserList";
 import FileUploadPage from "./summer/FileUploadPage";
 
-const domainNameLocalhost = "127.0.0.1:8080";
-const domainName = "hongwei-test1.top";
-const applicationName = "hongwei-homepage-service"
-const prod = "http://" + domainNameLocalhost + "/" + applicationName
-const prodWeb = "https://" + domainName + "/" + applicationName
-const debug = "http://localhost:8080"
-const debugWar = "http://localhost:8080/hongwei-homepage-service-1.0-SNAPSHOT"
-window.baseUrl = prodWeb
-
-const applicationNameAuth = "application-service-authentication"
-const prodAuth = "https://" + domainName + "/" + applicationNameAuth
-const debugAuth = "http://" + domainNameLocalhost
-window.baseUrlAuth = prodAuth
-
-// window.baseFileServer = "http://localhost:8080/"
-const prodFileServer = "https://" + domainName + "/application-file-server"
-window.baseFileServer = prodFileServer
+window.baseUrl = process.env.REACT_APP_SERVICE_DOMAIN + process.env.REACT_APP_SERVICE_HOME
+window.baseUrlAuth = process.env.REACT_APP_SERVICE_DOMAIN + process.env.REACT_APP_SERVICE_AUTHENTICATION
+window.baseFileServer = process.env.REACT_APP_SERVICE_DOMAIN + process.env.REACT_APP_FILE_SERVER
 
 function App() {
     return (

@@ -1,7 +1,12 @@
 .BlogRoot {
     background-color: whitesmoke;
-    padding-left: 10%;
-    padding-right: 10%;
+}
+
+.BlogContent {
+    margin: auto;
+    max-width: 1500px;
+    padding-left: 20%;
+    padding-right: 20%;
 }
 
 .Container {
@@ -10,4 +15,12 @@
 
 Button {
     min-width: 70px;
+}
+
+@media only screen and (max-width: 801px) {
+    .BlogContent {
+        max-width: 99%;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }

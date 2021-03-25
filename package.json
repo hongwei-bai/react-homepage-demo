@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^27.0.0",
+    "@ckeditor/ckeditor5-react": "^3.0.2",
     "@material-ui/core": "^4.9.14",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/styles": "latest",
@@ -11,6 +13,8 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
+    "collections": "^5.1.12",
+    "env-cmd": "^10.1.0",
     "node-sass": "^4.14.1",
     "prop-types": "latest",
     "quill": "^1.3.7",
@@ -25,9 +29,9 @@
     "react-intl-universal": "^2.3.2",
     "react-native-fit-image": "^1.5.5",
     "react-native-network-info": "^5.2.1",
-    "react-quill": "^1.3.5",
+    "react-quill": "^2.0.0-beta.2",
     "react-redux": "^7.2.1",
-    "react-router-dom": "^5.1.2",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "store": "^2.0.12",
@@ -36,8 +40,9 @@
     "use-file-picker": "^0.2.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start:debug": "env-cmd -f .env.debug react-scripts start",
+    "start:debug:remote": "env-cmd -f .env.prod react-scripts start",
+    "build": "env-cmd -f .env.prod react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

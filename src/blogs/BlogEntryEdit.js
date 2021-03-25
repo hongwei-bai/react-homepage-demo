@@ -6,7 +6,7 @@ import ReactQuill, {Quill} from 'react-quill';
 import {ImageDrop} from 'quill-image-drop-module';
 import 'react-quill/dist/quill.snow.css';
 import TextField from "@material-ui/core/TextField";
-import {Delta} from "quill";
+import store from '../store';
 
 // 在quill中注册quill-image-drop-module
 Quill.register('modules/imageDrop', ImageDrop);
@@ -15,6 +15,7 @@ class BlogEntryEdit extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: true,
             post: "Post",
             data: undefined,
             title: "",
@@ -69,6 +70,7 @@ class BlogEntryEdit extends React.Component {
             .then(
                 result => {
                     this.setState({
+                        loading: false,
                         data: result.data,
                         title: result.data.title,
                         delta: JSON.parse(result.data.delta)
@@ -76,6 +78,9 @@ class BlogEntryEdit extends React.Component {
                 }
             )
             .catch(error => {
+                this.setState({
+                    loading: false
+                })
                 console.log('error', error)
             });
     }
@@ -119,7 +124,7 @@ class BlogEntryEdit extends React.Component {
             formData.append(k, params[k]);
         }
 
-        console.log("bodyStr: " + formData)
+        // console.log("bodyStr: " + formData)
 
         const requestOptions = {
             method: 'PUT',
@@ -133,6 +138,7 @@ class BlogEntryEdit extends React.Component {
                 result => {
                     console.log("post result: " + result)
                     this.setState({post: "Post"})
+                    store.dispatch(invalidateBlogEntry(this.props.match.params.id))
                     this.props.history.push("/blog/entry/" + this.state.data.id)
                 }
             )
@@ -178,37 +184,52 @@ class BlogEntryEdit extends React.Component {
 
     render() {
         const thisPtr = this
-        return <div className="DemoRoot">
-            <div className="DemoContent">
-                <br/>
-                <TextField required id="standard-required" label="Title" fullWidth={true}
-                           value={this.state.title}
-                           onChange={e => {
-                               thisPtr.setState({title: e.target.value})
-                           }
-                           }/>
-                <br/>
-                <br/>
-                <ReactQuill className="DemoInputArea"
-                            theme="snow"
-                            modules={this.modules}
-                            formats={this.formats}
-                            onChange={this.onQuillChange}
-                            value={this.state.delta}
-                            placeholder="Please Input"
-                /><br/>
-
-                <Button variant="contained" color="primary" onClick={() => {
-                    this.post(thisPtr)
-                }}>
-                    {this.state.post}
-                </Button>&nbsp;
-                <Button onClick={() => {
-                    this.goBack()
-                }}>Cancel</Button>
-                <br/><br/>
+        if (true === this.state.loading) {
+            return <div>
+                <p>Loading...</p>
             </div>
-        </div>
+        } else {
+            return <div className="BlogEditRoot">
+                <div className="BlogEditContent">
+                    <br/>
+                    <TextField required id="standard-required" label="Title" fullWidth={true}
+                               value={this.state.title}
+                               onChange={e => {
+                                   thisPtr.setState({title: e.target.value})
+                               }
+                               }/>
+                    <br/>
+                    <br/>
+                    <ReactQuill className="BlogEditInputArea"
+                                theme="snow"
+                                modules={this.modules}
+                                formats={this.formats}
+                                onChange={this.onQuillChange}
+                                value={this.state.delta}
+                                placeholder="Please Input"
+                    /><br/>
+
+                    <Button variant="contained" color="primary" onClick={() => {
+                        this.post(thisPtr)
+                    }}>
+                        {this.state.post}
+                    </Button>&nbsp;
+                    <Button onClick={() => {
+                        this.goBack()
+                    }}>Cancel</Button>
+                    <br/><br/>
+                </div>
+            </div>
+        }
+    }
+}
+
+const BLOG_ENTRY_INVALIDATE = 'BLOG_ENTRY_INVALIDATE'
+
+function invalidateBlogEntry(id) {
+    return {
+        type: BLOG_ENTRY_INVALIDATE,
+        id: id
     }
 }
 

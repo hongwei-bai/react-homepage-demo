@@ -8,6 +8,9 @@ import ItemEntryCard from "./ItemEntryCard";
 import {FormControl, InputGroup} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {withRouter} from 'react-router-dom';
+import store from '../store';
+
+const BLOG_LIST_UPDATE = 'BLOG_LIST_UPDATE'
 
 const styles = {
     root: {
@@ -21,11 +24,18 @@ const styles = {
     },
 };
 
+function updateBlogList(cur) {
+    return {
+        type: BLOG_LIST_UPDATE,
+        data: cur
+    }
+}
 
 class BlogList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: true,
             data: [],
             message: ""
         }
@@ -41,48 +51,82 @@ class BlogList extends React.Component {
             .then(response => response.json())
             .then(
                 result => {
-                    this.setState({data: result.data})
+                    this.setState({
+                        loading: false,
+                        data: result.data
+                    })
+                    store.dispatch(updateBlogList(result.data))
                 }
             )
             .catch(error => {
                 console.log('error', error)
-                this.setState({message: error})
+                this.setState({
+                    loading: false,
+                    message: error
+                })
             });
     }
 
     componentDidMount() {
-        this.fetchBlogList()
-
-        // cache
-        console.log("info", "11111111111111 test: " + this.props.location.action)
+        let cachedBlogList = store.getState().blogList
+        if (cachedBlogList !== undefined && cachedBlogList.length > 0) {
+            this.setState({
+                loading: false,
+                data: cachedBlogList
+            })
+        } else {
+            this.fetchBlogList()
+        }
     }
 
     render() {
-        return <div>
-            <img className="BlogListBanner" src={require("../images/blog_banner_full.jpg")} alt="Blog" width="200"
-                 height="80"/>
-            <div className="BlogListRoot">
-                <br/>
-                <Button variant="light" onClick={() => this.props.history.push("/")}>&lt;Home</Button>&nbsp;
-                <Button variant="primary" onClick={() => this.props.history.push("/blog/new")}> New Post</Button>{' '}
-                <br/>
-                <br/>
-                <InputGroup>
-                    <FormControl className="BlogSearch"/>
-                </InputGroup>
-                <br/>
-                <div>
-                    <ul>
-                        {this.state.data.map((entry) => (
-                            <li key={entry.id}>
-                                <ItemEntryCard key={entry.id} data={entry} history={this.props.history}/>
-                            </li>
-                        ))}
-                    </ul>
+        if (this.state.loading === true) {
+            return <div>
+                <img className="BlogListBanner" src={require("../images/blog_banner_full.jpg")} alt="Blog" width="200"
+                     height="80"/>
+                <div className="BlogListRoot">
+                    <br/>
+                    <Button variant="light" onClick={() => this.props.history.push("/")}>&lt;Home</Button>&nbsp;
+                    <Button variant="primary" onClick={() => this.props.history.push("/blog/new")}> New
+                        Post</Button>{' '}
+                    <br/>
+                    <br/>
+                    <InputGroup>
+                        <FormControl className="BlogSearch"/>
+                    </InputGroup>
+                    <br/>
+                    <div>
+                        <p>Loading...</p>
+                    </div>
                 </div>
             </div>
-        </div>
-
+        } else {
+            return <div>
+                <img className="BlogListBanner" src={require("../images/blog_banner_full.jpg")} alt="Blog" width="200"
+                     height="80"/>
+                <div className="BlogListRoot">
+                    <br/>
+                    <Button variant="light" onClick={() => this.props.history.push("/")}>&lt;Home</Button>&nbsp;
+                    <Button variant="primary" onClick={() => this.props.history.push("/blog/new")}> New
+                        Post</Button>{' '}
+                    <br/>
+                    <br/>
+                    <InputGroup>
+                        <FormControl className="BlogSearch"/>
+                    </InputGroup>
+                    <br/>
+                    <div>
+                        <ul>
+                            {this.state.data.map((entry) => (
+                                <li key={entry.id}>
+                                    <ItemEntryCard key={entry.id} data={entry} history={this.props.history}/>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
     }
 }
 
