@@ -166,7 +166,14 @@ class Home extends React.Component {
             privilegeJson: response.data.privilegeJson
         })
         if (jwt != null) {
-            writeCookieCredentials(userName, jwt, response.data.refreshToken)
+            writeCookieCredentials({
+                userName: userName,
+                role: response.data.role,
+                accessToken: jwt,
+                refreshToken: response.data.refreshToken,
+                preferenceJson: response.data.preferenceJson,
+                privilegeJson: response.data.privilegeJson
+            })
         } else {
             clearCookieCredentials()
         }

@@ -17,49 +17,43 @@ export function getCredentialRequestBody(userName, password) {
 }
 
 export function recoverLoginStatusFromCookie() {
-    let [user, jwt, refreshToken] = readCookieCredentials()
-    console.log("read from cookie: " + user)
-    console.log("read from cookie: " + jwt)
-    console.log("read from cookie: " + refreshToken)
-
-    // TODO Need extra backend api to get all user info
-    // if (user != null && user.length > 0
-    //     && jwt != null && jwt.length > 0
-    //     && refreshToken != null && refreshToken.length > 0) {
-    //     store.dispatch(
-    //         {
-    //             type: LOGIN,
-    //             accessToken: jwt,
-    //             refreshToken: refreshToken,
-    //             userName: user,
-    //             userRole: "?????"
-    //         }
-    //     )
-    // } else {
-    store.dispatch({
-        type: LOGOUT
-    })
-    // }
+    const info = readCookieCredentials()
+    if (info !== null) {
+        store.dispatch(
+            {
+                type: LOGIN,
+                accessToken: info.accessToken,
+                refreshToken: info.refreshToken,
+                userName: info.userName,
+                userRole: info.role,
+                preferenceJson: info.preferenceJson,
+                privilegeJson: info.privilegeJson
+            }
+        )
+    } else {
+        store.dispatch({
+            type: LOGOUT
+        })
+    }
 }
 
-const COOKIE_KEY_USER = "user"
-const COOKIE_KEY_JWT = "jwt"
-const COOKIE_KEY_REFRESH_TOKEN = "refreshToken"
+const COOKIE_KEY_LOGIN_INFO = "login_info"
 
 export function clearCookieCredentials() {
-    setCookie(COOKIE_KEY_USER, "", 1)
-    setCookie(COOKIE_KEY_JWT, "", 1)
-    setCookie(COOKIE_KEY_REFRESH_TOKEN, "", 1)
+    setCookie(COOKIE_KEY_LOGIN_INFO, "", 1)
 }
 
-export function writeCookieCredentials(user, jwt, refreshToken) {
-    setCookie(COOKIE_KEY_USER, user, 30)
-    setCookie(COOKIE_KEY_JWT, jwt, 7)
-    setCookie(COOKIE_KEY_REFRESH_TOKEN, refreshToken, 30)
+export function writeCookieCredentials(loginInfo) {
+    setCookie(COOKIE_KEY_LOGIN_INFO, JSON.stringify(loginInfo), 7)
 }
 
 export function readCookieCredentials() {
-    return [getCookie(COOKIE_KEY_USER), getCookie(COOKIE_KEY_JWT), getCookie(COOKIE_KEY_REFRESH_TOKEN)]
+    const string = getCookie(COOKIE_KEY_LOGIN_INFO)
+    if (string !== undefined) {
+        return JSON.parse(string)
+    } else {
+        return null
+    }
 }
 
 //e.g. g:wq7CjbYja
