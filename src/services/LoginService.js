@@ -18,6 +18,10 @@ export function getCredentialRequestBody(userName, password) {
 
 export function recoverLoginStatusFromCookie() {
     let [user, jwt, refreshToken] = readCookieCredentials()
+    console.log("read from cookie: " + user)
+    console.log("read from cookie: " + jwt)
+    console.log("read from cookie: " + refreshToken)
+
     if (user != null && user.length > 0
         && jwt != null && jwt.length > 0
         && refreshToken != null && refreshToken.length > 0) {

@@ -13,7 +13,8 @@ import locales from '../../multi-lang/Locale'
 import axios from "axios";
 import {message} from 'antd';
 import store from '../../reducers/store';
-import {LOGIN_AS_GUEST, LOGIN_AS_USER} from "../../reducers/LoginReducer";
+import {logInStore} from '../../reducers/store';
+import {LOGIN_AS_GUEST, LOGIN_AS_USER, LOGOUT} from "../../reducers/LoginReducer";
 import {
     clearCookieCredentials,
     getCredentialRequestBody,
@@ -87,23 +88,38 @@ class Home extends React.Component {
             if (response.data.accessToken != null && response.data.refreshToken != null) {
                 this.displayLoginSuccessMessage()
                 this.handleLoginSuccess(this.state.username, response)
+                this.setState({
+                    username: "",
+                    logInError: "",
+                    password: ""
+                })
             } else {
                 this.displayLoginFailureMessage()
                 this.handleLoginFailure("null tokens")
+                this.setState({
+                    logInError: "Log in fail!",
+                    password: ""
+                })
             }
         }).catch(reason => {
             this.displayLoginFailureMessage()
             this.handleLoginFailure(reason)
+            this.setState({
+                logInError: "Log in fail!",
+                password: ""
+            })
         })
     }
 
     logout() {
+        store.dispatch({
+            type: LOGOUT
+        })
         this.setState({
-            loggedIn: false,
-            loggedInUser: "",
             logInError: "",
             username: "",
-            password: ""
+            password: "",
+            showPasswordField: false
         })
         clearCookieCredentials()
         this.render()
@@ -121,11 +137,14 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        recoverLoginStatusFromCookie();
-
-        store.subscribe(() => {
-            console.log("11111111111111111111")
+        logInStore.subscribe(() => {
+            console.log("logInStore.subscribe loggedIn: " + store.getState().isLoggedIn)
+            this.setState({
+                loggedIn: store.getState().isLoggedIn,
+                loggedInUser: store.getState().userName,
+            })
         })
+        recoverLoginStatusFromCookie()
     }
 
     getGreeting() {
@@ -138,7 +157,6 @@ class Home extends React.Component {
 
     handleLoginSuccess(userName, response) {
         const jwt = response.data.accessToken
-        console.log("jwt: " + jwt)
         let actionType = LOGIN_AS_USER
         if (isGuest(userName)) {
             actionType = LOGIN_AS_GUEST
@@ -150,28 +168,14 @@ class Home extends React.Component {
             userName: userName,
         })
         if (jwt != null) {
-            writeCookieCredentials(userName, jwt)
-            this.setState({
-                loggedIn: true,
-                loggedInUser: userName,
-                username: "",
-                password: ""
-            })
+            writeCookieCredentials(userName, jwt, response.data.refreshToken)
         } else {
             clearCookieCredentials()
-            this.setState({
-                loggedIn: false,
-                logInError: 'Log in failed.'
-            })
         }
     }
 
     handleLoginFailure(reason) {
         clearCookieCredentials()
-        this.setState({
-            loggedIn: false,
-            logInError: 'Log in failed.'
-        })
         console.log('error', reason)
     }
 

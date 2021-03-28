@@ -8,6 +8,8 @@ import 'react-quill/dist/quill.snow.css';
 import TextField from "@material-ui/core/TextField";
 import store from '../../reducers/store';
 import {BLOG_ENTRY_INVALIDATE} from "../../reducers/BlogReducer";
+import axios from "axios";
+import {getCredentialRequestBody} from "../../services/LoginService";
 
 // 在quill中注册quill-image-drop-module
 Quill.register('modules/imageDrop', ImageDrop);
@@ -66,24 +68,21 @@ class BlogEntryEdit extends React.Component {
             redirect: 'follow'
         };
 
-        fetch(window.baseUrl + "/blog/" + id + "/entry.do?owner=1", requestOptions)
-            .then(response => response.json())
-            .then(
-                result => {
-                    this.setState({
-                        loading: false,
-                        data: result.data,
-                        title: result.data.title,
-                        delta: JSON.parse(result.data.delta)
-                    })
-                }
-            )
-            .catch(error => {
+        axios.get(window.baseUrl + "/blog/" + id + "/entry.do?owner=1")
+            .then((response) => {
+                this.setState({
+                    loading: false,
+                    data: response.data,
+                    title: response.data.title,
+                    delta: JSON.parse(response.data.delta)
+                })
+            })
+            .catch(reason => {
                 this.setState({
                     loading: false
                 })
-                console.log('error', error)
-            });
+                console.log('error', reason)
+            })
     }
 
     componentDidMount() {
@@ -129,8 +128,6 @@ class BlogEntryEdit extends React.Component {
             formData.append(k, params[k]);
         }
 
-        // console.log("bodyStr: " + formData)
-
         const requestOptions = {
             method: 'PUT',
             redirect: 'follow',
@@ -164,8 +161,6 @@ class BlogEntryEdit extends React.Component {
         for (let k in params) {
             formData.append(k, params[k]);
         }
-
-        console.log("bodyStr: " + formData)
 
         const requestOptions = {
             method: 'POST',
