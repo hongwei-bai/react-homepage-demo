@@ -18,16 +18,19 @@ export function changeLanguage() {
     initLocale(defaultLocale);
 };
 
-export function initLocale() {
+export function initLocale(locale = "en-US") {
     intl
         .init({
-            currentLocale: sessionStorage["locale"] ? sessionStorage["locale"] : "en-US",
-            locales: "en-US"
+            currentLocale: sessionStorage["locale"]
+                ? sessionStorage["locale"]
+                : locale,
+            locales: locales
         })
         .then(() => {
             localesStore.dispatch({
                 type: SWITCH_LOCALE,
-                locale: "en-US"
+                locale: locale
             })
+            // this.forceUpdate();
         });
 }
