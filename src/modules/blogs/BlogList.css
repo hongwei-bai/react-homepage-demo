@@ -1,7 +1,7 @@
 .BlogListBanner {
     width: 100%;
     height: auto;
-    background-image: url("../images/blog_banner_full.jpg");
+    background-image: url("../../images/blog_banner_full.jpg");
 }
 
 .BlogListRoot ul li {

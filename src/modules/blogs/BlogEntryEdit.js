@@ -6,7 +6,8 @@ import ReactQuill, {Quill} from 'react-quill';
 import {ImageDrop} from 'quill-image-drop-module';
 import 'react-quill/dist/quill.snow.css';
 import TextField from "@material-ui/core/TextField";
-import store from '../store';
+import store from '../../reducers/store';
+import {BLOG_ENTRY_INVALIDATE} from "../../reducers/BlogReducer";
 
 // 在quill中注册quill-image-drop-module
 Quill.register('modules/imageDrop', ImageDrop);
@@ -93,8 +94,12 @@ class BlogEntryEdit extends React.Component {
             .replace(/\..+/, '')
         this.setState({title: titleByDefault})
 
-        if (id != undefined) {
+        if (id !== undefined) {
             this.fetchBlogEntry(id)
+        } else {
+            this.setState({
+                loading: false
+            })
         }
     }
 
@@ -104,7 +109,7 @@ class BlogEntryEdit extends React.Component {
 
     post(thisPtr) {
         thisPtr.setState({post: "Post..."})
-        if (thisPtr.state.data == undefined) {
+        if (thisPtr.state.data === undefined) {
             thisPtr.postNew()
         } else {
             thisPtr.postUpdate()
@@ -223,8 +228,6 @@ class BlogEntryEdit extends React.Component {
         }
     }
 }
-
-const BLOG_ENTRY_INVALIDATE = 'BLOG_ENTRY_INVALIDATE'
 
 function invalidateBlogEntry(id) {
     return {

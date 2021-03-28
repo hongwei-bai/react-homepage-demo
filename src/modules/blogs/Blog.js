@@ -1,7 +1,9 @@
 import React from 'react';
 import './Blog.css';
 import Button from "react-bootstrap/Button";
-import store from '../store';
+import store from '../../reducers/store';
+import axios from "axios";
+import {BLOG_ENTRY_LOAD, BLOG_ENTRY_VISIT} from "../../reducers/BlogReducer";
 
 class Blog extends React.Component {
     constructor(props) {
@@ -14,37 +16,29 @@ class Blog extends React.Component {
     }
 
     fetchBlogEntry(id) {
-        const requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        fetch(window.baseUrl + "/blog/" + id + "/entry.do?owner=1", requestOptions)
-            .then(response => response.json())
-            .then(
-                result => {
-                    // console.log("content: " + result.data.content)
-                    store.dispatch(loadBlogEntry(id, result.data))
-                    this.setState({
-                        data: result.data,
-                        loading: false
-                    })
-                }
-            )
-            .catch(error => {
-                console.log('error', error)
-                this.setState({title: "Not avail"})
+        axios.get(window.baseUrl + "/blog/" + id + "/entry.do?owner=1")
+            .then(response => {
+                store.dispatch(loadBlogEntry(id, response.data))
+                this.setState({
+                    data: response.data,
+                    loading: false
+                })
+            })
+            .catch(reason => {
+                this.setState({title: "Ops! Something is wrong! Please try again later."})
                 this.setState({
                     loading: false
                 })
-            });
+            })
     }
 
     componentDidMount() {
         const id = this.props.match.params.id
 
+        const entries = store.getState().blogEntries
         let cachedBlog = null
-        if (store.getState().blogEntries.has(id)) {
+        console.log("blogEntries: " + JSON.stringify(entries))
+        if (entries !== undefined && entries.has(id)) {
             cachedBlog = store.getState().blogEntries.get(id)
             this.setState({
                 data: cachedBlog
@@ -68,7 +62,7 @@ class Blog extends React.Component {
 
     render() {
         const thisPtr = this
-        if (this.state.loading == true) {
+        if (this.state.loading === true) {
             return <div>
                 <p>Loading...</p>
             </div>
@@ -76,7 +70,12 @@ class Blog extends React.Component {
             return <div className="BlogRoot">
                 <div className="BlogContent">
                     <br/>
-                    <h3>{this.state.data.title}</h3>
+                    <h3>
+                        <a onClick={() => {
+                        this.props.history.push("/blog")
+                    }} href="#">&nbsp;&lsaquo;&nbsp;</a>
+                        {this.state.data.title}
+                    </h3>
                     <p>Created by {this.state.data.owner} on {new Date(this.state.data.createDate).toLocaleDateString()},
                         <br/>Last modified: {new Date(this.state.data.modifyDate).toLocaleString()}</p>
                     <br/>
@@ -96,9 +95,6 @@ class Blog extends React.Component {
         }
     }
 }
-
-const BLOG_ENTRY_LOAD = 'BLOG_ENTRY_LOAD'
-const BLOG_ENTRY_VISIT = 'BLOG_ENTRY_VISIT'
 
 function loadBlogEntry(id, entryData) {
     return {

@@ -6,10 +6,6 @@ import {Button, Card} from 'react-bootstrap';
 import {withRouter} from 'react-router-dom';
 
 class DashboardCard extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     redirect(thisPtr) {
         thisPtr.props.history.push(thisPtr.props.data.actionPath)
     }

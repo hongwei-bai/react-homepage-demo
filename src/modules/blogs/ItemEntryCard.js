@@ -2,10 +2,6 @@ import React from 'react';
 import './ItemEntryCard.css';
 
 class ItemEntryCard extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     onOpenEntry(e, id) {
         this.props.history.push('/blog/entry/' + id)
     }

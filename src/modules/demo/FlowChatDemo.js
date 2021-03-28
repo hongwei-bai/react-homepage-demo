@@ -26,7 +26,7 @@ class FlowChatDemo extends React.Component {
         // 5) link the ports
         let link1 = port1.link(port2);
 
-        // 6) add the models to the root graph
+        // 6) add the models to the home graph
         model.addAll(node1, node2, link1);
 
         // 7) load model into engine

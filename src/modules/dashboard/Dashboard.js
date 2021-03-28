@@ -3,15 +3,16 @@ import React from 'react';
 import './Dashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import imgCovid19 from './../images/covid19_banner.jpg';
-import imgBlog from './../images/blog_banner.jpg';
-import imgAdmin from './../images/admin_banner.jpg';
-import imgPhoto from './../images/photo_banner.jpg';
-import imgECommerce from './../images/ecommerce_banner.jpg';
-import imgCv from './../images/cv_banner.jpg';
-import imgGtd from './../images/gtd_banner.jpg';
-import imgLogs from './../images/logs_banner.jpg';
-import imgGraph from './../images/graph_banner.png';
+import imgCovid19 from './../../images/covid19_banner.jpg';
+import imgBlog from './../../images/blog_banner.jpg';
+import imgAdmin from './../../images/admin_banner.jpg';
+import imgPhoto from './../../images/photo_banner.jpg';
+// eslint-disable-next-line no-unused-vars
+import imgECommerce from './../../images/ecommerce_banner.jpg';
+import imgCv from './../../images/cv_banner.jpg';
+import imgGtd from './../../images/gtd_banner.jpg';
+import imgLogs from './../../images/logs_banner.jpg';
+import imgGraph from './../../images/graph_banner.png';
 
 import DashboardCard from "./DashboardCard";
 import DashboardCardCovid19 from "./DashboardCardCovid19";
@@ -104,17 +105,13 @@ const dataDashboard = [
 ]
 
 class Dashboard extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <ul className="Dashboard">
                 {dataDashboard.map((item) => (
                     <li key={item.data.title}>
-                        {item.data.dynamicContent == "covid19" && <DashboardCardCovid19 data={item.data}/>}
-                        {item.data.dynamicContent != "covid19" && <DashboardCard data={item.data}/>}
+                        {item.data.dynamicContent === "covid19" && <DashboardCardCovid19 data={item.data}/>}
+                        {item.data.dynamicContent !== "covid19" && <DashboardCard data={item.data}/>}
                     </li>
                 ))}
             </ul>

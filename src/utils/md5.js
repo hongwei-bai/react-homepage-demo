@@ -98,7 +98,6 @@ function ii(a, b, c, d, x, s, t) {
 }
 
 function md51(s) {
-    let txt = '';
     let n = s.length,
         state = [1732584193, -271733879, -1732584194, 271733878], i;
     for (i = 64; i <= s.length; i += 64) {
@@ -174,8 +173,9 @@ function add32(a, b) {
     return (a + b) & 0xFFFFFFFF;
 }
 
-if (md5('hello') != '5d41402abc4b2a76b9719d911017c592') {
-    function add32(x, y) {
+if (md5('hello') !== '5d41402abc4b2a76b9719d911017c592') {
+    // eslint-disable-next-line no-unused-vars
+    function add32Alt(x, y) {
         let lsw = (x & 0xFFFF) + (y & 0xFFFF),
             msw = (x >> 16) + (y >> 16) + (lsw >> 16);
         return (msw << 16) | (lsw & 0xFFFF);

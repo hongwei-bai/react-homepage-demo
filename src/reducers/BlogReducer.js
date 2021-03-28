@@ -1,24 +1,23 @@
-import {createStore} from "redux";
-
-const initialState = {
+const blogInitialState = {
     blogList: "",
     blogEntries: new Map(),
     blogEntryLatestVisited: []
 }
 
-const BLOG_LIST_UPDATE = 'BLOG_LIST_UPDATE'
-const BLOG_ENTRY_LOAD = 'BLOG_ENTRY_LOAD'
-const BLOG_ENTRY_VISIT = 'BLOG_ENTRY_VISIT'
-const BLOG_ENTRY_INVALIDATE = 'BLOG_ENTRY_INVALIDATE'
+export const BLOG_LIST_UPDATE = 'BLOG_LIST_UPDATE'
+export const BLOG_ENTRY_LOAD = 'BLOG_ENTRY_LOAD'
+export const BLOG_ENTRY_VISIT = 'BLOG_ENTRY_VISIT'
+export const BLOG_ENTRY_INVALIDATE = 'BLOG_ENTRY_INVALIDATE'
 
-const DEBUG = false
+const DEBUG = true
 
-const blogReducer = (state = initialState, action) => {
+export const blogReducer = (state = blogInitialState, action) => {
     let visitedList = state.blogEntryLatestVisited
     let entries = state.blogEntries
     if (DEBUG) {
         console.log("blogReducer: action.type: " + action.type + ", action.id: " + action.id)
         console.log("blogReducer: what in list:")
+        console.log("blogReducer: blogEntries.length: " + entries.size)
         state.blogEntryLatestVisited.forEach(function (element, i) {
             console.log("blogReducer: blogEntryLatestVisited[" + i + "]: " + element)
         })
@@ -81,6 +80,3 @@ const blogReducer = (state = initialState, action) => {
             return state
     }
 }
-
-const store = createStore(blogReducer)
-export default store;

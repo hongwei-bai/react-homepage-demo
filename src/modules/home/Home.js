@@ -1,16 +1,26 @@
 import React from 'react';
-import bannerBg from './images/space.jpg';
-import bannerBgW from './images/space.webp';
+import bannerBg from '../../images/space.jpg';
+import bannerBgW from '../../images/space.webp';
 import './Home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import {Button, Card, Col, Row} from 'react-bootstrap';
+import {Button, Col, Row} from 'react-bootstrap';
 import Form from "react-bootstrap/Form";
-import ImageWebp from './components/ImageWebp/ImageWebp';
-import Dashboard from "./dashboard/Dashboard";
-import {md5} from './utils/md5'
+import ImageWebp from '../../components/ImageWebp/ImageWebp';
+import Dashboard from "../dashboard/Dashboard";
 import intl from 'react-intl-universal';
-import locales from './multi-lang/Locale'
+import locales from '../../multi-lang/Locale'
+import axios from "axios";
+import {message} from 'antd';
+import store from '../../reducers/store';
+import {LOGIN_AS_GUEST, LOGIN_AS_USER} from "../../reducers/LoginReducer";
+import {
+    clearCookieCredentials,
+    getCredentialRequestBody,
+    isGuest,
+    isValidGuestCode,
+    recoverLoginStatusFromCookie, writeCookieCredentials
+} from "../../services/LoginService";
 
 class Home extends React.Component {
     constructor(props) {
@@ -50,7 +60,7 @@ class Home extends React.Component {
             username: event.target.value
         })
 
-        if (this.isValidGuestCode(event.target.value)) {
+        if (isValidGuestCode(event.target.value)) {
             this.setState({
                 showPasswordField: false
             })
@@ -61,19 +71,6 @@ class Home extends React.Component {
         }
     }
 
-    //e.g. g:wq7CjbYja
-    // Assume a standard guest code starts with 'g:' and has length of 10.
-    // Don't show password field if user type guest code from 'g:xx'.
-    isValidGuestCode(str) {
-        if (str.startsWith("g") && str.length === 1) {
-            return true
-        } else if (str.startsWith("g:") && str.length <= 10) {
-            return true
-        }
-
-        return false
-    }
-
     onPasswordChange(event) {
         this.setState({
             password: event.target.value
@@ -81,56 +78,23 @@ class Home extends React.Component {
     }
 
     login() {
-        const userName = this.state.username
-        let userCredentials
-        if (userName.startsWith("g:")) {
-            userCredentials = {
-                guestCode: userName
+        this.displayLoginLoading()
+        axios({
+            method: 'post',
+            url: window.baseUrlAuth + "/authenticate/login.do",
+            data: getCredentialRequestBody(this.state.username, this.state.password)
+        }).then(response => {
+            if (response.data.accessToken != null && response.data.refreshToken != null) {
+                this.displayLoginSuccessMessage()
+                this.handleLoginSuccess(this.state.username, response)
+            } else {
+                this.displayLoginFailureMessage()
+                this.handleLoginFailure("null tokens")
             }
-        } else {
-            userCredentials = {
-                userName: userName,
-                credential: md5(this.state.password).toUpperCase()
-            }
-        }
-
-        fetch(window.baseUrlAuth + "/authenticate/login.do", {
-            method: 'POST',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: JSON.stringify(userCredentials) // body data type must match "Content-Type" header
+        }).catch(reason => {
+            this.displayLoginFailureMessage()
+            this.handleLoginFailure(reason)
         })
-            .then(response => response.json())
-            .then(
-                result => {
-                    const jwt = result['accessToken']
-                    if (jwt != null) {
-                        this.writeCredentials(userName, jwt)
-                        this.setState({
-                            loggedIn: true,
-                            loggedInUser: userName,
-                            username: "",
-                            password: ""
-                        })
-                    } else {
-                        this.clearCredentials()
-                        this.setState({
-                            loggedIn: false,
-                            logInError: 'Log in failed.'
-                        })
-                    }
-                }
-            )
-            .catch(error => {
-                this.clearCredentials()
-                console.log('error', error)
-            });
     }
 
     logout() {
@@ -141,7 +105,7 @@ class Home extends React.Component {
             username: "",
             password: ""
         })
-        this.clearCredentials()
+        clearCookieCredentials()
         this.render()
     }
 
@@ -157,69 +121,71 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        this.refreshLoginStatus();
-    }
+        recoverLoginStatusFromCookie();
 
-    refreshLoginStatus() {
-        let [user, jwt] = this.readCredentials()
-        if (user != null && user.length > 0
-            && jwt != null && jwt.length > 0) {
-            this.setState({
-                loggedIn: true,
-                loggedInUser: user
-            })
-        } else {
-            this.setState({
-                loggedIn: false
-            })
-        }
-    }
-
-    clearCredentials() {
-        this.setCookie("user", "", 1)
-        this.setCookie("jwt", "", 1)
-    }
-
-    writeCredentials(user, jwt) {
-        this.setCookie("user", user, 7)
-        this.setCookie("jwt", jwt, 7)
-    }
-
-    readCredentials() {
-        console.log("cookie:" + document.cookie)
-        return [this.getCookie("user"), this.getCookie("jwt")]
-    }
-
-    getCookie(cname) {
-        let name = cname + "=";
-        let decodedCookie = decodeURIComponent(document.cookie);
-        let ca = decodedCookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-
-    setCookie(cname, cvalue, exdays) {
-        let d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        let expires = "expires=" + d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        store.subscribe(() => {
+            console.log("11111111111111111111")
+        })
     }
 
     getGreeting() {
-        if (this.state.loggedInUser.startsWith("g:")) {
+        if (isGuest(this.state.loggedInUser)) {
             return "Hello guest "
         } else {
             return "Hello " + this.state.loggedInUser
         }
     }
+
+    handleLoginSuccess(userName, response) {
+        const jwt = response.data.accessToken
+        console.log("jwt: " + jwt)
+        let actionType = LOGIN_AS_USER
+        if (isGuest(userName)) {
+            actionType = LOGIN_AS_GUEST
+        }
+        store.dispatch({
+            type: actionType,
+            accessToken: jwt,
+            refreshToken: response.data.refreshToken,
+            userName: userName,
+        })
+        if (jwt != null) {
+            writeCookieCredentials(userName, jwt)
+            this.setState({
+                loggedIn: true,
+                loggedInUser: userName,
+                username: "",
+                password: ""
+            })
+        } else {
+            clearCookieCredentials()
+            this.setState({
+                loggedIn: false,
+                logInError: 'Log in failed.'
+            })
+        }
+    }
+
+    handleLoginFailure(reason) {
+        clearCookieCredentials()
+        this.setState({
+            loggedIn: false,
+            logInError: 'Log in failed.'
+        })
+        console.log('error', reason)
+    }
+
+    displayLoginLoading = (name) => {
+        message.loading({content: 'Logging in...', duration: 0, key: 'updatable'});
+    };
+
+    displayLoginSuccessMessage = () => {
+        message.success({content: 'Log in success!', key: 'updatable'});
+    };
+
+    displayLoginFailureMessage = () => {
+        message.error({content: 'Log in failed!', key: 'updatable'});
+    };
 
     render() {
         return (
@@ -264,7 +230,7 @@ class Home extends React.Component {
                                     </Form.Group>}
                                 </Col>
                             </Row>
-                            {this.state.logInError != "" && <Row>
+                            {this.state.logInError !== "" && <Row>
                                 <Col xs={9}>
                                     <p className="LoginError">{this.state.logInError}</p>
                                 </Col>

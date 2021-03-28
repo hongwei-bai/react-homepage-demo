@@ -4,9 +4,6 @@ import './DashboardCard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Card} from 'react-bootstrap';
 import {withRouter} from 'react-router-dom';
-import Cookies from 'universal-cookie';
-
-const cookies = new Cookies();
 
 class DashboardCardCovid19 extends React.Component {
     constructor(props) {
@@ -38,35 +35,9 @@ class DashboardCardCovid19 extends React.Component {
     }
 
     render() {
-        if (!this.state.loaded) {
-            return (
-                <Card style={{
-                    width: '18rem',
-                    height: '100%',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    marginTop: '0.1em',
-                    marginBottom: '0.1em'
-                }}>
-                    <div className="CardInner">
-                        <Card.Img variant="top" src={this.props.data.image}/>
-                        <Card.Body>
-                            <Card.Title>{this.props.data.title}</Card.Title>
-                            <Card.Text>
-                                Loading...
-                            </Card.Text>
-                            <Button variant="primary" disabled={!this.props.data.enabled}
-                                    onClick={() => {
-                                        this.redirect(thisPtr)
-                                    }}>{this.props.data.actionButton}</Button>
-                        </Card.Body>
-                    </div>
-                </Card>
-            )
-        }
         let NSWStr = this.state.dataCovid19.Australia.NSW
         let VICStr = this.state.dataCovid19.Australia.VIC
-        if (this.state.dataCovid19.Australia.Time == "") {
+        if (this.state.dataCovid19.Australia.Time === "") {
             NSWStr = "-"
             VICStr = "-"
         }
@@ -74,7 +45,6 @@ class DashboardCardCovid19 extends React.Component {
         if (!this.state.isNew) {
             loadAgainCation = " (cache)"
         }
-        const thisPtr = this
         return (
             <Card style={{
                 width: '18rem',
@@ -88,29 +58,12 @@ class DashboardCardCovid19 extends React.Component {
                     <Card.Img variant="top" src={this.props.data.image}/>
                     <Card.Body>
                         <Card.Title>{this.props.data.title}</Card.Title>
-                        <Card.Text>
-                                <span>
-                                    +Cases/+Deaths/Cases/Deaths/Tests<br/>
-                                </span>
-                            <span className="Covid19Data">
-                                    Australia:
-                                    <span className="Today">+{this.state.dataCovid19.Australia.NewConfirmed}/+
-                                        {this.state.dataCovid19.Australia.NewDeaths}</span>/
-                                {this.state.dataCovid19.Australia.Confirmed}/
-                                {this.state.dataCovid19.Australia.Deaths}/
-                                    <span className="Test">{this.state.dataCovid19.Australia.Tests}</span>
-                                    <br/>
-                                    - NSW:{NSWStr} {loadAgainCation}<br/>
-                                    - Victoria:{VICStr}<br/>
-                                    China:
-                                    <span className="Today">+{this.state.dataCovid19.China.NewConfirmed}/+
-                                        {this.state.dataCovid19.China.NewDeaths}</span>/
-                                {this.state.dataCovid19.China.Confirmed}/
-                                {this.state.dataCovid19.China.Deaths}/
-                                    <span className="Test">{this.state.dataCovid19.China.Tests}</span>
-                                    <br/>
-                                </span>
-                        </Card.Text>
+                        <Covid19Content
+                            loaded={this.state.loaded}
+                            dataCovid19={this.state.dataCovid19}
+                            NSWStr={NSWStr}
+                            loadAgainCation={loadAgainCation}
+                            VICStr={VICStr}/>
                         <Button variant="primary" disabled>Details</Button>
                     </Card.Body>
                 </div>
@@ -119,9 +72,6 @@ class DashboardCardCovid19 extends React.Component {
     }
 
     componentDidMount() {
-        // cookies.set('myCat', 'Pacman', { path: '/' });
-        console.log(cookies.get('myCat')); // Pacman
-
         this.getSummary();
     }
 
@@ -199,6 +149,40 @@ class DashboardCardCovid19 extends React.Component {
                 }
             )
             .catch(error => console.log('error', error));
+    }
+}
+
+function Covid19Content(props) {
+    if (props.loaded) {
+        return (
+            <Card.Text>
+                                <span>
+                                    +Cases/+Deaths/Cases/Deaths/Tests<br/>
+                                </span>
+                <span className="Covid19Data">
+                                    Australia:
+                                    <span className="Today">+{props.dataCovid19.Australia.NewConfirmed}/+
+                                        {props.dataCovid19.Australia.NewDeaths}</span>/
+                    {props.dataCovid19.Australia.Confirmed}/
+                    {props.dataCovid19.Australia.Deaths}/
+                                    <span className="Test">{props.dataCovid19.Australia.Tests}</span>
+                                    <br/>
+                                    - NSW:{props.NSWStr} {props.loadAgainCation}<br/>
+                                    - Victoria:{props.VICStr}<br/>
+                                    China:
+                                    <span className="Today">+{props.dataCovid19.China.NewConfirmed}/+
+                                        {props.dataCovid19.China.NewDeaths}</span>/
+                    {props.dataCovid19.China.Confirmed}/
+                    {props.dataCovid19.China.Deaths}/
+                                    <span className="Test">{props.dataCovid19.China.Tests}</span>
+                                    <br/>
+                                </span>
+            </Card.Text>
+        )
+    } else {
+        return <Card.Text>
+            Loading...
+        </Card.Text>
     }
 }
 
