@@ -26,8 +26,8 @@
     "react-bootstrap": "^1.0.0",
     "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
-    "react-intl": "^5.4.4",
-    "react-intl-universal": "^2.3.2",
+    "react-intl": "^5.15.2",
+    "react-intl-universal": "^2.4.3",
     "react-native-fit-image": "^1.5.5",
     "react-native-network-info": "^5.2.1",
     "react-quill": "^2.0.0-beta.2",
@@ -37,6 +37,7 @@
     "redux": "^4.0.5",
     "store": "^2.0.12",
     "storm-react-diagrams": "^5.2.1",
+    "umi": "^3.4.7",
     "universal-cookie": "^4.0.3",
     "use-file-picker": "^0.2.1"
   },
@@ -61,5 +62,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "umi-plugin-locale": "^2.11.6"
   }
 }

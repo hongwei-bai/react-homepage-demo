@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import {
     BrowserRouter as Router,
     Switch,
@@ -18,30 +17,54 @@ import Blog from "./modules/blogs/Blog";
 import UserList from "./modules/admin/UserList";
 import FileUploadPage from "./modules/summer/FileUploadPage";
 import AntTest from "./modules/demo/AntTest";
+import {localesStore} from "./reducers/store";
+import {initLocale} from "./locales/LocalesUtil";
 
-function App() {
-    return (
-        <Router>
-            <div>
-                <Switch>
-                    <Route exact path="/" component={Home}/>
-                    <Route exact path="/admin" component={UserList}/>
-                    <Route exact path="/blog" component={BlogList}/>
-                    <Route path="/blog/category/:categories" component={BlogList}/>
-                    <Route path="/blog/tag/:tags" component={BlogList}/>
-                    <Route path="/blog/entry/:id" component={Blog}/>
-                    <Route path="/blog/edit/:id" component={BlogEntryEdit}/>
-                    <Route path="/blog/new" component={BlogEntryEdit}/>
-                    <Route path="/about" component={About}/>
-                    <Route path="/demo/rdm" component={FlowChatDemo}/>
-                    <Route path="/demo/quill" component={QuillDemo}/>
-                    <Route path="/demo/antd" component={AntTest}/>
-                    <Route path="/demo/info" component={UserInfo}/>
-                    <Route path="/summer/upload" component={FileUploadPage}/>
-                </Switch>
-            </div>
-        </Router>
-    );
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            locale: "en-US",
+            intlDone: false
+        };
+    }
+
+    componentDidMount() {
+        localesStore.subscribe(() => {
+            console.log("localesStore.subscribe: " + localesStore.getState().locale)
+            this.setState({
+                locale: localesStore.getState().locale,
+                intlDone: true
+            })
+        })
+        initLocale()
+    }
+
+    render() {
+        return (
+            this.state.intlDone &&
+            <Router>
+                <div>
+                    <Switch>
+                        <Route exact path="/" component={Home}/>
+                        <Route exact path="/admin" component={UserList}/>
+                        <Route exact path="/blog" component={BlogList}/>
+                        <Route path="/blog/category/:categories" component={BlogList}/>
+                        <Route path="/blog/tag/:tags" component={BlogList}/>
+                        <Route path="/blog/entry/:id" component={Blog}/>
+                        <Route path="/blog/edit/:id" component={BlogEntryEdit}/>
+                        <Route path="/blog/new" component={BlogEntryEdit}/>
+                        <Route path="/about" component={About}/>
+                        <Route path="/demo/rdm" component={FlowChatDemo}/>
+                        <Route path="/demo/quill" component={QuillDemo}/>
+                        <Route path="/demo/antd" component={AntTest}/>
+                        <Route path="/demo/info" component={UserInfo}/>
+                        <Route path="/summer/upload" component={FileUploadPage}/>
+                    </Switch>
+                </div>
+            </Router>
+        );
+    }
 }
 
 if (process.env.REACT_APP_SERVICE_HOME.startsWith("http")) {

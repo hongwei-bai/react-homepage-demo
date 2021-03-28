@@ -9,7 +9,6 @@ import Form from "react-bootstrap/Form";
 import ImageWebp from '../../components/ImageWebp/ImageWebp';
 import Dashboard from "../dashboard/Dashboard";
 import intl from 'react-intl-universal';
-import locales from '../../multi-lang/Locale'
 import axios from "axios";
 import {message} from 'antd';
 import store from '../../reducers/store';
@@ -27,7 +26,6 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            antdLang: locales.en_US,  // 修改antd  组件的国际化
             loggedIn: false,
             loggedInUser: "",
             logInError: "",
@@ -123,17 +121,6 @@ class Home extends React.Component {
         })
         clearCookieCredentials()
         this.render()
-    }
-
-    loadLocales(lang = 'en-US') {
-        intl.init({
-            currentLocale: lang,  // 设置初始语音
-            locales,
-        }).then(() => {
-            this.setState({
-                antdLang: lang === 'zh-CN' ? locales.zh_CN : locales.en_US
-            });
-        });
     }
 
     componentDidMount() {

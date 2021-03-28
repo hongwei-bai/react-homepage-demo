@@ -7,6 +7,7 @@ import imgCv from "../../images/cv_banner.jpg";
 import imgGtd from "../../images/gtd_banner.jpg";
 import imgLogs from "../../images/logs_banner.jpg";
 import imgGraph from "../../images/graph_banner.png";
+import intl from 'react-intl-universal';
 
 export const dataCovid19 = {
     data: {
@@ -21,7 +22,7 @@ export const dataCovid19 = {
 export const blogData = {
     data: {
         image: imgBlog,
-        title: "Blog",
+        title: intl.get('blog_title'),
         content: "Coming soon...",
         enabled: true,
         actionPath: "/blog",
@@ -78,6 +79,7 @@ export const toDoData = {
         actionButton: "Details"
     }
 }
+
 export const logData = {
     data: {
         image: imgLogs,
@@ -87,6 +89,7 @@ export const logData = {
         actionButton: "Details"
     }
 }
+
 export const knowledgeData = {
     data: {
         image: imgGraph,
