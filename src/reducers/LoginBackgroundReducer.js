@@ -2,19 +2,13 @@ const initialState = {
     accessToken: ""
 }
 
-export const LOGIN_AS_USER = 'LOGIN_AS_USER'
-export const LOGIN_AS_GUEST = 'LOGIN_AS_GUEST'
+export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 export const REFRESH_TOKEN = 'REFRESH_TOKEN'
 
 export const loginBackgroundReducer = (state = initialState, action) => {
     switch (action.type) {
-        case LOGIN_AS_USER:
-            return {
-                accessToken: action.accessToken,
-                ...state
-            }
-        case LOGIN_AS_GUEST:
+        case LOGIN:
             return {
                 accessToken: action.accessToken,
                 ...state

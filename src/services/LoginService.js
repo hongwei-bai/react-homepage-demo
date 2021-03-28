@@ -1,6 +1,6 @@
 import {md5} from "../utils/md5";
 import store from "../reducers/store"
-import {LOGIN_AS_GUEST, LOGIN_AS_USER, LOGOUT} from "../reducers/LoginReducer";
+import {LOGIN, LOGOUT} from "../reducers/LoginReducer";
 import {getCookie, setCookie} from "../utils/CookieUtils";
 
 export function getCredentialRequestBody(userName, password) {
@@ -22,33 +22,24 @@ export function recoverLoginStatusFromCookie() {
     console.log("read from cookie: " + jwt)
     console.log("read from cookie: " + refreshToken)
 
-    if (user != null && user.length > 0
-        && jwt != null && jwt.length > 0
-        && refreshToken != null && refreshToken.length > 0) {
-        if (isGuest(user)) {
-            store.dispatch(
-                {
-                    type: LOGIN_AS_GUEST,
-                    accessToken: jwt,
-                    refreshToken: refreshToken,
-                    guestCode: user
-                }
-            )
-        } else {
-            store.dispatch(
-                {
-                    type: LOGIN_AS_USER,
-                    accessToken: jwt,
-                    refreshToken: refreshToken,
-                    userName: user
-                }
-            )
-        }
-    } else {
-        store.dispatch({
-            type: LOGOUT
-        })
-    }
+    // TODO Need extra backend api to get all user info
+    // if (user != null && user.length > 0
+    //     && jwt != null && jwt.length > 0
+    //     && refreshToken != null && refreshToken.length > 0) {
+    //     store.dispatch(
+    //         {
+    //             type: LOGIN,
+    //             accessToken: jwt,
+    //             refreshToken: refreshToken,
+    //             userName: user,
+    //             userRole: "?????"
+    //         }
+    //     )
+    // } else {
+    store.dispatch({
+        type: LOGOUT
+    })
+    // }
 }
 
 const COOKIE_KEY_USER = "user"

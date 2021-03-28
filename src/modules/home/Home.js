@@ -14,7 +14,7 @@ import axios from "axios";
 import {message} from 'antd';
 import store from '../../reducers/store';
 import {logInStore} from '../../reducers/store';
-import {LOGIN_AS_GUEST, LOGIN_AS_USER, LOGOUT} from "../../reducers/LoginReducer";
+import {LOGIN, LOGOUT} from "../../reducers/LoginReducer";
 import {
     clearCookieCredentials,
     getCredentialRequestBody,
@@ -138,7 +138,6 @@ class Home extends React.Component {
 
     componentDidMount() {
         logInStore.subscribe(() => {
-            console.log("logInStore.subscribe loggedIn: " + store.getState().isLoggedIn)
             this.setState({
                 loggedIn: store.getState().isLoggedIn,
                 loggedInUser: store.getState().userName,
@@ -157,15 +156,14 @@ class Home extends React.Component {
 
     handleLoginSuccess(userName, response) {
         const jwt = response.data.accessToken
-        let actionType = LOGIN_AS_USER
-        if (isGuest(userName)) {
-            actionType = LOGIN_AS_GUEST
-        }
         store.dispatch({
-            type: actionType,
+            type: LOGIN,
             accessToken: jwt,
             refreshToken: response.data.refreshToken,
             userName: userName,
+            userRole: response.data.role,
+            preferenceJson: response.data.preferenceJson,
+            privilegeJson: response.data.privilegeJson
         })
         if (jwt != null) {
             writeCookieCredentials(userName, jwt, response.data.refreshToken)
