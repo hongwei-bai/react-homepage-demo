@@ -1,5 +1,7 @@
+import {changeLanguage} from "../locales/LocalesUtil";
+
 const initialState = {
-    locale: "en-US"
+    initDone: false
 }
 
 export const SWITCH_LOCALE = 'SWITCH_LOCALE'
@@ -7,9 +9,12 @@ export const SWITCH_LOCALE = 'SWITCH_LOCALE'
 export const localesReducer = (state = initialState, action) => {
     switch (action.type) {
         case SWITCH_LOCALE:
+            // if (state.locale !== action.locale) {
+            //     changeLanguage(action.locale)
+            // }
             return {
                 ...state,
-                locale: action.locale
+                initDone: true
             }
         default:
             return {

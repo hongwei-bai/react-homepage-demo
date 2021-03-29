@@ -11,7 +11,7 @@ export function getCredentialRequestBody(userName, password) {
     } else {
         return {
             userName: userName,
-            credential: md5(password).toUpperCase()
+            credential: md5(password).toLowerCase()
         }
     }
 }
@@ -38,22 +38,32 @@ export function recoverLoginStatusFromCookie() {
 }
 
 const COOKIE_KEY_LOGIN_INFO = "login_info"
+const COOKIE_KEY_LOCALE = "locale"
 
 export function clearCookieCredentials() {
     setCookie(COOKIE_KEY_LOGIN_INFO, "", 1)
+    setCookie(COOKIE_KEY_LOCALE, "", 1)
 }
 
 export function writeCookieCredentials(loginInfo) {
     setCookie(COOKIE_KEY_LOGIN_INFO, JSON.stringify(loginInfo), 7)
 }
 
+export function writeCookieLocale(locale) {
+    setCookie(COOKIE_KEY_LOCALE, locale, 7)
+}
+
 export function readCookieCredentials() {
     const string = getCookie(COOKIE_KEY_LOGIN_INFO)
-    if (string !== undefined) {
+    try {
         return JSON.parse(string)
-    } else {
+    } catch (exception) {
         return null
     }
+}
+
+export function readCookieLocale() {
+    return getCookie(COOKIE_KEY_LOCALE)
 }
 
 //e.g. g:wq7CjbYja

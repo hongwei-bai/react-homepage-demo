@@ -11,7 +11,7 @@ import Dashboard from "../dashboard/Dashboard";
 import intl from 'react-intl-universal';
 import axios from "axios";
 import {message} from 'antd';
-import store from '../../reducers/store';
+import store, {localesStore} from '../../reducers/store';
 import {logInStore} from '../../reducers/store';
 import {LOGIN, LOGOUT} from "../../reducers/LoginReducer";
 import {
@@ -19,8 +19,10 @@ import {
     getCredentialRequestBody,
     isGuest,
     isValidGuestCode,
-    recoverLoginStatusFromCookie, writeCookieCredentials
+    recoverLoginStatusFromCookie, writeCookieCredentials, writeCookieLocale
 } from "../../services/LoginService";
+import {SWITCH_LOCALE} from "../../reducers/LocalesReducer";
+import {changeLanguage} from "../../locales/LocalesUtil";
 
 class Home extends React.Component {
     constructor(props) {
@@ -83,6 +85,7 @@ class Home extends React.Component {
             url: window.baseUrlAuth + "/authenticate/login.do",
             data: getCredentialRequestBody(this.state.username, this.state.password)
         }).then(response => {
+            console.log("login rsp: " + JSON.stringify(response))
             if (response.data.accessToken != null && response.data.refreshToken != null) {
                 this.displayLoginSuccessMessage()
                 this.handleLoginSuccess(this.state.username, response)
@@ -125,9 +128,17 @@ class Home extends React.Component {
 
     componentDidMount() {
         logInStore.subscribe(() => {
+            let preference = store.getState().preference
+            if (preference !== undefined && preference.locale !== undefined
+                && (preference.locale.length > 0)) {
+                changeLanguage(preference.locale)
+            }
             this.setState({
                 loggedIn: store.getState().isLoggedIn,
                 loggedInUser: store.getState().userName,
+            })
+            localesStore.dispatch({
+                type: SWITCH_LOCALE
             })
         })
         recoverLoginStatusFromCookie()
@@ -135,9 +146,9 @@ class Home extends React.Component {
 
     getGreeting() {
         if (isGuest(this.state.loggedInUser)) {
-            return "Hello guest "
+            return intl.get("hello").replace("{name}", "guest")
         } else {
-            return "Hello " + this.state.loggedInUser
+            return intl.get("hello").replace("{name}", this.state.loggedInUser)
         }
     }
 
@@ -152,18 +163,14 @@ class Home extends React.Component {
             preferenceJson: response.data.preferenceJson,
             privilegeJson: response.data.privilegeJson
         })
-        if (jwt != null) {
-            writeCookieCredentials({
-                userName: userName,
-                role: response.data.role,
-                accessToken: jwt,
-                refreshToken: response.data.refreshToken,
-                preferenceJson: response.data.preferenceJson,
-                privilegeJson: response.data.privilegeJson
-            })
-        } else {
-            clearCookieCredentials()
-        }
+        writeCookieCredentials({
+            userName: userName,
+            role: response.data.role,
+            accessToken: jwt,
+            refreshToken: response.data.refreshToken,
+            preferenceJson: response.data.preferenceJson,
+            privilegeJson: response.data.privilegeJson
+        })
     }
 
     handleLoginFailure(reason) {
@@ -180,7 +187,7 @@ class Home extends React.Component {
     };
 
     displayLoginFailureMessage = () => {
-        message.error({content: 'Log in failed!', key: 'updatable'});
+        message.error({content: intl.get("loginError"), key: 'updatable'});
     };
 
     render() {
@@ -194,13 +201,13 @@ class Home extends React.Component {
                 <ul>
                     <li className="Banner">
                         <ImageWebp srcWebp={bannerBgW} src={bannerBg}/>
-                        <h1>Welcome</h1>
+                        <h1>{intl.get("welcome")}</h1>
                         <h1>{intl.get("samp.policyEngine.nasClients.title")}</h1>
                     </li>
                     <li className="Main">
                         {this.state.loggedIn && <form className="Logout" onSubmit={this.logout}>
                             {this.getGreeting()} <Button variant="link"
-                                                         onClick={this.logout}>Logout</Button>
+                                                         onClick={this.logout}>{intl.get("logout")}</Button>
                         </form>}
                         {!this.state.loggedIn && <form className="Login" onSubmit={this.login}>
                             <Row>
@@ -208,12 +215,12 @@ class Home extends React.Component {
                                     <Form.Group id="loginForm" className="FormGroupUsername"
                                                 controlId="formUsername">
                                         <Form.Control type="username" onChange={this.onUsernameChange}
-                                                      placeholder="Username/Guest code" tabIndex="1"
+                                                      placeholder={intl.get("loginBoxHint")} tabIndex="1"
                                                       onKeyUp={this.onKeyup} onKeyDown={this.onKeydown}/>
                                     </Form.Group>
                                 </Col>
                                 <Col xs={2}>
-                                    <Button variant="primary" onClick={this.login}>Go</Button>
+                                    <Button variant="primary" onClick={this.login}>{intl.get("loginButton")}</Button>
                                 </Col>
                             </Row>
                             <Row>

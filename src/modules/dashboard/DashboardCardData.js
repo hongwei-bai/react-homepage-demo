@@ -9,93 +9,111 @@ import imgLogs from "../../images/logs_banner.jpg";
 import imgGraph from "../../images/graph_banner.png";
 import intl from 'react-intl-universal';
 
-export const dataCovid19 = {
-    data: {
-        image: imgCovid19,
-        title: "COVID-19",
-        dynamicContent: "covid19",
-        enabled: false,
-        actionButton: "Details"
+export function dataCovid19() {
+    return {
+        data: {
+            image: imgCovid19,
+            title: intl.get("covid19"),
+            dynamicContent: "covid19",
+            enabled: false,
+            actionButton: intl.get("details")
+        }
     }
 }
 
-export const blogData = {
-    data: {
-        image: imgBlog,
-        title: intl.get('blog_title'),
-        content: "Coming soon...",
-        enabled: true,
-        actionPath: "/blog",
-        actionButton: "Details"
+export function blogData() {
+    return {
+        data: {
+            image: imgBlog,
+            title: intl.get('blog'),
+            content: intl.get("comingSoon"),
+            enabled: true,
+            actionPath: "/blog",
+            actionButton: intl.get("details")
+        }
     }
 }
 
-export const adminData = {
-    data: {
-        image: imgAdmin,
-        title: "Administration",
-        content: "In construction...",
-        enabled: false,
-        actionButton: "Details"
+export function adminData() {
+    return {
+        data: {
+            image: imgAdmin,
+            title: intl.get("administration"),
+            content: intl.get("inConstruction"),
+            enabled: false,
+            actionButton: intl.get("details")
+        }
     }
 }
 
-export const eCommerceData = {
-    data: {
-        image: imgECommerce,
-        title: "E-Commerce Catalogs",
-        content: "Coming soon...",
-        enabled: false,
-        actionButton: "Details"
+export function eCommerceData() {
+    return {
+        data: {
+            image: imgECommerce,
+            title: intl.get("eCommerceCatalogue"),
+            content: intl.get("comingSoon"),
+            enabled: false,
+            actionButton: intl.get("details")
+        }
     }
 }
 
-export const photoData = {
-    data: {
-        image: imgPhoto,
-        title: "Photo gallery",
-        content: "Coming soon...",
-        enabled: false,
-        actionButton: "Details"
+export function photoData() {
+    return {
+        data: {
+            image: imgPhoto,
+            title: intl.get("photoGallery"),
+            content: intl.get("comingSoon"),
+            enabled: false,
+            actionButton: intl.get("details")
+        }
     }
 }
 
-export const cvData = {
-    data: {
-        image: imgCv,
-        title: "Resume",
-        content: "Coming soon...",
-        enabled: false,
-        actionButton: "Details"
+export function cvData() {
+    return {
+        data: {
+            image: imgCv,
+            title: intl.get("resume"),
+            content: intl.get("comingSoon"),
+            enabled: false,
+            actionButton: intl.get("details")
+        }
     }
 }
 
-export const toDoData = {
-    data: {
-        image: imgGtd,
-        title: "To-Do",
-        content: "Coming soon...",
-        enabled: false,
-        actionButton: "Details"
+export function toDoData() {
+    return {
+        data: {
+            image: imgGtd,
+            title: intl.get("todo"),
+            content: intl.get("comingSoon"),
+            enabled: false,
+            actionButton: intl.get("details")
+        }
     }
 }
 
-export const logData = {
-    data: {
-        image: imgLogs,
-        title: "System Logs",
-        content: "In construction...",
-        enabled: false,
-        actionButton: "Details"
+export function logData() {
+    return {
+        data: {
+            image: imgLogs,
+            title: intl.get("systemLogs"),
+            content: intl.get("inConstruction"),
+            enabled: false,
+            actionButton: intl.get("details")
+        }
     }
 }
 
-export const knowledgeData = {
-    data: {
-        image: imgGraph,
-        title: "Knowledge graph",
-        content: "Coming soon...",
-        enabled: false,
-        actionButton: "Details"
+export function knowledgeData() {
+    return {
+        data: {
+            image: imgGraph,
+            title: intl.get("knowledgeGraph"),
+            content: intl.get("comingSoon"),
+            enabled: false,
+            actionButton: intl.get("details")
+        }
     }
 }

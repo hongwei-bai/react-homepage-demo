@@ -37,7 +37,6 @@
     "redux": "^4.0.5",
     "store": "^2.0.12",
     "storm-react-diagrams": "^5.2.1",
-    "umi": "^3.4.7",
     "universal-cookie": "^4.0.3",
     "use-file-picker": "^0.2.1"
   },

@@ -11,6 +11,7 @@ import {withRouter} from 'react-router-dom';
 import store from '../../reducers/store';
 import axios from "axios";
 import {BLOG_LIST_UPDATE} from "../../reducers/BlogReducer";
+import intl from 'react-intl-universal';
 
 const styles = {
     root: {
@@ -42,8 +43,30 @@ class BlogList extends React.Component {
     }
 
     fetchBlogList() {
+        let jwt =
+            "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsYW1ldXNlciIsImV4cCI6MTYxNjk5ODc5NywiaWF0IjoxNjE2OTk1MTk3fQ.qb5fDLrtjp9wds2chZZPBkIl90sJCk8Pxt-4VP4lo_g"
+
+        console.log("test message ${jwt}")
+        axios.interceptors.request.use(
+            config => {
+                config.headers.Authorization = 'Bearer ' + jwt
+                return config
+            }
+        )
+        // axios({
+        //     url:window.baseUrl + "/blog/entry.do?owner=1",
+        //     method: 'get',
+        // headers: {
+        //     'Authorization': 'Bearer ' + jwt
+        // }
+        // })
         axios.get(window.baseUrl + "/blog/entry.do?owner=1")
+            // fetch( window.baseUrl + "/blog/entry.do?owner=1", {
+            //     headers: { 'Authorisation': 'Bearer ' + jwt},
+            // }).then(response => response.json())
+            // axios.get(window.baseUrl + "/blog/entry.do?owner=1")
             .then(response => {
+                console.log("response: " + JSON.stringify(response))
                 let dataFromApi = response.data
                 if (dataFromApi === undefined) {
                     dataFromApi = []
@@ -81,9 +104,10 @@ class BlogList extends React.Component {
                  height="80"/>
             <div className="BlogListRoot">
                 <br/>
-                <Button variant="light" onClick={() => this.props.history.push("/")}>&lt;Home</Button>&nbsp;
-                <Button variant="primary" onClick={() => this.props.history.push("/blog/new")}> New
-                    Post</Button>{' '}
+                <Button variant="light"
+                        onClick={() => this.props.history.push("/")}>&lt;{intl.get("blogBackButton")}</Button>&nbsp;
+                <Button variant="primary"
+                        onClick={() => this.props.history.push("/blog/new")}>{intl.get("newPost")}</Button>{' '}
                 <br/>
                 <br/>
                 <InputGroup>
@@ -118,17 +142,17 @@ function BlogListContent(props) {
                 )
             } else {
                 return (
-                    <p>No blog entry. Now add one!</p>
+                    <p>{intl.get("blogListEmpty")}</p>
                 )
             }
         case "loading":
             return (
-                <p>Loading...</p>
+                <p>{intl.get("blogLoading")}</p>
             )
         case "error":
         default:
             return (
-                <p>Ops, something is wrong! Please try again later.</p>
+                <p>{intl.get("blogError")}</p>
             )
     }
 }

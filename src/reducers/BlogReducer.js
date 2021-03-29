@@ -9,7 +9,7 @@ export const BLOG_ENTRY_LOAD = 'BLOG_ENTRY_LOAD'
 export const BLOG_ENTRY_VISIT = 'BLOG_ENTRY_VISIT'
 export const BLOG_ENTRY_INVALIDATE = 'BLOG_ENTRY_INVALIDATE'
 
-const DEBUG = true
+const DEBUG = false
 
 export const blogReducer = (state = blogInitialState, action) => {
     let visitedList = state.blogEntryLatestVisited

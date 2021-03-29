@@ -4,6 +4,7 @@ import './DashboardCard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Card} from 'react-bootstrap';
 import {withRouter} from 'react-router-dom';
+import intl from 'react-intl-universal';
 
 class DashboardCardCovid19 extends React.Component {
     constructor(props) {
@@ -64,7 +65,7 @@ class DashboardCardCovid19 extends React.Component {
                             NSWStr={NSWStr}
                             loadAgainCation={loadAgainCation}
                             VICStr={VICStr}/>
-                        <Button variant="primary" disabled>Details</Button>
+                        <Button variant="primary" disabled>{intl.get("details")}</Button>
                     </Card.Body>
                 </div>
             </Card>

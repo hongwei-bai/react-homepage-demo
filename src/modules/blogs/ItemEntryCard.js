@@ -1,5 +1,6 @@
 import React from 'react';
 import './ItemEntryCard.css';
+import intl from 'react-intl-universal';
 
 class ItemEntryCard extends React.Component {
     onOpenEntry(e, id) {
@@ -10,7 +11,8 @@ class ItemEntryCard extends React.Component {
         const id = this.props.data.id
         return <div className="Card" onClick={e => this.onOpenEntry(e, id)}>
             <h6>{this.props.data.title}</h6>
-            <p>by {this.props.data.owner} on {new Date(this.props.data.createDate).toLocaleString()}</p>
+            <p>{intl.get("blogByInList").replace("{author}", this.props.data.owner)
+                .replace("{date}", new Date(this.props.data.createDate).toLocaleString())}</p>
             <div className="BottomLine"/>
         </div>
     }

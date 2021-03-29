@@ -17,24 +17,21 @@ import Blog from "./modules/blogs/Blog";
 import UserList from "./modules/admin/UserList";
 import FileUploadPage from "./modules/summer/FileUploadPage";
 import AntTest from "./modules/demo/AntTest";
-import {localesStore} from "./reducers/store";
 import {initLocale} from "./locales/LocalesUtil";
+import {localesStore} from "./reducers/store";
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            locale: "en-US",
             intlDone: false
         };
     }
 
     componentDidMount() {
         localesStore.subscribe(() => {
-            console.log("localesStore.subscribe: " + localesStore.getState().locale)
             this.setState({
-                locale: localesStore.getState().locale,
-                intlDone: true
+                intlDone: localesStore.getState().initDone
             })
         })
         initLocale()

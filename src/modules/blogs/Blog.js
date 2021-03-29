@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import store from '../../reducers/store';
 import axios from "axios";
 import {BLOG_ENTRY_LOAD, BLOG_ENTRY_VISIT} from "../../reducers/BlogReducer";
+import intl from 'react-intl-universal';
 
 class Blog extends React.Component {
     constructor(props) {
@@ -37,7 +38,6 @@ class Blog extends React.Component {
 
         const entries = store.getState().blogEntries
         let cachedBlog = null
-        console.log("blogEntries: " + JSON.stringify(entries))
         if (entries !== undefined && entries.has(id)) {
             cachedBlog = store.getState().blogEntries.get(id)
             this.setState({
@@ -64,7 +64,7 @@ class Blog extends React.Component {
         const thisPtr = this
         if (this.state.loading === true) {
             return <div>
-                <p>Loading...</p>
+                <p>{intl.get("blogLoading")}</p>
             </div>
         } else {
             return <div className="BlogRoot">
@@ -76,8 +76,9 @@ class Blog extends React.Component {
                     }} href="#">&nbsp;&lsaquo;&nbsp;</a>
                         {this.state.data.title}
                     </h3>
-                    <p>Created by {this.state.data.owner} on {new Date(this.state.data.createDate).toLocaleDateString()},
-                        <br/>Last modified: {new Date(this.state.data.modifyDate).toLocaleString()}</p>
+                    <p>{intl.get("blogCreatedBy").replace("{author}", this.state.data.owner)
+                        .replace("{date}", new Date(this.state.data.createDate).toLocaleDateString())},
+                        <br/>{intl.get("blogLastModified")}{new Date(this.state.data.modifyDate).toLocaleString()}</p>
                     <br/>
                     <br/>
                     <div className="Container" dangerouslySetInnerHTML={{__html: this.state.data.content}}></div>
@@ -85,10 +86,10 @@ class Blog extends React.Component {
 
                     <Button variant="primary" onClick={() => {
                         this.props.history.push("/blog")
-                    }}>Back</Button>{' '}&nbsp;
+                    }}>{intl.get("blogBack")}</Button>{' '}&nbsp;
                     <Button variant="outline-primary" onClick={() => {
                         thisPtr.edit(thisPtr)
-                    }}>Edit</Button>{' '}&nbsp;
+                    }}>{intl.get("blogEdit")}</Button>{' '}&nbsp;
                     <br/><br/>
                 </div>
             </div>

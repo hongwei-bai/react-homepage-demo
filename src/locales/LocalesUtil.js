@@ -1,4 +1,5 @@
 import intl from 'react-intl-universal';
+import {readCookieLocale, writeCookieLocale} from "../services/LoginService";
 import {localesStore} from "../reducers/store";
 import {SWITCH_LOCALE} from "../reducers/LocalesReducer";
 
@@ -7,30 +8,28 @@ const locales = {
     "zh-CN": require('../locales/zh-CN.json'),
 };
 
-export function changeLanguage() {
-    let defaultLocale
-    if (localesStore.getState().locale === "zh-CN") {
-        defaultLocale = "en-US";
-    } else {
-        defaultLocale = "zh-CN";
-    }
-    sessionStorage["locale"] = defaultLocale;
-    initLocale(defaultLocale);
+export function changeLanguage(locale) {
+    writeCookieLocale(locale)
+    initLocaleImpl(locale);
 };
 
-export function initLocale(locale = "en-US") {
-    intl
-        .init({
-            currentLocale: sessionStorage["locale"]
-                ? sessionStorage["locale"]
-                : locale,
-            locales: locales
+export function initLocale() {
+    let locale = readCookieLocale()
+    if (locale === "en-US" || locale === "zh-CN") {
+        initLocaleImpl(locale)
+    } else {
+        initLocaleImpl("en-US")
+    }
+}
+
+export function initLocaleImpl(locale) {
+    intl.init({
+        currentLocale: locale,
+        locales: locales
+    }).then(() => {
+        localesStore.dispatch({
+            type: SWITCH_LOCALE,
+            initDone: true
         })
-        .then(() => {
-            localesStore.dispatch({
-                type: SWITCH_LOCALE,
-                locale: locale
-            })
-            // this.forceUpdate();
-        });
+    });
 }

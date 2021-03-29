@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import store from '../../reducers/store';
 import {BLOG_ENTRY_INVALIDATE} from "../../reducers/BlogReducer";
 import axios from "axios";
-import {getCredentialRequestBody} from "../../services/LoginService";
+import intl from 'react-intl-universal';
 
 // 在quill中注册quill-image-drop-module
 Quill.register('modules/imageDrop', ImageDrop);
@@ -19,7 +19,7 @@ class BlogEntryEdit extends React.Component {
         super(props);
         this.state = {
             loading: true,
-            post: "Post",
+            post: intl.get("blogPost"),
             data: undefined,
             title: "",
             editor: null,
@@ -107,7 +107,7 @@ class BlogEntryEdit extends React.Component {
     }
 
     post(thisPtr) {
-        thisPtr.setState({post: "Post..."})
+        thisPtr.setState({post: intl.get("blogPosting")})
         if (thisPtr.state.data === undefined) {
             thisPtr.postNew()
         } else {
@@ -138,8 +138,7 @@ class BlogEntryEdit extends React.Component {
             .then(response => response.json())
             .then(
                 result => {
-                    console.log("post result: " + result)
-                    this.setState({post: "Post"})
+                    this.setState({post: intl.get("blogPost")})
                     store.dispatch(invalidateBlogEntry(this.props.match.params.id))
                     this.props.history.push("/blog/entry/" + this.state.data.id)
                 }
@@ -172,8 +171,7 @@ class BlogEntryEdit extends React.Component {
             .then(response => response.json())
             .then(
                 result => {
-                    console.log("post result: " + result)
-                    this.setState({post: "Post"})
+                    this.setState({post: intl.get("blogPost")})
                     this.props.history.push("/blog")
                 }
             )
@@ -186,13 +184,13 @@ class BlogEntryEdit extends React.Component {
         const thisPtr = this
         if (true === this.state.loading) {
             return <div>
-                <p>Loading...</p>
+                <p>{intl.get("blogLoading")}</p>
             </div>
         } else {
             return <div className="BlogEditRoot">
                 <div className="BlogEditContent">
                     <br/>
-                    <TextField required id="standard-required" label="Title" fullWidth={true}
+                    <TextField required id="standard-required" label={intl.get("blogEditTitle")} fullWidth={true}
                                value={this.state.title}
                                onChange={e => {
                                    thisPtr.setState({title: e.target.value})
@@ -216,7 +214,7 @@ class BlogEntryEdit extends React.Component {
                     </Button>&nbsp;
                     <Button onClick={() => {
                         this.goBack()
-                    }}>Cancel</Button>
+                    }}>{intl.get("blogCancel")}</Button>
                     <br/><br/>
                 </div>
             </div>
