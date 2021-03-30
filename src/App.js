@@ -19,6 +19,7 @@ import FileUploadPage from "./modules/summer/FileUploadPage";
 import AntTest from "./modules/demo/AntTest";
 import {initLocale} from "./locales/LocalesUtil";
 import {localesStore} from "./reducers/store";
+import {recoverLoginStatusFromCookie} from "./services/LoginService";
 
 class App extends React.Component {
     constructor(props) {
@@ -35,6 +36,7 @@ class App extends React.Component {
             })
         })
         initLocale()
+        recoverLoginStatusFromCookie()
     }
 
     render() {

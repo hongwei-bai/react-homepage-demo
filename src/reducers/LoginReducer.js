@@ -2,6 +2,7 @@ import {Language, Module, UserRole} from "../constants/LoginContants";
 
 const loginInitialState = {
     isLoggedIn: false,
+    accessToken: "",
     refreshToken: "",
     userName: "",
     userRole: UserRole.USER,
@@ -19,6 +20,7 @@ export const loginReducer = (state = loginInitialState, action) => {
             return {
                 ...state,
                 isLoggedIn: true,
+                accessToken: action.accessToken,
                 refreshToken: action.refreshToken,
                 isGuest: false,
                 userName: action.userName,

@@ -18,8 +18,8 @@ import {
     clearCookieCredentials,
     getCredentialRequestBody,
     isGuest,
-    isValidGuestCode,
-    recoverLoginStatusFromCookie, writeCookieCredentials, writeCookieLocale
+    isValidGuestCode, recoverLoginStatusFromCookie,
+    writeCookieCredentials
 } from "../../services/LoginService";
 import {SWITCH_LOCALE} from "../../reducers/LocalesReducer";
 import {changeLanguage} from "../../locales/LocalesUtil";

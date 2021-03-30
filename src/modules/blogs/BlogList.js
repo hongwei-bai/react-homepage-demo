@@ -12,6 +12,7 @@ import store from '../../reducers/store';
 import axios from "axios";
 import {BLOG_LIST_UPDATE} from "../../reducers/BlogReducer";
 import intl from 'react-intl-universal';
+import {logInStore} from "../../reducers/store"
 
 const styles = {
     root: {
@@ -43,28 +44,15 @@ class BlogList extends React.Component {
     }
 
     fetchBlogList() {
-        let jwt =
-            "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsYW1ldXNlciIsImV4cCI6MTYxNjk5ODc5NywiaWF0IjoxNjE2OTk1MTk3fQ.qb5fDLrtjp9wds2chZZPBkIl90sJCk8Pxt-4VP4lo_g"
-
-        console.log("test message ${jwt}")
-        axios.interceptors.request.use(
-            config => {
-                config.headers.Authorization = 'Bearer ' + jwt
-                return config
+        let jwt = store.getState().accessToken
+        console.log("fetchBlogList, jwt: " + jwt)
+        axios({
+            url: window.baseUrl + "/blog/entry.do?owner=1",
+            method: 'get',
+            headers: {
+                'Authorization': 'Bearer ' + jwt
             }
-        )
-        // axios({
-        //     url:window.baseUrl + "/blog/entry.do?owner=1",
-        //     method: 'get',
-        // headers: {
-        //     'Authorization': 'Bearer ' + jwt
-        // }
-        // })
-        axios.get(window.baseUrl + "/blog/entry.do?owner=1")
-            // fetch( window.baseUrl + "/blog/entry.do?owner=1", {
-            //     headers: { 'Authorisation': 'Bearer ' + jwt},
-            // }).then(response => response.json())
-            // axios.get(window.baseUrl + "/blog/entry.do?owner=1")
+        })
             .then(response => {
                 console.log("response: " + JSON.stringify(response))
                 let dataFromApi = response.data
