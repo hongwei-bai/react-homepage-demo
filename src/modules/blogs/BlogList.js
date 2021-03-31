@@ -45,7 +45,6 @@ class BlogList extends React.Component {
 
     fetchBlogList() {
         let jwt = store.getState().accessToken
-        console.log("fetchBlogList, jwt: " + jwt)
         axios({
             url: window.baseUrl + "/blog/entry.do?owner=1",
             method: 'get',
@@ -54,7 +53,6 @@ class BlogList extends React.Component {
             }
         })
             .then(response => {
-                console.log("response: " + JSON.stringify(response))
                 let dataFromApi = response.data
                 if (dataFromApi === undefined) {
                     dataFromApi = []
