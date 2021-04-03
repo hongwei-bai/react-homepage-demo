@@ -16,7 +16,6 @@ import {
     photoData,
     toDoData
 } from "./DashboardCardData";
-import intl from 'react-intl-universal';
 
 class Dashboard extends React.Component {
     constructor(props) {

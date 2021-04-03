@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Card} from 'react-bootstrap';
 import {withRouter} from 'react-router-dom';
 import intl from 'react-intl-universal';
+import {homePageInstance} from "../../network/AxiosInstances";
 
 class DashboardCardCovid19 extends React.Component {
     constructor(props) {
@@ -77,26 +78,20 @@ class DashboardCardCovid19 extends React.Component {
     }
 
     getSummary() {
-        const requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
         this.setState({loaded: false})
         let AuDate = "";
         let AuTime = "";
         let NSWCases = 0;
         let VICCases = 0;
 
-        fetch(window.baseUrl + "/covid19/querybystate.do?days=1", requestOptions)
-            .then(response => response.json())
+        homePageInstance.get("/covid19/querybystate.do?days=1")
             .then(
-                result => {
-                    AuDate = result['ausDataByStatePerDays'][0]['date'];
-                    AuTime = result['ausDataByStatePerDays'][0]['timeFrom'];
-                    NSWCases = result['ausDataByStatePerDays'][0]['NSW'];
-                    VICCases = result['ausDataByStatePerDays'][0]['VIC'];
-                    this.fetchWorld(AuDate, AuTime, NSWCases, VICCases, result['isNewData'])
+                response => {
+                    AuDate = response.data.ausDataByStatePerDays[0].date
+                    AuTime = response.data.ausDataByStatePerDays[0].timeFrom
+                    NSWCases = response.data.ausDataByStatePerDays[0].NSW
+                    VICCases = response.data.ausDataByStatePerDays[0].VIC
+                    this.fetchWorld(AuDate, AuTime, NSWCases, VICCases, response.data.isNewData)
                 }
             )
             .catch(error => {

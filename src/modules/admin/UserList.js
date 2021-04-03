@@ -1,7 +1,6 @@
 import React from 'react';
 import './UserList.css';
 
-import withStyles from "@material-ui/core/styles/withStyles";
 import {withRouter} from 'react-router-dom';
 
 class UserList extends React.Component {

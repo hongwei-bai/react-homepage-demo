@@ -9,7 +9,6 @@ import {
 import Home from "./modules/home/Home";
 import About from "./modules/home/About";
 import FlowChatDemo from "./modules/demo/FlowChatDemo"
-import QuillDemo from "./modules/demo/QuillDemo";
 import UserInfo from "./modules/demo/UserInfo";
 import BlogEntryEdit from "./modules/blogs/BlogEntryEdit";
 import BlogList from "./modules/blogs/BlogList";
@@ -55,7 +54,6 @@ class App extends React.Component {
                         <Route path="/blog/new" component={BlogEntryEdit}/>
                         <Route path="/about" component={About}/>
                         <Route path="/demo/rdm" component={FlowChatDemo}/>
-                        <Route path="/demo/quill" component={QuillDemo}/>
                         <Route path="/demo/antd" component={AntTest}/>
                         <Route path="/demo/info" component={UserInfo}/>
                         <Route path="/summer/upload" component={FileUploadPage}/>

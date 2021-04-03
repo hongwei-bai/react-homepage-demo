@@ -1,4 +1,4 @@
-import {Language, Module, UserRole} from "../constants/LoginContants";
+import {UserRole} from "../constants/LoginContants";
 
 const loginInitialState = {
     isLoggedIn: false,

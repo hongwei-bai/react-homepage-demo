@@ -83,6 +83,7 @@ class Blog extends React.Component {
                 <div className="BlogContent">
                     <br/>
                     <h3>
+                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                         <a onClick={() => {
                             this.props.history.push("/blog")
                         }} href="#">&nbsp;&lsaquo;&nbsp;</a>
