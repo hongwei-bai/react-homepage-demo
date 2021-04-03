@@ -214,7 +214,8 @@ class Home extends React.Component {
                                 <Col xs={9}>
                                     <Form.Group id="loginForm" className="FormGroupUsername"
                                                 controlId="formUsername">
-                                        <Form.Control type="username" onChange={this.onUsernameChange}
+                                        <Form.Control type="username" className={"MainHint"}
+                                                      onChange={this.onUsernameChange}
                                                       placeholder={intl.get("loginBoxHint")} tabIndex="1"
                                                       onKeyUp={this.onKeyup} onKeyDown={this.onKeydown}/>
                                     </Form.Group>

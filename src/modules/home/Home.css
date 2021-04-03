@@ -104,6 +104,10 @@ Form {
     width: 100%;
 }
 
+.MainHint {
+    font-family: 'Abel', 'Noto Sans SC', cursive;
+}
+
 .Footer {
     width: 100%;
     background-color: black;
