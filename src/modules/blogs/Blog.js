@@ -5,6 +5,7 @@ import store from '../../reducers/store';
 import axios from "axios";
 import {BLOG_ENTRY_LOAD, BLOG_ENTRY_VISIT} from "../../reducers/BlogReducer";
 import intl from 'react-intl-universal';
+import {homePageInstance} from "../../network/AxiosInstances";
 
 class Blog extends React.Component {
     constructor(props) {
@@ -17,7 +18,7 @@ class Blog extends React.Component {
     }
 
     fetchBlogEntry(id) {
-        axios.get(window.baseUrl + "/blog/" + id + "/entry.do?owner=1")
+        homePageInstance.get("/blog/" + id + "/entry.do?owner=1")
             .then(response => {
                 store.dispatch(loadBlogEntry(id, response.data))
                 this.setState({
@@ -72,8 +73,8 @@ class Blog extends React.Component {
                     <br/>
                     <h3>
                         <a onClick={() => {
-                        this.props.history.push("/blog")
-                    }} href="#">&nbsp;&lsaquo;&nbsp;</a>
+                            this.props.history.push("/blog")
+                        }} href="#">&nbsp;&lsaquo;&nbsp;</a>
                         {this.state.data.title}
                     </h3>
                     <p>{intl.get("blogCreatedBy").replace("{author}", this.state.data.owner)

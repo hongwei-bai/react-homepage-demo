@@ -8,8 +8,8 @@ import 'react-quill/dist/quill.snow.css';
 import TextField from "@material-ui/core/TextField";
 import store from '../../reducers/store';
 import {BLOG_ENTRY_INVALIDATE} from "../../reducers/BlogReducer";
-import axios from "axios";
 import intl from 'react-intl-universal';
+import {homePageInstance} from "../../network/AxiosInstances";
 
 // 在quill中注册quill-image-drop-module
 Quill.register('modules/imageDrop', ImageDrop);
@@ -63,12 +63,7 @@ class BlogEntryEdit extends React.Component {
     };
 
     fetchBlogEntry(id) {
-        const requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        axios.get(window.baseUrl + "/blog/" + id + "/entry.do?owner=1")
+        homePageInstance.get("/blog/" + id + "/entry.do?owner=1")
             .then((response) => {
                 this.setState({
                     loading: false,
@@ -134,8 +129,9 @@ class BlogEntryEdit extends React.Component {
             body: formData
         };
 
-        fetch(window.baseUrl + "/blog/" + this.state.data.id + "/entry.do", requestOptions)
-            .then(response => response.json())
+        homePageInstance.put("/blog/" + this.state.data.id + "/entry.do", formData)
+            // fetch(window.baseUrl + "/blog/" + this.state.data.id + "/entry.do", requestOptions)
+            //     .then(response => response.json())
             .then(
                 result => {
                     this.setState({post: intl.get("blogPost")})

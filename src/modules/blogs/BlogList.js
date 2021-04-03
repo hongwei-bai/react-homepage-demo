@@ -10,10 +10,11 @@ import Button from "react-bootstrap/Button";
 import {withRouter} from 'react-router-dom';
 import store from '../../reducers/store';
 import axios from "axios";
+import {homePageInstance} from "../../network/AxiosInstances"
 import {BLOG_LIST_UPDATE} from "../../reducers/BlogReducer";
 import intl from 'react-intl-universal';
 import {FaFeather} from "react-icons/fa";
-import { RiAncientGateLine } from "react-icons/ri";
+import {RiAncientGateLine} from "react-icons/ri";
 
 const styles = {
     root: {
@@ -45,14 +46,7 @@ class BlogList extends React.Component {
     }
 
     fetchBlogList() {
-        let jwt = store.getState().accessToken
-        axios({
-            url: window.baseUrl + "/blog/entry.do?owner=1",
-            method: 'get',
-            headers: {
-                'Authorization': 'Bearer ' + jwt
-            }
-        })
+        homePageInstance.get("/blog/entry.do?owner=1")
             .then(response => {
                 let dataFromApi = response.data
                 if (dataFromApi === undefined) {

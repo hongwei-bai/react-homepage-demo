@@ -23,6 +23,7 @@ import {
 } from "../../services/LoginService";
 import {SWITCH_LOCALE} from "../../reducers/LocalesReducer";
 import {changeLanguage} from "../../locales/LocalesUtil";
+import {baseUrlAuthentication} from "../../network/NetworkEndpoints";
 
 class Home extends React.Component {
     constructor(props) {
@@ -82,7 +83,7 @@ class Home extends React.Component {
         this.displayLoginLoading()
         axios({
             method: 'post',
-            url: window.baseUrlAuth + "/authenticate/login.do",
+            url: baseUrlAuthentication() + "/authenticate/login.do",
             data: getCredentialRequestBody(this.state.username, this.state.password)
         }).then(response => {
             console.log("login rsp: " + JSON.stringify(response))

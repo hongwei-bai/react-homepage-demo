@@ -66,22 +66,4 @@ class App extends React.Component {
     }
 }
 
-if (process.env.REACT_APP_SERVICE_HOME.startsWith("http")) {
-    window.baseUrl = process.env.REACT_APP_SERVICE_HOME
-} else {
-    window.baseUrl = process.env.REACT_APP_SERVICE_DOMAIN + process.env.REACT_APP_SERVICE_HOME
-}
-
-if (process.env.REACT_APP_SERVICE_AUTHENTICATION.startsWith("http")) {
-    window.baseUrlAuth = process.env.REACT_APP_SERVICE_AUTHENTICATION
-} else {
-    window.baseUrlAuth = process.env.REACT_APP_SERVICE_DOMAIN + process.env.REACT_APP_SERVICE_AUTHENTICATION
-}
-
-if (process.env.REACT_APP_FILE_SERVER.startsWith("http")) {
-    window.baseFileServer = process.env.REACT_APP_FILE_SERVER
-} else {
-    window.baseFileServer = process.env.REACT_APP_SERVICE_DOMAIN + process.env.REACT_APP_FILE_SERVER
-}
-
 export default App;

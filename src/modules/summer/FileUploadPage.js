@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {baseUrlFileServer} from "../../network/NetworkEndpoints";
 
 class FileUploadPage extends Component {
     onFileChangeHandler = (e) => {
@@ -7,7 +8,7 @@ class FileUploadPage extends Component {
         const formData = new FormData();
         formData.append('file', fileToUpload);
         formData.append('path', "");
-        fetch(window.baseFileServer + "/upload.do", {
+        fetch(baseUrlFileServer() + "/upload.do", {
             method: 'post',
             body: formData
         }).then(res => {
