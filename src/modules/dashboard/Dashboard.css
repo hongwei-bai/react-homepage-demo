@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap');
+
 .Dashboard {
     background-color: black;
     padding-top: 0.4em;
@@ -5,6 +7,7 @@
     justify-content: center;
     display: flex;
     flex-wrap: wrap;
+    font-family: 'Abel', 'Noto Sans SC', cursive, sans-serif;
 }
 
 .Dashboard li {

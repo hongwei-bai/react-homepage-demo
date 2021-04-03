@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap');
+
 .BlogListBanner {
     width: 100%;
     height: auto;
@@ -9,6 +12,32 @@
     margin: auto;
     max-width: 800px;
     cursor: pointer;
+}
+
+.BlogListFontStyle {
+    font-family: 'Raleway', 'Noto Sans SC', cursive;
+}
+
+.BlogListIconEmbedded {
+    height: 1.2em;
+    width: 1.2em;
+    vertical-align: text-bottom;
+}
+
+.BlogListIcon {
+    height: 1.4em;
+    width: 1.4em;
+    vertical-align: text-bottom;
+}
+
+.BlogListIconButton {
+    border-radius: 18px;
+    text-transform: uppercase;
+}
+
+.BlogListPrimaryButton {
+    border-radius: 18px;
+    text-transform: uppercase;
 }
 
 .BlogSearch {

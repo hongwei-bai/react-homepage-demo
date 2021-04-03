@@ -12,7 +12,8 @@ import store from '../../reducers/store';
 import axios from "axios";
 import {BLOG_LIST_UPDATE} from "../../reducers/BlogReducer";
 import intl from 'react-intl-universal';
-import {logInStore} from "../../reducers/store"
+import {FaFeather} from "react-icons/fa";
+import { RiAncientGateLine } from "react-icons/ri";
 
 const styles = {
     root: {
@@ -85,15 +86,20 @@ class BlogList extends React.Component {
     }
 
     render() {
-        return <div>
+        return <div className="BlogListFontStyle">
             <img className="BlogListBanner" src={require("../../images/blog_banner_full.jpg")} alt="Blog" width="200"
                  height="80"/>
             <div className="BlogListRoot">
                 <br/>
-                <Button variant="light"
-                        onClick={() => this.props.history.push("/")}>&lt;{intl.get("blogBackButton")}</Button>&nbsp;
-                <Button variant="primary"
-                        onClick={() => this.props.history.push("/blog/new")}>{intl.get("newPost")}</Button>{' '}
+                <Button variant="light" className={"BlogListIconButton"}
+                        onClick={() => this.props.history.push("/")}>
+                    <RiAncientGateLine className={"BlogListIcon"}/>
+                    &nbsp;{intl.get("blogBackButton")}
+                </Button>&nbsp;
+                <Button variant="primary" className={"BlogListPrimaryButton"}
+                        onClick={() => this.props.history.push("/blog/new")}>
+                    <FaFeather className={"BlogListIconEmbedded"}/>&nbsp;&nbsp;
+                    {intl.get("newPost")}</Button>{' '}
                 <br/>
                 <br/>
                 <InputGroup>
