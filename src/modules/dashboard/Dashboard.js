@@ -5,8 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import DashboardCard from "./DashboardCard";
 import DashboardCardCovid19 from "./DashboardCardCovid19";
-import store, {localesStore} from "../../reducers/store"
-import {logInStore} from "../../reducers/store"
+import {logInStore, localesStore} from "../../reducers/store"
 import {
     adminData,
     blogData,
@@ -34,7 +33,7 @@ class Dashboard extends React.Component {
     }
 
     loadCards() {
-        const privilege = store.getState().privilege
+        const privilege = logInStore.getState().privilege
         let cardsWithAccess = []
         cardsWithAccess.push(dataCovid19())
         if (privilege !== undefined && privilege.blog !== undefined) {

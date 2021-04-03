@@ -1,8 +1,7 @@
 import React from 'react';
 import './Blog.css';
 import Button from "react-bootstrap/Button";
-import store from '../../reducers/store';
-import axios from "axios";
+import {blogStore, logInStore} from '../../reducers/store';
 import {BLOG_ENTRY_LOAD, BLOG_ENTRY_VISIT} from "../../reducers/BlogReducer";
 import intl from 'react-intl-universal';
 import {homePageInstance} from "../../network/AxiosInstances";
@@ -12,39 +11,51 @@ class Blog extends React.Component {
         super(props);
         this.state = {
             loading: true,
+            canEdit: false,
             data: {}
         }
         this.goBack = this.goBack.bind(this);
     }
 
     fetchBlogEntry(id) {
-        homePageInstance.get("/blog/" + id + "/entry.do?owner=1")
+        homePageInstance.get("/blog/" + id + "/entry.do")
             .then(response => {
-                store.dispatch(loadBlogEntry(id, response.data))
+                blogStore.dispatch(loadBlogEntry(id, response.data))
                 this.setState({
                     data: response.data,
+                    canEdit: this.isOwner(response),
                     loading: false
                 })
             })
             .catch(reason => {
-                this.setState({title: "Ops! Something is wrong! Please try again later."})
+                this.setState({title: intl.get("blogError")})
                 this.setState({
                     loading: false
                 })
             })
     }
 
+    isOwner(response) {
+        const blogOwner = response.data.owner
+        const currentUser = logInStore.getState().userName
+        if (blogOwner !== undefined && blogOwner !== null
+            && currentUser !== undefined && currentUser !== null) {
+            return (response.data.owner.toLowerCase() === logInStore.getState.userName.toLowerCase())
+        }
+        return false
+    }
+
     componentDidMount() {
         const id = this.props.match.params.id
 
-        const entries = store.getState().blogEntries
+        const entries = blogStore.getState().blogEntries
         let cachedBlog = null
         if (entries !== undefined && entries.has(id)) {
-            cachedBlog = store.getState().blogEntries.get(id)
+            cachedBlog = blogStore.getState().blogEntries.get(id)
             this.setState({
                 data: cachedBlog
             })
-            store.dispatch(visitBlogEntry(id))
+            blogStore.dispatch(visitBlogEntry(id))
             this.setState({
                 loading: false
             })
@@ -84,13 +95,12 @@ class Blog extends React.Component {
                     <br/>
                     <div className="Container" dangerouslySetInnerHTML={{__html: this.state.data.content}}></div>
                     <br/>
-
                     <Button variant="primary" onClick={() => {
                         this.props.history.push("/blog")
                     }}>{intl.get("blogBack")}</Button>{' '}&nbsp;
-                    <Button variant="outline-primary" onClick={() => {
+                    {this.state.canEdit && <Button variant="outline-primary" onClick={() => {
                         thisPtr.edit(thisPtr)
-                    }}>{intl.get("blogEdit")}</Button>{' '}&nbsp;
+                    }}>{intl.get("blogEdit")}</Button>}
                     <br/><br/>
                 </div>
             </div>

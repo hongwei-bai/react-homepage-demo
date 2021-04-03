@@ -1,4 +1,4 @@
-import store from '../reducers/store';
+import {logInStore} from '../reducers/store';
 import axios from "axios";
 import {baseUrlHome} from "./NetworkEndpoints";
 
@@ -7,7 +7,7 @@ export const homePageInstance = axios.create({
 })
 
 homePageInstance.interceptors.request.use(function (config) {
-    const jwt = store.getState().accessToken
+    const jwt = logInStore.getState().accessToken
     config.headers.Authorization = jwt ? `Bearer ${jwt}` : '';
     return config;
 });

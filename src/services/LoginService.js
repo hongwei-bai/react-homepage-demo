@@ -1,5 +1,5 @@
 import {md5} from "../utils/md5";
-import store from "../reducers/store"
+import {logInStore} from "../reducers/store"
 import {LOGIN, LOGOUT} from "../reducers/LoginReducer";
 import {getCookie, setCookie} from "../utils/CookieUtils";
 
@@ -19,7 +19,7 @@ export function getCredentialRequestBody(userName, password) {
 export function recoverLoginStatusFromCookie() {
     const info = readCookieCredentials()
     if (info !== null) {
-        store.dispatch(
+        logInStore.dispatch(
             {
                 type: LOGIN,
                 accessToken: info.accessToken,
@@ -31,7 +31,7 @@ export function recoverLoginStatusFromCookie() {
             }
         )
     } else {
-        store.dispatch({
+        logInStore.dispatch({
             type: LOGOUT
         })
     }

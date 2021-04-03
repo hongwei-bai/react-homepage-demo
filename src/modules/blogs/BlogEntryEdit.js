@@ -6,7 +6,7 @@ import ReactQuill, {Quill} from 'react-quill';
 import {ImageDrop} from 'quill-image-drop-module';
 import 'react-quill/dist/quill.snow.css';
 import TextField from "@material-ui/core/TextField";
-import store from '../../reducers/store';
+import {logInStore, blogStore} from '../../reducers/store';
 import {BLOG_ENTRY_INVALIDATE} from "../../reducers/BlogReducer";
 import intl from 'react-intl-universal';
 import {homePageInstance} from "../../network/AxiosInstances";
@@ -63,7 +63,7 @@ class BlogEntryEdit extends React.Component {
     };
 
     fetchBlogEntry(id) {
-        homePageInstance.get("/blog/" + id + "/entry.do?owner=1")
+        homePageInstance.get("/blog/" + id + "/entry.do")
             .then((response) => {
                 this.setState({
                     loading: false,
@@ -123,19 +123,10 @@ class BlogEntryEdit extends React.Component {
             formData.append(k, params[k]);
         }
 
-        const requestOptions = {
-            method: 'PUT',
-            redirect: 'follow',
-            body: formData
-        };
-
         homePageInstance.put("/blog/" + this.state.data.id + "/entry.do", formData)
-            // fetch(window.baseUrl + "/blog/" + this.state.data.id + "/entry.do", requestOptions)
-            //     .then(response => response.json())
-            .then(
-                result => {
+            .then(_ => {
                     this.setState({post: intl.get("blogPost")})
-                    store.dispatch(invalidateBlogEntry(this.props.match.params.id))
+                    blogStore.dispatch(invalidateBlogEntry(this.props.match.params.id))
                     this.props.history.push("/blog/entry/" + this.state.data.id)
                 }
             )
@@ -146,7 +137,7 @@ class BlogEntryEdit extends React.Component {
 
     postNew() {
         let params = {
-            owner: '1',
+            owner: logInStore.getState().userName,
             title: this.state.title,
             content: this.state.content,
             delta: JSON.stringify(this.state.delta)

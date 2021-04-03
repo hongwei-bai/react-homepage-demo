@@ -11,8 +11,7 @@ import Dashboard from "../dashboard/Dashboard";
 import intl from 'react-intl-universal';
 import axios from "axios";
 import {message} from 'antd';
-import store, {localesStore} from '../../reducers/store';
-import {logInStore} from '../../reducers/store';
+import {logInStore, localesStore} from '../../reducers/store';
 import {LOGIN, LOGOUT} from "../../reducers/LoginReducer";
 import {
     clearCookieCredentials,
@@ -86,7 +85,6 @@ class Home extends React.Component {
             url: baseUrlAuthentication() + "/authenticate/login.do",
             data: getCredentialRequestBody(this.state.username, this.state.password)
         }).then(response => {
-            console.log("login rsp: " + JSON.stringify(response))
             if (response.data.accessToken != null && response.data.refreshToken != null) {
                 this.displayLoginSuccessMessage()
                 this.handleLoginSuccess(this.state.username, response)
@@ -114,7 +112,7 @@ class Home extends React.Component {
     }
 
     logout() {
-        store.dispatch({
+        logInStore.dispatch({
             type: LOGOUT
         })
         this.setState({
@@ -129,14 +127,14 @@ class Home extends React.Component {
 
     componentDidMount() {
         logInStore.subscribe(() => {
-            let preference = store.getState().preference
+            let preference = logInStore.getState().preference
             if (preference !== undefined && preference.locale !== undefined
                 && (preference.locale.length > 0)) {
                 changeLanguage(preference.locale)
             }
             this.setState({
-                loggedIn: store.getState().isLoggedIn,
-                loggedInUser: store.getState().userName,
+                loggedIn: logInStore.getState().isLoggedIn,
+                loggedInUser: logInStore.getState().userName,
             })
             localesStore.dispatch({
                 type: SWITCH_LOCALE
@@ -155,7 +153,7 @@ class Home extends React.Component {
 
     handleLoginSuccess(userName, response) {
         const jwt = response.data.accessToken
-        store.dispatch({
+        logInStore.dispatch({
             type: LOGIN,
             accessToken: jwt,
             refreshToken: response.data.refreshToken,

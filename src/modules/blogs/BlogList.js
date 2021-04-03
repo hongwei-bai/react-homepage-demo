@@ -8,8 +8,7 @@ import ItemEntryCard from "./ItemEntryCard";
 import {FormControl, InputGroup} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {withRouter} from 'react-router-dom';
-import store from '../../reducers/store';
-import axios from "axios";
+import {blogStore} from '../../reducers/store';
 import {homePageInstance} from "../../network/AxiosInstances"
 import {BLOG_LIST_UPDATE} from "../../reducers/BlogReducer";
 import intl from 'react-intl-universal';
@@ -46,7 +45,7 @@ class BlogList extends React.Component {
     }
 
     fetchBlogList() {
-        homePageInstance.get("/blog/entry.do?owner=1")
+        homePageInstance.get("/blog/entry.do")
             .then(response => {
                 let dataFromApi = response.data
                 if (dataFromApi === undefined) {
@@ -56,7 +55,7 @@ class BlogList extends React.Component {
                     loadingStatus: loadingStatus.SUCCESS,
                     data: dataFromApi
                 })
-                store.dispatch(updateBlogList(dataFromApi))
+                blogStore.dispatch(updateBlogList(dataFromApi))
             })
             .catch(reason => {
                 console.log('reason', reason)
@@ -68,7 +67,7 @@ class BlogList extends React.Component {
     }
 
     componentDidMount() {
-        let cachedBlogList = store.getState().blogList
+        let cachedBlogList = blogStore.getState().blogList
         if (cachedBlogList !== undefined && cachedBlogList.length > 0) {
             this.setState({
                 loadingStatus: loadingStatus.SUCCESS,
