@@ -40,7 +40,7 @@ class Blog extends React.Component {
         const currentUser = logInStore.getState().userName
         if (blogOwner !== undefined && blogOwner !== null
             && currentUser !== undefined && currentUser !== null) {
-            return (response.data.owner.toLowerCase() === logInStore.getState.userName.toLowerCase())
+            return (blogOwner.toLowerCase() === currentUser.toLowerCase())
         }
         return false
     }
