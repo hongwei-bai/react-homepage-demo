@@ -18,7 +18,7 @@ import {
     getCredentialRequestBody,
     isGuest,
     isValidGuestCode, recoverLoginStatusFromCookie,
-    writeCookieCredentials
+    writeCookieCredentials, writeCookieJwt
 } from "../../services/LoginService";
 import {SWITCH_LOCALE} from "../../reducers/LocalesReducer";
 import {changeLanguage} from "../../locales/LocalesUtil";
@@ -165,11 +165,11 @@ class Home extends React.Component {
         writeCookieCredentials({
             userName: userName,
             role: response.data.role,
-            accessToken: jwt,
             refreshToken: response.data.refreshToken,
             preferenceJson: response.data.preferenceJson,
             privilegeJson: response.data.privilegeJson
         })
+        writeCookieJwt(jwt)
     }
 
     handleLoginFailure(reason) {

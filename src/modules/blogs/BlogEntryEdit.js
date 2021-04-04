@@ -76,7 +76,6 @@ class BlogEntryEdit extends React.Component {
                 this.setState({
                     loading: false
                 })
-                console.log('error', reason)
             })
     }
 
@@ -130,9 +129,6 @@ class BlogEntryEdit extends React.Component {
                     this.props.history.push("/blog/entry/" + this.state.data.id)
                 }
             )
-            .catch(error => {
-                console.log('error', error)
-            });
     }
 
     postNew() {

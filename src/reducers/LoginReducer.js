@@ -1,8 +1,8 @@
 import {UserRole} from "../constants/LoginContants";
+import {logInBackgroundStore} from "./store";
 
 const loginInitialState = {
     isLoggedIn: false,
-    accessToken: "",
     refreshToken: "",
     userName: "",
     userRole: UserRole.USER,
@@ -17,11 +17,15 @@ export const LOGOUT = 'LOGOUT'
 export const loginReducer = (state = loginInitialState, action) => {
     switch (action.type) {
         case LOGIN:
+            logInBackgroundStore.dispatch({
+                type: LOGIN,
+                accessToken: action.accessToken
+            })
             return {
                 ...state,
                 isLoggedIn: true,
-                accessToken: action.accessToken,
                 refreshToken: action.refreshToken,
+                isRefreshingToken: false,
                 isGuest: false,
                 userName: action.userName,
                 userRole: action.userRole,
@@ -29,6 +33,9 @@ export const loginReducer = (state = loginInitialState, action) => {
                 privilege: parseJsonString(action.privilegeJson)
             }
         case LOGOUT:
+            logInBackgroundStore.dispatch({
+                type: LOGOUT
+            })
             return {
                 loginInitialState
             }

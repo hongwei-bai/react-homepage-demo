@@ -6,6 +6,8 @@ import {Button, Card} from 'react-bootstrap';
 import {withRouter} from 'react-router-dom';
 import intl from 'react-intl-universal';
 import {homePageInstance} from "../../network/AxiosInstances";
+import {logInBackgroundStore} from "../../reducers/store";
+import {STATUS_REFRESHED} from "../../reducers/LoginBackgroundReducer";
 
 class DashboardCardCovid19 extends React.Component {
     constructor(props) {
@@ -75,6 +77,11 @@ class DashboardCardCovid19 extends React.Component {
 
     componentDidMount() {
         this.getSummary();
+        logInBackgroundStore.subscribe(() => {
+            if (logInBackgroundStore.getState().refreshTokenStatus === STATUS_REFRESHED) {
+                this.getSummary();
+            }
+        })
     }
 
     getSummary() {
@@ -95,7 +102,6 @@ class DashboardCardCovid19 extends React.Component {
                 }
             )
             .catch(error => {
-                console.log('error', error)
                 this.fetchWorld("API not available!", "", 0, 0, true)
             });
     }

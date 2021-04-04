@@ -18,11 +18,12 @@ export function getCredentialRequestBody(userName, password) {
 
 export function recoverLoginStatusFromCookie() {
     const info = readCookieCredentials()
+    const jwt = readCookieJwt()
     if (info !== null) {
         logInStore.dispatch(
             {
                 type: LOGIN,
-                accessToken: info.accessToken,
+                accessToken: jwt,
                 refreshToken: info.refreshToken,
                 userName: info.userName,
                 userRole: info.role,
@@ -38,10 +39,12 @@ export function recoverLoginStatusFromCookie() {
 }
 
 const COOKIE_KEY_LOGIN_INFO = "login_info"
+const COOKIE_KEY_ACCESS_TOKEN = "access_token"
 const COOKIE_KEY_LOCALE = "locale"
 
 export function clearCookieCredentials() {
     setCookie(COOKIE_KEY_LOGIN_INFO, "", 1)
+    setCookie(COOKIE_KEY_ACCESS_TOKEN, "", 1)
     setCookie(COOKIE_KEY_LOCALE, "", 1)
 }
 
@@ -60,6 +63,14 @@ export function readCookieCredentials() {
     } catch (exception) {
         return null
     }
+}
+
+export function writeCookieJwt(accessToken) {
+    setCookie(COOKIE_KEY_ACCESS_TOKEN, accessToken, 1)
+}
+
+export function readCookieJwt() {
+    return getCookie(COOKIE_KEY_ACCESS_TOKEN)
 }
 
 export function readCookieLocale() {

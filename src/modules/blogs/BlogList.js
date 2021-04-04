@@ -8,12 +8,13 @@ import ItemEntryCard from "./ItemEntryCard";
 import {FormControl, InputGroup} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {withRouter} from 'react-router-dom';
-import {blogStore} from '../../reducers/store';
+import {blogStore, logInBackgroundStore} from '../../reducers/store';
 import {homePageInstance} from "../../network/AxiosInstances"
 import {BLOG_LIST_UPDATE} from "../../reducers/BlogReducer";
 import intl from 'react-intl-universal';
 import {FaFeather} from "react-icons/fa";
 import {RiAncientGateLine} from "react-icons/ri";
+import {STATUS_REFRESHED, USE_TOKEN} from "../../reducers/LoginBackgroundReducer";
 
 const styles = {
     root: {
@@ -55,10 +56,10 @@ class BlogList extends React.Component {
                     loadingStatus: loadingStatus.SUCCESS,
                     data: dataFromApi
                 })
+                logInBackgroundStore.dispatch({type: USE_TOKEN})
                 blogStore.dispatch(updateBlogList(dataFromApi))
             })
             .catch(reason => {
-                console.log('reason', reason)
                 this.setState({
                     loadingStatus: loadingStatus.ERROR,
                     message: reason
@@ -76,6 +77,11 @@ class BlogList extends React.Component {
         } else {
             this.fetchBlogList()
         }
+        logInBackgroundStore.subscribe(() => {
+            if (logInBackgroundStore.getState().refreshTokenStatus === STATUS_REFRESHED) {
+                this.fetchBlogList()
+            }
+        })
     }
 
     render() {
