@@ -12,9 +12,9 @@ import intl from 'react-intl-universal';
 import axios from "axios";
 import {message} from 'antd';
 import {logInStore, localesStore} from '../../reducers/store';
-import {LOGIN, LOGOUT} from "../../reducers/LoginReducer";
+import {LOGIN} from "../../reducers/LoginReducer";
 import {
-    clearCookieCredentials,
+    clearCookieCredentials, executeLogOut,
     getCredentialRequestBody,
     isGuest,
     isValidGuestCode, recoverLoginStatusFromCookie,
@@ -112,9 +112,7 @@ class Home extends React.Component {
     }
 
     logout() {
-        logInStore.dispatch({
-            type: LOGOUT
-        })
+        executeLogOut()
         this.setState({
             logInError: "",
             username: "",

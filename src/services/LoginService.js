@@ -1,5 +1,5 @@
 import {md5} from "../utils/md5";
-import {logInStore} from "../reducers/store"
+import {blogStore, localesStore, logInStore} from "../reducers/store"
 import {LOGIN, LOGOUT} from "../reducers/LoginReducer";
 import {getCookie, setCookie} from "../utils/CookieUtils";
 
@@ -32,10 +32,17 @@ export function recoverLoginStatusFromCookie() {
             }
         )
     } else {
-        logInStore.dispatch({
-            type: LOGOUT
-        })
+        executeLogOut()
     }
+}
+
+export function executeLogOut() {
+    logInStore.dispatch({
+        type: LOGOUT
+    })
+    blogStore.dispatch({
+        type: LOGOUT
+    })
 }
 
 const COOKIE_KEY_LOGIN_INFO = "login_info"

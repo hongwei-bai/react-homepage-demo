@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import DashboardCard from "./DashboardCard";
 import DashboardCardCovid19 from "./DashboardCardCovid19";
-import {logInStore, localesStore} from "../../reducers/store"
+import {localesStore} from "../../reducers/store"
 import {
     adminData,
     blogData,

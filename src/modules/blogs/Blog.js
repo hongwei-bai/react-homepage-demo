@@ -1,7 +1,7 @@
 import React from 'react';
 import './Blog.css';
 import Button from "react-bootstrap/Button";
-import {blogStore, logInStore} from '../../reducers/store';
+import {blogStore} from '../../reducers/store';
 import {BLOG_ENTRY_LOAD, BLOG_ENTRY_VISIT} from "../../reducers/BlogReducer";
 import intl from 'react-intl-universal';
 import {homePageInstance} from "../../network/AxiosInstances";

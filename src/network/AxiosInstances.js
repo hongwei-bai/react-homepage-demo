@@ -1,9 +1,8 @@
 import {logInBackgroundStore, logInStore} from '../reducers/store';
 import axios from "axios";
 import {baseUrlAuthentication, baseUrlHome} from "./NetworkEndpoints";
-import {LOGOUT} from "../reducers/LoginReducer";
 import {REFRESHED_TOKEN, REFRESHING_TOKEN, STATUS_INIT} from "../reducers/LoginBackgroundReducer";
-import {writeCookieJwt} from "../services/LoginService";
+import {executeLogOut, writeCookieJwt} from "../services/LoginService";
 
 export const homePageInstance = axios.create({
     baseURL: baseUrlHome(),
@@ -49,13 +48,11 @@ homePageInstance.interceptors.response.use(response => {
                         accessToken: newJwt
                     })
                 } else {
-                    logInBackgroundStore.dispatch({type: LOGOUT})
+                    executeLogOut()
                 }
             }).catch(cause => {
-                logInBackgroundStore.dispatch({type: LOGOUT})
+                executeLogOut()
             })
-        } else {
-            logInStore.dispatch({type: LOGOUT})
         }
     }
 })

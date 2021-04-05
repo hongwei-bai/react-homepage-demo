@@ -1,3 +1,5 @@
+import {LOGOUT} from "./LoginReducer";
+
 const blogInitialState = {
     blogList: "",
     blogEntries: new Map(),
@@ -75,7 +77,13 @@ export const blogReducer = (state = blogInitialState, action) => {
                 blogEntryLatestVisited: visitedList,
                 blogEntries: entries
             }
-
+        case LOGOUT:
+            return {
+                ...state,
+                blogList: "",
+                blogEntryLatestVisited: [],
+                blogEntries: new Map()
+            }
         default:
             return state
     }
