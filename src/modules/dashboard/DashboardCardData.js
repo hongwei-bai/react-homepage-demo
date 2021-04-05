@@ -112,7 +112,8 @@ export function knowledgeData() {
             image: imgGraph,
             title: intl.get("knowledgeGraph"),
             content: intl.get("comingSoon"),
-            enabled: false,
+            enabled: true,
+            actionPath: "/knowledge",
             actionButton: intl.get("details")
         }
     }

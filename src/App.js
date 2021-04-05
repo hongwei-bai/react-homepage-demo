@@ -19,6 +19,7 @@ import AntTest from "./modules/demo/AntTest";
 import {initLocale} from "./locales/LocalesUtil";
 import {localesStore} from "./reducers/store";
 import {recoverLoginStatusFromCookie} from "./services/LoginService";
+import KnowledgeRoot from "./modules/knowledge/KnowledgeRoot";
 
 class App extends React.Component {
     constructor(props) {
@@ -52,6 +53,7 @@ class App extends React.Component {
                         <Route path="/blog/entry/:id" component={Blog}/>
                         <Route path="/blog/edit/:id" component={BlogEntryEdit}/>
                         <Route path="/blog/new" component={BlogEntryEdit}/>
+                        <Route path="/knowledge" component={KnowledgeRoot}/>
                         <Route path="/about" component={About}/>
                         <Route path="/demo/rdm" component={FlowChatDemo}/>
                         <Route path="/demo/antd" component={AntTest}/>

@@ -144,16 +144,10 @@ class BlogEntryEdit extends React.Component {
             formData.append(k, params[k]);
         }
 
-        const requestOptions = {
-            method: 'POST',
-            redirect: 'follow',
-            body: formData
-        };
-
-        fetch(window.baseUrl + "/blog/entry.do", requestOptions)
-            .then(response => response.json())
-            .then(
-                result => {
+        homePageInstance.post("/blog/entry.do", {
+            formData
+        })
+            .then(response => {
                     this.setState({post: intl.get("blogPost")})
                     this.props.history.push("/blog")
                 }

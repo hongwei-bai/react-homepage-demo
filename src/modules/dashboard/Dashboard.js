@@ -16,6 +16,7 @@ import {
     photoData,
     toDoData
 } from "./DashboardCardData";
+import {getDashboardEntries, isAdmin} from "../../services/PricilegeService";
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -35,18 +36,36 @@ class Dashboard extends React.Component {
         const privilege = logInStore.getState().privilege
         let cardsWithAccess = []
         cardsWithAccess.push(dataCovid19())
-        if (privilege !== undefined && privilege.blog !== undefined) {
-            if (privilege.blog.main === true) {
-                cardsWithAccess.push(blogData())
-            }
+
+        if (isAdmin()) {
+            cardsWithAccess.push(adminData())
+            cardsWithAccess.push(logData())
+        } else {
+            getDashboardEntries().forEach((access) => {
+                switch (access.toLowerCase()) {
+                    case "blog":
+                        cardsWithAccess.push(blogData())
+                        break
+                    case "knowledgegraph":
+                        cardsWithAccess.push(knowledgeData())
+                        break
+                    case "ecommerce":
+                        cardsWithAccess.push(eCommerceData())
+                        break
+                    case "album":
+                        cardsWithAccess.push(photoData())
+                        break
+                    case "resume":
+                        cardsWithAccess.push(cvData())
+                        break
+                    case "todo":
+                        cardsWithAccess.push(toDoData())
+                        break
+                    default:
+                        break
+                }
+            })
         }
-        cardsWithAccess.push(adminData())
-        cardsWithAccess.push(eCommerceData())
-        cardsWithAccess.push(photoData())
-        cardsWithAccess.push(cvData())
-        cardsWithAccess.push(toDoData())
-        cardsWithAccess.push(logData())
-        cardsWithAccess.push(knowledgeData())
         this.setState({
             data: cardsWithAccess
         })
