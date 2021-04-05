@@ -33,7 +33,6 @@ class Dashboard extends React.Component {
     }
 
     loadCards() {
-        const privilege = logInStore.getState().privilege
         let cardsWithAccess = []
         cardsWithAccess.push(dataCovid19())
 
@@ -45,22 +44,22 @@ class Dashboard extends React.Component {
                 switch (access.toLowerCase()) {
                     case "blog":
                         cardsWithAccess.push(blogData())
-                        break
+                        break;
                     case "knowledgegraph":
                         cardsWithAccess.push(knowledgeData())
-                        break
+                        break;
                     case "ecommerce":
                         cardsWithAccess.push(eCommerceData())
-                        break
+                        break;
                     case "album":
                         cardsWithAccess.push(photoData())
-                        break
+                        break;
                     case "resume":
                         cardsWithAccess.push(cvData())
-                        break
+                        break;
                     case "todo":
                         cardsWithAccess.push(toDoData())
-                        break
+                        break;
                     default:
                         break
                 }

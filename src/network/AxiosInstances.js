@@ -35,7 +35,8 @@ homePageInstance.interceptors.response.use(response => {
     console.log("homePageInstance api failure - config: " + JSON.stringify(config))
     console.log("homePageInstance api failure - status: " + status)
     console.log("homePageInstance api failure - data: " + JSON.stringify(data))
-    if (status === 401 && logInStore.getState().isLoggedIn && logInStore.getState().refreshToken !== undefined) {
+    if (status === 401 && data.subCode === 1
+        && logInStore.getState().isLoggedIn && logInStore.getState().refreshToken !== undefined) {
         if (logInBackgroundStore.getState().refreshTokenStatus === STATUS_INIT) {
             logInBackgroundStore.dispatch({type: REFRESHING_TOKEN})
             authenticationInstance.post("/authenticate/refreshToken.do", {

@@ -12,3 +12,9 @@ export function getDashboardEntries() {
     }
     return []
 }
+
+export function canEditBlog(owner) {
+    const userName = logInStore.getState().userName.toLowerCase()
+    const privilege = logInStore.getState().privilege
+    return userName === owner.toLowerCase() || privilege.blog.modAll === true
+}

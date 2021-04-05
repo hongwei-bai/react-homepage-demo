@@ -5,6 +5,7 @@ import {blogStore, logInStore} from '../../reducers/store';
 import {BLOG_ENTRY_LOAD, BLOG_ENTRY_VISIT} from "../../reducers/BlogReducer";
 import intl from 'react-intl-universal';
 import {homePageInstance} from "../../network/AxiosInstances";
+import {canEditBlog} from "../../services/PricilegeService";
 
 class Blog extends React.Component {
     constructor(props) {
@@ -23,7 +24,7 @@ class Blog extends React.Component {
                 blogStore.dispatch(loadBlogEntry(id, response.data))
                 this.setState({
                     data: response.data,
-                    canEdit: this.isOwner(response),
+                    canEdit: canEditBlog(response.data.owner),
                     loading: false
                 })
             })
@@ -33,16 +34,6 @@ class Blog extends React.Component {
                     loading: false
                 })
             })
-    }
-
-    isOwner(response) {
-        const blogOwner = response.data.owner
-        const currentUser = logInStore.getState().userName
-        if (blogOwner !== undefined && blogOwner !== null
-            && currentUser !== undefined && currentUser !== null) {
-            return (blogOwner.toLowerCase() === currentUser.toLowerCase())
-        }
-        return false
     }
 
     componentDidMount() {
