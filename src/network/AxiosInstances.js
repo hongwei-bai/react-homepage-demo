@@ -1,6 +1,6 @@
 import {logInBackgroundStore, logInStore} from '../reducers/store';
 import axios from "axios";
-import {baseUrlAuthentication, baseUrlHome} from "./NetworkEndpoints";
+import {baseUrlAuthentication, baseUrlBlog, baseUrlHome} from "./NetworkEndpoints";
 import {REFRESHED_TOKEN, REFRESHING_TOKEN, STATUS_INIT} from "../reducers/LoginBackgroundReducer";
 import {executeLogOut, writeCookieJwt} from "../services/LoginService";
 
@@ -14,9 +14,20 @@ export const authenticationInstance = axios.create({
     withCredentials: true
 })
 
+export const blogInstance = axios.create({
+    baseURL: baseUrlBlog(),
+    withCredentials: true
+})
+
+homePageInstance.interceptors.request.use(function (config) {
+    const jwt = process.env.REACT_APP_PUBLIC_ACCESS_TOKEN
+    config.headers.Authorization = jwt ? `Bearer ${jwt}` : '';
+    return config;
+});
+
 logInBackgroundStore.subscribe(() => {
     writeCookieJwt(logInBackgroundStore.getState().accessToken)
-    homePageInstance.interceptors.request.use(function (config) {
+    blogInstance.interceptors.request.use(function (config) {
         const jwt = logInBackgroundStore.getState().accessToken
         // const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsYW1ldXNlciIsImV4cCI6MTYxNzQzMDU1OSwiaWF0IjoxNjE3NDMwNDk5fQ.MctAGPKre77IeuqVeO65Pz9VQf6SVhhFtNgIONYztuM"
         config.headers.Authorization = jwt ? `Bearer ${jwt}` : '';
@@ -24,7 +35,7 @@ logInBackgroundStore.subscribe(() => {
     });
 })
 
-homePageInstance.interceptors.response.use(response => {
+blogInstance.interceptors.response.use(response => {
     return response
 }, reason => {
     const {

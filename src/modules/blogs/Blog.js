@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import {blogStore} from '../../reducers/store';
 import {BLOG_ENTRY_LOAD, BLOG_ENTRY_VISIT} from "../../reducers/BlogReducer";
 import intl from 'react-intl-universal';
-import {homePageInstance} from "../../network/AxiosInstances";
+import {blogInstance} from "../../network/AxiosInstances";
 import {canEditBlog} from "../../services/PricilegeService";
 
 class Blog extends React.Component {
@@ -19,7 +19,7 @@ class Blog extends React.Component {
     }
 
     fetchBlogEntry(id) {
-        homePageInstance.get("/blog/" + id + "/entry.do")
+        blogInstance.get("/blog/" + id + "/entry.do")
             .then(response => {
                 blogStore.dispatch(loadBlogEntry(id, response.data))
                 this.setState({

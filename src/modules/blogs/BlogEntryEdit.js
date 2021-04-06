@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import {logInStore, blogStore} from '../../reducers/store';
 import {BLOG_ENTRY_INVALIDATE} from "../../reducers/BlogReducer";
 import intl from 'react-intl-universal';
-import {homePageInstance} from "../../network/AxiosInstances";
+import {blogInstance} from "../../network/AxiosInstances";
 
 // 在quill中注册quill-image-drop-module
 Quill.register('modules/imageDrop', ImageDrop);
@@ -63,7 +63,7 @@ class BlogEntryEdit extends React.Component {
     };
 
     fetchBlogEntry(id) {
-        homePageInstance.get("/blog/" + id + "/entry.do")
+        blogInstance.get("/blog/" + id + "/entry.do")
             .then((response) => {
                 this.setState({
                     loading: false,
@@ -122,7 +122,7 @@ class BlogEntryEdit extends React.Component {
             formData.append(k, params[k]);
         }
 
-        homePageInstance.put("/blog/" + this.state.data.id + "/entry.do", formData)
+        blogInstance.put("/blog/" + this.state.data.id + "/entry.do", formData)
             .then(_ => {
                     this.setState({post: intl.get("blogPost")})
                     blogStore.dispatch(invalidateBlogEntry(this.props.match.params.id))
@@ -144,7 +144,7 @@ class BlogEntryEdit extends React.Component {
             formData.append(k, params[k]);
         }
 
-        homePageInstance.post("/blog/entry.do", {
+        blogInstance.post("/blog/entry.do", {
             formData
         })
             .then(response => {

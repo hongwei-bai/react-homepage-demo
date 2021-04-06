@@ -43,6 +43,9 @@
   },
   "scripts": {
     "start:debug": "env-cmd -f .env.debug react-scripts start",
+    "start:debug.home": "env-cmd -f .env.debug.home react-scripts start",
+    "start:debug.auth": "env-cmd -f .env.debug.auth react-scripts start",
+    "start:debug.tomcat": "env-cmd -f .env.debug.tomcat react-scripts start",
     "start:prod": "env-cmd -f .env.prod react-scripts start",
     "build": "env-cmd -f .env.prod react-scripts build",
     "test": "react-scripts test",

@@ -9,7 +9,7 @@ import {FormControl, InputGroup} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {withRouter} from 'react-router-dom';
 import {blogStore, logInBackgroundStore} from '../../reducers/store';
-import {homePageInstance} from "../../network/AxiosInstances"
+import {blogInstance} from "../../network/AxiosInstances"
 import {BLOG_LIST_UPDATE} from "../../reducers/BlogReducer";
 import intl from 'react-intl-universal';
 import {FaFeather} from "react-icons/fa";
@@ -46,7 +46,7 @@ class BlogList extends React.Component {
     }
 
     fetchBlogList() {
-        homePageInstance.get("/blog/entry.do")
+        blogInstance.get("/blog/entry.do")
             .then(response => {
                 let dataFromApi = response.data
                 if (dataFromApi === undefined) {

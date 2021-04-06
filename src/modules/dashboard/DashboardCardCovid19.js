@@ -91,13 +91,17 @@ class DashboardCardCovid19 extends React.Component {
         let NSWCases = 0;
         let VICCases = 0;
 
-        homePageInstance.get("/covid19/querybystate.do?days=1")
-            .then(
-                response => {
+        homePageInstance.get("/covid19/queryByState.do?days=1")
+            .then(response => {
+                    console.log("19: " + JSON.stringify(response))
                     AuDate = response.data.ausDataByStatePerDays[0].date
                     AuTime = response.data.ausDataByStatePerDays[0].timeFrom
                     NSWCases = response.data.ausDataByStatePerDays[0].NSW
                     VICCases = response.data.ausDataByStatePerDays[0].VIC
+                    console.log("AuDate: " + AuDate)
+                    console.log("AuTime: " + AuTime)
+                    console.log("NSWCases: " + NSWCases)
+                    console.log("VICCases: " + VICCases)
                     this.fetchWorld(AuDate, AuTime, NSWCases, VICCases, response.data.isNewData)
                 }
             )

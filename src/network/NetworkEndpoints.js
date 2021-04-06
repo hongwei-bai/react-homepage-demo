@@ -14,6 +14,14 @@ export function baseUrlAuthentication() {
     }
 }
 
+export function baseUrlBlog() {
+    if (process.env.REACT_APP_SERVICE_BLOG.startsWith("http")) {
+        return process.env.REACT_APP_SERVICE_BLOG
+    } else {
+        return process.env.REACT_APP_SERVICE_DOMAIN + process.env.REACT_APP_SERVICE_BLOG
+    }
+}
+
 export function baseUrlFileServer() {
     if (process.env.REACT_APP_FILE_SERVER.startsWith("http")) {
         return process.env.REACT_APP_FILE_SERVER
