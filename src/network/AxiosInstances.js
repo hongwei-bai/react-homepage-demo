@@ -4,6 +4,8 @@ import {baseUrlAuthentication, baseUrlBlog, baseUrlHome} from "./NetworkEndpoint
 import {REFRESHED_TOKEN, REFRESHING_TOKEN, STATUS_INIT} from "../reducers/LoginBackgroundReducer";
 import {executeLogOut, writeCookieJwt} from "../services/LoginService";
 
+
+
 export const homePageInstance = axios.create({
     baseURL: baseUrlHome(),
     withCredentials: true
@@ -20,7 +22,7 @@ export const blogInstance = axios.create({
 })
 
 homePageInstance.interceptors.request.use(function (config) {
-    const jwt = process.env.REACT_APP_PUBLIC_ACCESS_TOKEN
+    const jwt = require('../config/config.json').security.publicAccess.jwt
     config.headers.Authorization = jwt ? `Bearer ${jwt}` : '';
     return config;
 });
