@@ -4,8 +4,6 @@ import {baseUrlAuthentication, baseUrlBlog, baseUrlHome} from "./NetworkEndpoint
 import {REFRESHED_TOKEN, REFRESHING_TOKEN, STATUS_INIT} from "../reducers/LoginBackgroundReducer";
 import {executeLogOut, writeCookieJwt} from "../services/LoginService";
 
-
-
 export const homePageInstance = axios.create({
     baseURL: baseUrlHome(),
     withCredentials: true

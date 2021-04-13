@@ -26,7 +26,7 @@ export function blogData() {
         data: {
             image: imgBlog,
             title: intl.get('blog'),
-            content: intl.get("comingSoon"),
+            content: intl.get("inAlphaTest"),
             enabled: true,
             actionPath: "/blog",
             actionButton: intl.get("details")
@@ -63,8 +63,9 @@ export function photoData() {
         data: {
             image: imgPhoto,
             title: intl.get("photoGallery"),
-            content: intl.get("comingSoon"),
-            enabled: false,
+            content: intl.get("inAlphaTest"),
+            enabled: true,
+            actionPath: "/photo",
             actionButton: intl.get("details")
         }
     }

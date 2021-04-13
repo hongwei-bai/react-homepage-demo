@@ -47,7 +47,7 @@ class DashboardCardCovid19 extends React.Component {
         }
         let loadAgainCation = ""
         if (!this.state.isNew) {
-            loadAgainCation = " (cache)"
+            loadAgainCation = " " + intl.get("covid19Cached")
         }
         return (
             <Card style={{
@@ -101,7 +101,7 @@ class DashboardCardCovid19 extends React.Component {
                 }
             )
             .catch(error => {
-                this.fetchWorld("API not available!", "", 0, 0, true)
+                this.fetchWorld(intl.get("covid19LoadError"), "", 0, 0, true)
             });
     }
 
@@ -158,19 +158,19 @@ function Covid19Content(props) {
         return (
             <Card.Text>
                                 <span>
-                                    +Cases/+Deaths/Cases/Deaths/Tests<br/>
+                                    {intl.get("newCases")}/{intl.get("newDeaths")}/{intl.get("totalCases")}/{intl.get("totalDeaths")}/{intl.get("totalTests")}<br/>
                                 </span>
                 <span className="Covid19Data">
-                                    Australia:
+                                    {intl.get("newCasesInAustralia")}:
                                     <span className="Today">+{props.dataCovid19.Australia.NewConfirmed}/+
                                         {props.dataCovid19.Australia.NewDeaths}</span>/
                     {props.dataCovid19.Australia.Confirmed}/
                     {props.dataCovid19.Australia.Deaths}/
                                     <span className="Test">{props.dataCovid19.Australia.Tests}</span>
                                     <br/>
-                                    - NSW:{props.NSWStr} {props.loadAgainCation}<br/>
-                                    - Victoria:{props.VICStr}<br/>
-                                    China:
+                                    - {intl.get("newCasesInNSW")}:{props.NSWStr} {props.loadAgainCation}<br/>
+                                    - {intl.get("newCasesInVictoria")}:{props.VICStr}<br/>
+                                    {intl.get("newCasesInChina")}:
                                     <span className="Today">+{props.dataCovid19.China.NewConfirmed}/+
                                         {props.dataCovid19.China.NewDeaths}</span>/
                     {props.dataCovid19.China.Confirmed}/
@@ -182,7 +182,7 @@ function Covid19Content(props) {
         )
     } else {
         return <Card.Text>
-            Loading...
+            {intl.get("covid19Loading")}
         </Card.Text>
     }
 }
