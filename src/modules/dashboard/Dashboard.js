@@ -14,7 +14,7 @@ import {
     eCommerceData, knowledgeData,
     logData,
     photoData,
-    toDoData
+    toDoData, uploadExerciseData
 } from "./DashboardCardData";
 import {getDashboardEntries, isAdmin} from "../../services/PricilegeService";
 
@@ -51,7 +51,7 @@ class Dashboard extends React.Component {
                     case "ecommerce":
                         cardsWithAccess.push(eCommerceData())
                         break;
-                    case "album":
+                    case "photo":
                         cardsWithAccess.push(photoData())
                         break;
                     case "resume":
@@ -59,6 +59,9 @@ class Dashboard extends React.Component {
                         break;
                     case "todo":
                         cardsWithAccess.push(toDoData())
+                        break;
+                    case "uploadExercise":
+                        cardsWithAccess.push(uploadExerciseData())
                         break;
                     default:
                         break

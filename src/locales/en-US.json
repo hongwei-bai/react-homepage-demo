@@ -18,6 +18,7 @@
   "todo": "To-Do",
   "systemLogs": "System Logs",
   "knowledgeGraph": "Knowledge graph",
+  "uploadExercise": "Exercise Upload",
 
   "covid19Loading": "Loading...",
   "covid19LoadError": "API not available!",

@@ -7,6 +7,7 @@ import imgCv from "../../images/cv_banner.jpg";
 import imgGtd from "../../images/gtd_banner.jpg";
 import imgLogs from "../../images/logs_banner.jpg";
 import imgGraph from "../../images/graph_banner.png";
+import imgUpload from "../../images/upload_banner.jpg"
 import intl from 'react-intl-universal';
 
 export function dataCovid19() {
@@ -115,6 +116,19 @@ export function knowledgeData() {
             content: intl.get("comingSoon"),
             enabled: true,
             actionPath: "/knowledge",
+            actionButton: intl.get("details")
+        }
+    }
+}
+
+export function uploadExerciseData() {
+    return {
+        data: {
+            image: imgUpload,
+            title: intl.get("uploadExercise"),
+            content: intl.get("inAlphaTest"),
+            enabled: true,
+            actionPath: "/summer/upload",
             actionButton: intl.get("details")
         }
     }
