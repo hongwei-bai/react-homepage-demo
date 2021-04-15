@@ -1,6 +1,6 @@
 import {logInBackgroundStore, logInStore} from '../reducers/store';
 import axios from "axios";
-import {baseUrlAuthentication, baseUrlBlog, baseUrlHome} from "./NetworkEndpoints";
+import {baseUrlAuthentication, baseUrlBlog, baseUrlFileServer, baseUrlHome} from "./NetworkEndpoints";
 import {REFRESHED_TOKEN, REFRESHING_TOKEN, STATUS_INIT} from "../reducers/LoginBackgroundReducer";
 import {executeLogOut, writeCookieJwt} from "../services/LoginService";
 
@@ -19,6 +19,11 @@ export const blogInstance = axios.create({
     withCredentials: true
 })
 
+export const fileServiceInstance = axios.create({
+    baseURL: baseUrlFileServer(),
+    withCredentials: true
+})
+
 homePageInstance.interceptors.request.use(function (config) {
     const jwt = require('../config/config.json').security.publicAccess.jwt
     config.headers.Authorization = jwt ? `Bearer ${jwt}` : '';
@@ -33,11 +38,26 @@ logInBackgroundStore.subscribe(() => {
         config.headers.Authorization = jwt ? `Bearer ${jwt}` : '';
         return config;
     });
+    fileServiceInstance.interceptors.request.use(function (config) {
+        const jwt = logInBackgroundStore.getState().accessToken
+        config.headers.Authorization = jwt ? `Bearer ${jwt}` : '';
+        return config;
+    });
 })
 
 blogInstance.interceptors.response.use(response => {
     return response
 }, reason => {
+    handleTokenExpire(reason)
+})
+
+fileServiceInstance.interceptors.response.use(response => {
+    return response
+}, reason => {
+    handleTokenExpire(reason)
+})
+
+function handleTokenExpire(reason) {
     const {
         config,
         response: {status, data}
@@ -66,4 +86,4 @@ blogInstance.interceptors.response.use(response => {
             })
         }
     }
-})
+}

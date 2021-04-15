@@ -33,8 +33,10 @@
   "newCasesInChina": "China",
   "covid19Cached": "(cache)",
 
+  "backHomeButton": "Home",
+  "backButton": "Back",
+
   "blog": "Blog",
-  "blogBackButton": "Home",
   "newPost": "New Post",
   "blogLoading": "Loading...",
   "blogListEmpty": "No blog entry. Now add one!",

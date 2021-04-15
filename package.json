@@ -40,7 +40,8 @@
     "store": "^2.0.12",
     "storm-react-diagrams": "^5.2.1",
     "universal-cookie": "^4.0.3",
-    "use-file-picker": "^0.2.1"
+    "use-file-picker": "^0.2.1",
+    "@ant-design/icons": "latest"
   },
   "scripts": {
     "start:debug": "env-cmd -f .env.debug react-scripts start",

@@ -33,8 +33,10 @@
   "newCasesInChina": "中国",
   "covid19Cached": "(缓存数据)",
 
+  "backHomeButton": "返回主页",
+  "backButton": "返回上一级",
+
   "blog": "博客",
-  "blogBackButton": "返回主页",
   "newPost": "创建博客",
   "blogLoading": "加载中...",
   "blogListEmpty": "当前没有博客，创建一个吧!",

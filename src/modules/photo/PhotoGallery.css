@@ -1,0 +1,13 @@
+@import "~react-image-gallery/styles/css/image-gallery.css";
+
+.BackButton {
+    margin: 1%;
+}
+
+.AlbumHeader {
+    align-content: center;
+}
+
+.ImageGallery {
+    margin-top: 5%;
+}

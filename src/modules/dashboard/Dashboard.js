@@ -45,14 +45,14 @@ class Dashboard extends React.Component {
                     case "blog":
                         cardsWithAccess.push(blogData())
                         break;
+                    case "photo":
+                        cardsWithAccess.push(photoData())
+                        break;
                     case "knowledgegraph":
                         cardsWithAccess.push(knowledgeData())
                         break;
                     case "ecommerce":
                         cardsWithAccess.push(eCommerceData())
-                        break;
-                    case "photo":
-                        cardsWithAccess.push(photoData())
                         break;
                     case "resume":
                         cardsWithAccess.push(cvData())
@@ -60,7 +60,7 @@ class Dashboard extends React.Component {
                     case "todo":
                         cardsWithAccess.push(toDoData())
                         break;
-                    case "uploadExercise":
+                    case "uploadexercise":
                         cardsWithAccess.push(uploadExerciseData())
                         break;
                     default:

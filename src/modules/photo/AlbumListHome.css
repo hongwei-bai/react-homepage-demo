@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap');
+
+.BackButton {
+    margin: 1%;
+}
+
+.AlbumListFrame {
+    margin: auto;
+    max-width: 800px;
+    cursor: pointer;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    font-family: 'Abel', 'Noto Sans SC', cursive, sans-serif;
+}
+
+.Album {
+    margin: 2%;
+}
+
+@media only screen and (max-width: 801px) {
+    .AlbumListFrame {
+        max-width: 90%;
+        padding: 2px 2%;
+    }
+}

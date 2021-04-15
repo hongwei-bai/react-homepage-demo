@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {baseUrlFileServer} from "../../network/NetworkEndpoints";
+import {fileServiceInstance} from "../../network/AxiosInstances";
 
 class FileUploadPage extends Component {
     onFileChangeHandler = (e) => {
@@ -8,9 +8,8 @@ class FileUploadPage extends Component {
         const formData = new FormData();
         formData.append('file', fileToUpload);
         formData.append('path', "");
-        fetch(baseUrlFileServer() + "/upload.do", {
-            method: 'post',
-            body: formData
+        fileServiceInstance.post("/upload.do", {
+            formData
         }).then(res => {
             if (res.ok) {
                 console.log(res.data);

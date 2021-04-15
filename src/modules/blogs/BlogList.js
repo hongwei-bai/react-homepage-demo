@@ -93,7 +93,7 @@ class BlogList extends React.Component {
                 <Button variant="light" className={"BlogListIconButton"}
                         onClick={() => this.props.history.push("/")}>
                     <RiAncientGateLine className={"BlogListIcon"}/>
-                    &nbsp;{intl.get("blogBackButton")}
+                    &nbsp;{intl.get("backHomeButton")}
                 </Button>&nbsp;
                 <Button variant="primary" className={"BlogListPrimaryButton"}
                         onClick={() => this.props.history.push("/blog/new")}>
