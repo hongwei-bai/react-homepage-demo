@@ -48,20 +48,24 @@ logInBackgroundStore.subscribe(() => {
 blogInstance.interceptors.response.use(response => {
     return response
 }, reason => {
-    handleTokenExpire(reason)
+    const {
+        config,
+        response: {status, data}
+    } = reason
+    handleTokenExpire(config, status, data)
 })
 
 fileServiceInstance.interceptors.response.use(response => {
     return response
 }, reason => {
-    handleTokenExpire(reason)
-})
-
-function handleTokenExpire(reason) {
     const {
         config,
         response: {status, data}
     } = reason
+    handleTokenExpire(config, status, data)
+})
+
+function handleTokenExpire(config, status, data) {
     console.log("homePageInstance api failure - config: " + JSON.stringify(config))
     console.log("homePageInstance api failure - status: " + status)
     console.log("homePageInstance api failure - data: " + JSON.stringify(data))

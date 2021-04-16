@@ -25,17 +25,11 @@ class PhotoGallery extends React.Component {
         const params = new URLSearchParams([['album', album], ['resolution', 'medium']]);
         fileServiceInstance.get("photo/photos.do?", {params})
             .then(response => {
-                let array = new Array(response.data.images.length);
-                let i, n = response.data.images.length;
-                for (i = 0; i < n; i++) {
-                    array[i] = {
-                        original: response.data.images[i],
-                        thumbnail: response.data.thumbnails[i],
-                    };
+                if (response["data"] !== undefined && response["data"] !== null) {
+                    this.setState({
+                        data: response.data.images
+                    })
                 }
-                this.setState({
-                    data: array
-                })
             })
     }
 

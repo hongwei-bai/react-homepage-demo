@@ -15,6 +15,7 @@ import intl from 'react-intl-universal';
 import {FaFeather} from "react-icons/fa";
 import {RiAncientGateLine} from "react-icons/ri";
 import {STATUS_REFRESHED, USE_TOKEN} from "../../reducers/LoginBackgroundReducer";
+import {loadingStatus} from "../../sharedUi/LoadingStatus";
 
 const styles = {
     root: {
@@ -146,12 +147,6 @@ function BlogListContent(props) {
                 <p>{intl.get("blogError")}</p>
             )
     }
-}
-
-const loadingStatus = {
-    LOADING: "loading",
-    ERROR: "error",
-    SUCCESS: "success",
 }
 
 export default withRouter(withStyles(styles)(BlogList));

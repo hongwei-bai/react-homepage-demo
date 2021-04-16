@@ -18,12 +18,12 @@
 }
 
 .Album {
-    margin: 2%;
+    margin: 1.5%;
 }
 
 @media only screen and (max-width: 801px) {
     .AlbumListFrame {
-        max-width: 90%;
+        max-width: 98%;
         padding: 2px 2%;
     }
 }

@@ -6,6 +6,7 @@ import {fileServiceInstance} from "../../network/AxiosInstances";
 import intl from "react-intl-universal";
 import Button from "react-bootstrap/Button";
 import {RiAncientGateLine} from "react-icons/ri";
+import {loadingStatus} from "../../sharedUi/LoadingStatus";
 
 const {Meta} = Card;
 
@@ -13,8 +14,9 @@ class AlbumListHome extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            albums: [],
-            thumbnails: []
+            loadingStatus: loadingStatus.LOADING,
+            message: "",
+            albums: []
         }
     }
 
@@ -23,12 +25,21 @@ class AlbumListHome extends React.Component {
     }
 
     loadAlbumList() {
+        this.setState({
+            loadingStatus: loadingStatus.LOADING
+        })
         fileServiceInstance.get("photo/albums.do")
             .then(response => {
-                this.setState({
-                    albums: response.data.albums,
-                    thumbnails: response.data.thumbnails
-                })
+                if (response["data"] !== undefined && response["data"] !== null) {
+                    this.setState({
+                        loadingStatus: loadingStatus.SUCCESS,
+                        albums: response.data.albums
+                    })
+                } else {
+                    this.setState({
+                        loadingStatus: loadingStatus.ERROR
+                    })
+                }
             })
     }
 
@@ -47,14 +58,14 @@ class AlbumListHome extends React.Component {
                 </Button>
                 <ul className="AlbumListFrame">
                     {this.state.albums.map((item, i) => (
-                        <li className="Album" key={item}>
+                        <li className="Album" key={item.name}>
                             <Card
                                 hoverable
-                                onClick={() => this.onClickAlbum(thisPtr, item)}
+                                onClick={() => this.onClickAlbum(thisPtr, item.nameByPath)}
                                 style={{width: 160}}
                                 cover={<img alt="Album"
-                                            src={this.state.thumbnails[i]}/>}>
-                                <Meta title={item} description="Click to browse"/>
+                                            src={item.thumbnail}/>}>
+                                <Meta title={item.name} description={item.description}/>
                             </Card>
                         </li>
                     ))}
