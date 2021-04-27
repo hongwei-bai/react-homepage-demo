@@ -34,7 +34,7 @@ logInBackgroundStore.subscribe(() => {
     writeCookieJwt(logInBackgroundStore.getState().accessToken)
     blogInstance.interceptors.request.use(function (config) {
         const jwt = logInBackgroundStore.getState().accessToken
-        // const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsYW1ldXNlciIsImV4cCI6MTYxNzQzMDU1OSwiaWF0IjoxNjE3NDMwNDk5fQ.MctAGPKre77IeuqVeO65Pz9VQf6SVhhFtNgIONYztuM"
+        // const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWgiLCJleHAiOjE2MTkyNTU5MzQsImlhdCI6MTYxOTI0NTEzNH0.0ufmk0U1ABkZesVCkXX9S0W9nwImyJlVxvM1Z60zxcU"
         config.headers.Authorization = jwt ? `Bearer ${jwt}` : '';
         return config;
     });

@@ -30,14 +30,15 @@ class AlbumListHome extends React.Component {
         })
         fileServiceInstance.get("photo/albums.do")
             .then(response => {
-                if (response["data"] !== undefined && response["data"] !== null) {
+                let dataFromApi = response.data
+                if (dataFromApi === undefined) {
                     this.setState({
-                        loadingStatus: loadingStatus.SUCCESS,
-                        albums: response.data.albums
+                        loadingStatus: loadingStatus.ERROR
                     })
                 } else {
                     this.setState({
-                        loadingStatus: loadingStatus.ERROR
+                        loadingStatus: loadingStatus.SUCCESS,
+                        albums: response.data.albums
                     })
                 }
             })
