@@ -49,5 +49,8 @@
   "blogCreatedBy": "作者 {author} 创建于 {date}",
   "blogByInList": "作者 {author} 于 {date}",
   "blogLastModified": "最后修改于: ",
-  "blogEditTitle": "标题"
+  "blogEditTitle": "标题",
+
+  "genericLoading": "加载中...",
+  "genericError": "出错啦！请稍后再试"
 }

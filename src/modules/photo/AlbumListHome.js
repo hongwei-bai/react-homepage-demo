@@ -30,15 +30,15 @@ class AlbumListHome extends React.Component {
         })
         fileServiceInstance.get("photo/albums.do")
             .then(response => {
-                let dataFromApi = response.data
-                if (dataFromApi === undefined) {
-                    this.setState({
-                        loadingStatus: loadingStatus.ERROR
-                    })
-                } else {
+                try {
                     this.setState({
                         loadingStatus: loadingStatus.SUCCESS,
                         albums: response.data.albums
+                    })
+                } catch (e) {
+                    this.setState({
+                        loadingStatus: loadingStatus.ERROR,
+                        message: intl.get("genericError")
                     })
                 }
             })
@@ -57,22 +57,34 @@ class AlbumListHome extends React.Component {
                     <RiAncientGateLine className={"BlogListIcon"}/>
                     &nbsp;{intl.get("backHomeButton")}
                 </Button>
-                <ul className="AlbumListFrame">
-                    {this.state.albums.map((item, i) => (
-                        <li className="Album" key={item.name}>
-                            <Card
-                                hoverable
-                                onClick={() => this.onClickAlbum(thisPtr, item.nameByPath)}
-                                style={{width: 160}}
-                                cover={<img alt="Album"
-                                            src={item.thumbnail}/>}>
-                                <Meta title={item.name} description={item.description}/>
-                            </Card>
-                        </li>
-                    ))}
-                </ul>
+                {albumListContent(this.state.loadingStatus, thisPtr)}
             </div>
         )
+    }
+}
+
+function albumListContent(loadingStatus, thisPtr) {
+    switch (loadingStatus) {
+        case loadingStatus.SUCCESS:
+            return <ul className="AlbumListFrame">
+                {this.state.albums.map((item, i) => (
+                    <li className="Album" key={item.name}>
+                        <Card
+                            hoverable
+                            onClick={() => this.onClickAlbum(thisPtr, item.nameByPath)}
+                            style={{width: 160}}
+                            cover={<img alt="Album"
+                                        src={item.thumbnail}/>}>
+                            <Meta title={item.name} description={item.description}/>
+                        </Card>
+                    </li>
+                ))}
+            </ul>
+        case loadingStatus.LOADING:
+            return <p>{intl.get("genericLoading")}</p>
+        default:
+        case loadingStatus.ERROR:
+            return <p>{intl.get("genericError")}</p>
     }
 }
 

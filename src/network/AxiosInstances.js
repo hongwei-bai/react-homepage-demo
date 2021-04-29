@@ -3,6 +3,7 @@ import axios from "axios";
 import {baseUrlAuthentication, baseUrlBlog, baseUrlFileServer, baseUrlHome} from "./NetworkEndpoints";
 import {REFRESHED_TOKEN, REFRESHING_TOKEN, STATUS_INIT} from "../reducers/LoginBackgroundReducer";
 import {executeLogOut, writeCookieJwt} from "../services/LoginService";
+import {AUTH_SUBCODE_NO_PERMISSION, AUTH_SUBCODE_TOKEN_EXPIRE} from "./AuthoriseSubCode";
 
 export const homePageInstance = axios.create({
     baseURL: baseUrlHome(),
@@ -69,25 +70,31 @@ function handleTokenExpire(config, status, data) {
     console.log("homePageInstance api failure - config: " + JSON.stringify(config))
     console.log("homePageInstance api failure - status: " + status)
     console.log("homePageInstance api failure - data: " + JSON.stringify(data))
-    if (status === 401 && data.subCode === 1
-        && logInStore.getState().isLoggedIn && logInStore.getState().refreshToken !== undefined) {
-        if (logInBackgroundStore.getState().refreshTokenStatus === STATUS_INIT) {
-            logInBackgroundStore.dispatch({type: REFRESHING_TOKEN})
-            authenticationInstance.post("/authenticate/refreshToken.do", {
-                refreshToken: logInStore.getState().refreshToken
-            }).then(response => {
-                const newJwt = response.data.token
-                if (newJwt !== undefined && newJwt !== "") {
-                    logInBackgroundStore.dispatch({
-                        type: REFRESHED_TOKEN,
-                        accessToken: newJwt
-                    })
-                } else {
+    if (status === 401) {
+        if (data.subCode === AUTH_SUBCODE_TOKEN_EXPIRE
+            && logInStore.getState().isLoggedIn && logInStore.getState().refreshToken !== undefined) {
+            if (logInBackgroundStore.getState().refreshTokenStatus === STATUS_INIT) {
+                logInBackgroundStore.dispatch({type: REFRESHING_TOKEN})
+                authenticationInstance.post("/authenticate/refreshToken.do", {
+                    refreshToken: logInStore.getState().refreshToken
+                }).then(response => {
+                    const newJwt = response.data.token
+                    if (newJwt !== undefined && newJwt !== "") {
+                        logInBackgroundStore.dispatch({
+                            type: REFRESHED_TOKEN,
+                            accessToken: newJwt
+                        })
+                    } else {
+                        executeLogOut()
+                    }
+                }).catch(cause => {
                     executeLogOut()
-                }
-            }).catch(cause => {
-                executeLogOut()
-            })
+                })
+            }
+        } else if (data.subCode === AUTH_SUBCODE_NO_PERMISSION) {
+            // No-Op
+        } else {
+            executeLogOut()
         }
     }
 }

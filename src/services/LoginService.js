@@ -37,6 +37,7 @@ export function recoverLoginStatusFromCookie() {
 }
 
 export function executeLogOut() {
+    clearCookieCredentials()
     logInStore.dispatch({
         type: LOGOUT
     })
