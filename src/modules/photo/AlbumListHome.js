@@ -51,10 +51,6 @@ class AlbumListHome extends React.Component {
             })
     }
 
-    onClickAlbum(thisPtr, albumName) {
-        thisPtr.props.history.push("/photo/gallery/" + albumName)
-    }
-
     render() {
         const thisPtr = this
         return (
@@ -70,6 +66,10 @@ class AlbumListHome extends React.Component {
     }
 }
 
+function onClickAlbum(thisPtr, albumName) {
+    thisPtr.props.history.push("/photo/gallery/" + albumName)
+}
+
 function albumListContent(loadingStatus, albums, thisPtr) {
     switch (loadingStatus) {
         case LoadingStatus.SUCCESS:
@@ -78,7 +78,7 @@ function albumListContent(loadingStatus, albums, thisPtr) {
                     <li className="Album" key={item.name}>
                         <Card
                             hoverable
-                            onClick={() => this.onClickAlbum(thisPtr, item.nameByPath)}
+                            onClick={() => onClickAlbum(thisPtr, item.nameByPath)}
                             style={{width: 160}}
                             cover={<img alt="Album"
                                         src={item.thumbnail}/>}>
