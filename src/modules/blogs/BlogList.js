@@ -15,7 +15,7 @@ import intl from 'react-intl-universal';
 import {FaFeather} from "react-icons/fa";
 import {RiAncientGateLine} from "react-icons/ri";
 import {STATUS_REFRESHED, USE_TOKEN} from "../../reducers/LoginBackgroundReducer";
-import {loadingStatus} from "../../sharedUi/LoadingStatus";
+import {LoadingStatus} from "../../sharedUi/LoadingStatus";
 
 const styles = {
     root: {
@@ -40,7 +40,7 @@ class BlogList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loadingStatus: loadingStatus.LOADING,
+            loadingStatus: LoadingStatus.LOADING,
             data: [],
             message: ""
         }
@@ -54,7 +54,7 @@ class BlogList extends React.Component {
                     dataFromApi = []
                 }
                 this.setState({
-                    loadingStatus: loadingStatus.SUCCESS,
+                    loadingStatus: LoadingStatus.SUCCESS,
                     data: dataFromApi
                 })
                 logInBackgroundStore.dispatch({type: USE_TOKEN})
@@ -62,7 +62,7 @@ class BlogList extends React.Component {
             })
             .catch(reason => {
                 this.setState({
-                    loadingStatus: loadingStatus.ERROR,
+                    loadingStatus: LoadingStatus.ERROR,
                     message: reason
                 })
             })
@@ -72,7 +72,7 @@ class BlogList extends React.Component {
         let cachedBlogList = blogStore.getState().blogList
         if (cachedBlogList !== undefined && cachedBlogList.length > 0) {
             this.setState({
-                loadingStatus: loadingStatus.SUCCESS,
+                loadingStatus: LoadingStatus.SUCCESS,
                 data: cachedBlogList
             })
         } else {

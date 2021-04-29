@@ -6,7 +6,9 @@ import {fileServiceInstance} from "../../network/AxiosInstances";
 import intl from "react-intl-universal";
 import Button from "react-bootstrap/Button";
 import {RiAncientGateLine} from "react-icons/ri";
-import {loadingStatus} from "../../sharedUi/LoadingStatus";
+import {LoadingStatus} from "../../sharedUi/LoadingStatus";
+import {logInBackgroundStore} from "../../reducers/store";
+import {STATUS_REFRESHED} from "../../reducers/LoginBackgroundReducer";
 
 const {Meta} = Card;
 
@@ -14,7 +16,7 @@ class AlbumListHome extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loadingStatus: loadingStatus.LOADING,
+            loadingStatus: LoadingStatus.LOADING,
             message: "",
             albums: []
         }
@@ -22,22 +24,27 @@ class AlbumListHome extends React.Component {
 
     componentDidMount() {
         this.loadAlbumList()
+        logInBackgroundStore.subscribe(() => {
+            if (logInBackgroundStore.getState().refreshTokenStatus === STATUS_REFRESHED) {
+                this.loadAlbumList()
+            }
+        })
     }
 
     loadAlbumList() {
         this.setState({
-            loadingStatus: loadingStatus.LOADING
+            loadingStatus: LoadingStatus.LOADING
         })
         fileServiceInstance.get("photo/albums.do")
             .then(response => {
                 try {
                     this.setState({
-                        loadingStatus: loadingStatus.SUCCESS,
+                        loadingStatus: LoadingStatus.SUCCESS,
                         albums: response.data.albums
                     })
                 } catch (e) {
                     this.setState({
-                        loadingStatus: loadingStatus.ERROR,
+                        loadingStatus: LoadingStatus.ERROR,
                         message: intl.get("genericError")
                     })
                 }
@@ -57,17 +64,17 @@ class AlbumListHome extends React.Component {
                     <RiAncientGateLine className={"BlogListIcon"}/>
                     &nbsp;{intl.get("backHomeButton")}
                 </Button>
-                {albumListContent(this.state.loadingStatus, thisPtr)}
+                {albumListContent(this.state.loadingStatus, this.state.albums, thisPtr)}
             </div>
         )
     }
 }
 
-function albumListContent(loadingStatus, thisPtr) {
+function albumListContent(loadingStatus, albums, thisPtr) {
     switch (loadingStatus) {
-        case loadingStatus.SUCCESS:
+        case LoadingStatus.SUCCESS:
             return <ul className="AlbumListFrame">
-                {this.state.albums.map((item, i) => (
+                {albums.map((item, i) => (
                     <li className="Album" key={item.name}>
                         <Card
                             hoverable
@@ -80,10 +87,10 @@ function albumListContent(loadingStatus, thisPtr) {
                     </li>
                 ))}
             </ul>
-        case loadingStatus.LOADING:
+        case LoadingStatus.LOADING:
             return <p>{intl.get("genericLoading")}</p>
         default:
-        case loadingStatus.ERROR:
+        case LoadingStatus.ERROR:
             return <p>{intl.get("genericError")}</p>
     }
 }

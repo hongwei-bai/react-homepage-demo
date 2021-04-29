@@ -59,6 +59,7 @@ blogInstance.interceptors.response.use(response => {
 fileServiceInstance.interceptors.response.use(response => {
     return response
 }, reason => {
+    console.log("reason: " + JSON.stringify(reason))
     const {
         config,
         response: {status, data}
@@ -71,8 +72,12 @@ function handleTokenExpire(config, status, data) {
     console.log("homePageInstance api failure - status: " + status)
     console.log("homePageInstance api failure - data: " + JSON.stringify(data))
     if (status === 401) {
+        // console.log("homePageInstance api failure - subCode: " + data.subCode)
+        // console.log("homePageInstance api failure - isLoggedIn: " + logInStore.getState().isLoggedIn)
+        // console.log("homePageInstance api failure - refreshToken: " + logInStore.getState().refreshToken)
         if (data.subCode === AUTH_SUBCODE_TOKEN_EXPIRE
             && logInStore.getState().isLoggedIn && logInStore.getState().refreshToken !== undefined) {
+            // console.log("homePageInstance api failure - refreshTokenStatus: " + logInBackgroundStore.getState().refreshTokenStatus)
             if (logInBackgroundStore.getState().refreshTokenStatus === STATUS_INIT) {
                 logInBackgroundStore.dispatch({type: REFRESHING_TOKEN})
                 authenticationInstance.post("/authenticate/refreshToken.do", {
