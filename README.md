@@ -6,3 +6,5 @@
 1. rz (in dir: ../usr/share/nginx/html/)
 
 1. tar -xvf build.tar
+
+#test summer
