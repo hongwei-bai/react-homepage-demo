@@ -82,7 +82,7 @@ function albumListContent(loadingStatus, albums, thisPtr) {
                             style={{width: 160}}
                             cover={<img alt="Album"
                                         src={item.thumbnail}/>}>
-                            <Meta title={item.name} description={item.description}/>
+                            <Meta title={item.name} description={buildDescription(item)}/>
                         </Card>
                     </li>
                 ))}
@@ -93,6 +93,10 @@ function albumListContent(loadingStatus, albums, thisPtr) {
         case LoadingStatus.ERROR:
             return <p>{intl.get("genericError")}</p>
     }
+}
+
+function buildDescription(item) {
+    return item.description + " (" + intl.get("noOfPhotos").replace("{no}", item.numberOfPhotos) + ")"
 }
 
 export default withRouter(AlbumListHome);

@@ -52,5 +52,6 @@
   "blogEditTitle": "Title",
 
   "genericLoading": "Loading...",
-  "genericError": "Ops, something is wrong! Please try again later."
+  "genericError": "Ops, something is wrong! Please try again later.",
+  "noOfPhotos": "{no} photos"
 }
