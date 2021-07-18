@@ -8,6 +8,8 @@ import intl from 'react-intl-universal';
 import {homePageInstance} from "../../network/AxiosInstances";
 import {logInBackgroundStore} from "../../reducers/store";
 import {STATUS_REFRESHED} from "../../reducers/LoginBackgroundReducer";
+import {followedPostcodes, followedSuburbs} from "./Covid19FollowedSuburbs";
+import DashboardCard from "./DashboardCard";
 
 class DashboardCardCovid19 extends React.Component {
     constructor(props) {
@@ -25,7 +27,10 @@ class DashboardCardCovid19 extends React.Component {
                     Date: "",
                     Time: "",
                     NSW: 0,
-                    VIC: 0
+                    VIC: 0,
+                    isTodaysData: false,
+                    topSuburbs: [],
+                    topFollowedSuburbs: []
                 },
                 China: {
                     NewConfirmed: 0,
@@ -41,13 +46,9 @@ class DashboardCardCovid19 extends React.Component {
     render() {
         let NSWStr = this.state.dataCovid19.Australia.NSW
         let VICStr = this.state.dataCovid19.Australia.VIC
-        if (this.state.dataCovid19.Australia.Time === "") {
-            NSWStr = "-"
-            VICStr = "-"
-        }
         let loadAgainCation = ""
-        if (!this.state.isNew) {
-            loadAgainCation = " " + intl.get("covid19Cached")
+        if (!this.state.dataCovid19.Australia.isTodaysData) {
+            loadAgainCation = " " + intl.get("covid19Yesterday")
         }
         return (
             <Card style={{
@@ -67,7 +68,11 @@ class DashboardCardCovid19 extends React.Component {
                             dataCovid19={this.state.dataCovid19}
                             NSWStr={NSWStr}
                             loadAgainCation={loadAgainCation}
-                            VICStr={VICStr}/>
+                            VICStr={VICStr}
+                            isTodaysData={this.state.dataCovid19.Australia.isTodaysData}
+                            topSuburbs={this.state.dataCovid19.Australia.topSuburbs}
+                            topFollowedSuburbs={this.state.dataCovid19.Australia.topFollowedSuburbs}
+                        />
                         <Button variant="primary" disabled>{intl.get("details")}</Button>
                     </Card.Body>
                 </div>
@@ -91,13 +96,23 @@ class DashboardCardCovid19 extends React.Component {
         let NSWCases = 0;
         let VICCases = 0;
 
-        homePageInstance.get("/covid19/queryByState.do?days=1")
+        homePageInstance.get("/covid19/queryByState.do?days=2")
             .then(response => {
+                    let dataSize = response.data.ausDataByStatePerDays.size
+                    let isTodaysData = dataSize === 1
+                    let topSuburbs = response.data.ausDataByStatePerDays[0].caseByPostcode.filter((_, i) => i <= 2)
+                    let topFollowedSuburbs = response.data.ausDataByStatePerDays[0].caseByPostcode
+                        .filter(item => followedPostcodes.includes(item.postcode))
+                        .map(data => ({
+                            suburb: this.getFollowedSuburbByPostcode(data.postcode),
+                            cases: data.cases
+                        }))
                     AuDate = response.data.ausDataByStatePerDays[0].date
                     AuTime = response.data.ausDataByStatePerDays[0].timeFrom
                     NSWCases = response.data.ausDataByStatePerDays[0].nsw
                     VICCases = response.data.ausDataByStatePerDays[0].vic
-                    this.fetchWorld(AuDate, AuTime, NSWCases, VICCases, response.data.newData)
+                    this.fetchWorld(AuDate, AuTime, NSWCases, VICCases, response.data.newData,
+                        isTodaysData, topSuburbs, topFollowedSuburbs)
                 }
             )
             .catch(error => {
@@ -105,7 +120,17 @@ class DashboardCardCovid19 extends React.Component {
             });
     }
 
-    fetchWorld(lAuDate, lAuTime, lNSWCases, lVICCases, isNew) {
+    getFollowedSuburbByPostcode(postcode) {
+        let found = ""
+        followedSuburbs.forEach(item => {
+            if (item.postcode === postcode) {
+                found = item.suburb
+            }
+        })
+        return found
+    }
+
+    fetchWorld(lAuDate, lAuTime, lNSWCases, lVICCases, isNew, isTodaysData, topSuburbs, topFollowedSuburbs) {
         const requestOptions = {
             method: 'GET',
             redirect: 'follow'
@@ -126,7 +151,10 @@ class DashboardCardCovid19 extends React.Component {
                             Date: lAuDate,
                             Time: lAuTime,
                             NSW: lNSWCases,
-                            VIC: lVICCases
+                            VIC: lVICCases,
+                            isTodaysData: isTodaysData,
+                            topSuburbs: topSuburbs,
+                            topFollowedSuburbs: topFollowedSuburbs
                         },
                         China: {
                             NewConfirmed: dataChina['todayCases'],
@@ -141,12 +169,12 @@ class DashboardCardCovid19 extends React.Component {
                     this.render();
 
                     this.setState({isNew: isNew})
-                    if (!isNew) {
-                        const timer = setTimeout(() => {
-                            this.getSummary()
-                            clearTimeout(timer);
-                        }, 5000);
-                    }
+                    // if (!isNew) {
+                    //     const timer = setTimeout(() => {
+                    //         this.getSummary()
+                    //         clearTimeout(timer);
+                    //     }, 5000);
+                    // }
                 }
             )
             .catch(error => console.log('error', error));
@@ -168,9 +196,12 @@ function Covid19Content(props) {
                     {props.dataCovid19.Australia.Deaths}/
                                     <span className="Test">{props.dataCovid19.Australia.Tests}</span>
                                     <br/>
-                                    - {intl.get("newCasesInNSW")}:{props.NSWStr} {props.loadAgainCation}<br/>
-                                    - {intl.get("newCasesInVictoria")}:{props.VICStr}<br/>
-                                    {intl.get("newCasesInChina")}:
+                                    - {intl.get("newCasesInNSW")}:+{props.NSWStr} {props.loadAgainCation}<br/>
+                                    - {intl.get("newCasesInVictoria")}:+{props.VICStr}<br/>
+                                    - {intl.get("topSuburbs")}:<br/>
+                                    <TopSuburbsDataToString topSuburbs={props.topSuburbs}/>
+                                    - {intl.get("topFollowedSuburbs")}:{topFollowedSuburbsDataToString(props.topFollowedSuburbs)}<br/>
+                    {intl.get("newCasesInChina")}:
                                     <span className="Today">+{props.dataCovid19.China.NewConfirmed}/+
                                         {props.dataCovid19.China.NewDeaths}</span>/
                     {props.dataCovid19.China.Confirmed}/
@@ -185,6 +216,31 @@ function Covid19Content(props) {
             {intl.get("covid19Loading")}
         </Card.Text>
     }
+}
+
+function topFollowedSuburbsDataToString(topFollowedSuburbs) {
+    let string = ""
+    topFollowedSuburbs.forEach((item, i) => {
+            string += item.suburb + "(+" + item.cases + ")"
+            if (i < topFollowedSuburbs.length - 1) {
+                string += ", "
+            }
+        }
+    )
+    return string
+}
+
+function TopSuburbsDataToString(props) {
+    let list = []
+    props.topSuburbs.forEach((item, i) => {
+            list[i] = " *" + item.postcode + " " + item.suburbs.split(",")[0] + " (+" + item.cases + ")"
+        }
+    )
+    return (
+        <ul>
+            {list.map((item) => (<li key={item}>{item}</li>))}
+        </ul>
+    );
 }
 
 export default withRouter(DashboardCardCovid19);

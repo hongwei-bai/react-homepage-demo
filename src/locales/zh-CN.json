@@ -30,8 +30,11 @@
   "newCasesInAustralia": "澳大利亚",
   "newCasesInNSW": "悉尼",
   "newCasesInVictoria": "墨尔本",
+  "topSuburbs": "社区",
+  "topFollowedSuburbs": "关注",
   "newCasesInChina": "中国",
   "covid19Cached": "(缓存数据)",
+  "covid19Yesterday": "(昨天数据)",
 
   "backHomeButton": "返回主页",
   "backButton": "返回上一级",
