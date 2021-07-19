@@ -9,7 +9,6 @@ import {homePageInstance} from "../../network/AxiosInstances";
 import {logInBackgroundStore} from "../../reducers/store";
 import {STATUS_REFRESHED} from "../../reducers/LoginBackgroundReducer";
 import {followedPostcodes, followedSuburbs} from "./Covid19FollowedSuburbs";
-import DashboardCard from "./DashboardCard";
 
 class DashboardCardCovid19 extends React.Component {
     constructor(props) {
@@ -25,7 +24,6 @@ class DashboardCardCovid19 extends React.Component {
                     Deaths: 0,
                     Tests: 0,
                     Date: "",
-                    Time: "",
                     NSW: 0,
                     VIC: 0,
                     isTodaysData: false,
@@ -92,31 +90,34 @@ class DashboardCardCovid19 extends React.Component {
     getSummary() {
         this.setState({loaded: false})
         let AuDate = "";
-        let AuTime = "";
         let NSWCases = 0;
         let VICCases = 0;
 
-        homePageInstance.get("/covid19/queryByState.do?days=2")
+        homePageInstance.get("/covid19/au.do?days=2&dataVersion=0")
             .then(response => {
-                    let dataSize = response.data.ausDataByStatePerDays.size
+                    let dataSize = response.data.dataByDay.size
                     let isTodaysData = dataSize === 1
-                    let topSuburbs = response.data.ausDataByStatePerDays[0].caseByPostcode.filter((_, i) => i <= 2)
-                    let topFollowedSuburbs = response.data.ausDataByStatePerDays[0].caseByPostcode
+                    let topSuburbs = response.data.dataByDay[0].caseByPostcode.filter((_, i) => i <= 2)
+                    let topFollowedSuburbs = response.data.dataByDay[0].caseByPostcode
                         .filter(item => followedPostcodes.includes(item.postcode))
                         .map(data => ({
                             suburb: this.getFollowedSuburbByPostcode(data.postcode),
                             cases: data.cases
                         }))
-                    AuDate = response.data.ausDataByStatePerDays[0].date
-                    AuTime = response.data.ausDataByStatePerDays[0].timeFrom
-                    NSWCases = response.data.ausDataByStatePerDays[0].nsw
-                    VICCases = response.data.ausDataByStatePerDays[0].vic
-                    this.fetchWorld(AuDate, AuTime, NSWCases, VICCases, response.data.newData,
-                        isTodaysData, topSuburbs, topFollowedSuburbs)
+                    AuDate = response.data.dataByDay[0].dateDisplay
+                    let nswList = response.data.dataByDay[0].caseByState.filter(item => item.stateCode === 'NSW')
+                    if (nswList.length > 0) {
+                        NSWCases = nswList[0].cases
+                    }
+                    let vicList = response.data.dataByDay[0].caseByState.filter(item => item.stateCode === 'VIC')
+                    if (vicList.length > 0) {
+                        VICCases = vicList[0].cases
+                    }
+                    this.fetchWorld(AuDate, NSWCases, VICCases, isTodaysData, topSuburbs, topFollowedSuburbs)
                 }
             )
             .catch(error => {
-                this.fetchWorld(intl.get("covid19LoadError"), "", 0, 0, true)
+                this.fetchWorld(intl.get("covid19LoadError"), 0, 0, true)
             });
     }
 
@@ -130,7 +131,7 @@ class DashboardCardCovid19 extends React.Component {
         return found
     }
 
-    fetchWorld(lAuDate, lAuTime, lNSWCases, lVICCases, isNew, isTodaysData, topSuburbs, topFollowedSuburbs) {
+    fetchWorld(lAuDate, lNSWCases, lVICCases, isTodaysData, topSuburbs, topFollowedSuburbs) {
         const requestOptions = {
             method: 'GET',
             redirect: 'follow'
@@ -149,7 +150,6 @@ class DashboardCardCovid19 extends React.Component {
                             Deaths: dataAustralia['deaths'],
                             Tests: dataAustralia['tests'],
                             Date: lAuDate,
-                            Time: lAuTime,
                             NSW: lNSWCases,
                             VIC: lVICCases,
                             isTodaysData: isTodaysData,
@@ -167,14 +167,6 @@ class DashboardCardCovid19 extends React.Component {
                     this.setState({loaded: true})
                     this.setState({dataCovid19: data});
                     this.render();
-
-                    this.setState({isNew: isNew})
-                    // if (!isNew) {
-                    //     const timer = setTimeout(() => {
-                    //         this.getSummary()
-                    //         clearTimeout(timer);
-                    //     }, 5000);
-                    // }
                 }
             )
             .catch(error => console.log('error', error));
@@ -233,7 +225,7 @@ function topFollowedSuburbsDataToString(topFollowedSuburbs) {
 function TopSuburbsDataToString(props) {
     let list = []
     props.topSuburbs.forEach((item, i) => {
-            list[i] = " *" + item.postcode + " " + item.suburbs.split(",")[0] + " (+" + item.cases + ")"
+            list[i] = " *" + item.postcode + " " + item.suburbBrief + " (+" + item.cases + ")"
         }
     )
     return (
