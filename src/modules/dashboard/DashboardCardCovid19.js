@@ -93,7 +93,7 @@ class DashboardCardCovid19 extends React.Component {
         let NSWCases = 0;
         let VICCases = 0;
 
-        homePageInstance.get("/covid19/au.do?days=2&dataVersion=0")
+        homePageInstance.get("/covid19/au.do?days=1&dataVersion=0")
             .then(response => {
                     let dataSize = response.data.dataByDay.size
                     let isTodaysData = dataSize === 1
@@ -212,27 +212,32 @@ function Covid19Content(props) {
 
 function topFollowedSuburbsDataToString(topFollowedSuburbs) {
     let string = ""
-    topFollowedSuburbs.forEach((item, i) => {
-            string += item.suburb + "(+" + item.cases + ")"
-            if (i < topFollowedSuburbs.length - 1) {
-                string += ", "
+    if(typeof topFollowedSuburbs != "undefined" && topFollowedSuburbs.length > 0) {
+        topFollowedSuburbs.forEach((item, i) => {
+                string += item.suburb + "(+" + item.cases + ")"
+                if (i < topFollowedSuburbs.length - 1) {
+                    string += ", "
+                }
             }
-        }
-    )
+        )
+    }
     return string
 }
 
 function TopSuburbsDataToString(props) {
     let list = []
-    props.topSuburbs.forEach((item, i) => {
-            list[i] = " *" + item.postcode + " " + item.suburbBrief + " (+" + item.cases + ")"
-        }
-    )
-    return (
-        <ul>
-            {list.map((item) => (<li key={item}>{item}</li>))}
-        </ul>
-    );
+    if(typeof props.topSuburbs != "undefined" && props.topSuburbs.length > 0) {
+        props.topSuburbs.forEach((item, i) => {
+                list[i] = " *" + item.postcode + " " + item.suburbBrief + " (+" + item.cases + ")"
+            }
+        )
+        return (
+            <ul>
+                {list.map((item) => (<li key={item}>{item}</li>))}
+            </ul>
+        );
+    }
+    return (<p>No data</p>)
 }
 
 export default withRouter(DashboardCardCovid19);
