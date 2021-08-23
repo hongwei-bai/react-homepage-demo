@@ -26,7 +26,7 @@ class DashboardCardCovid19 extends React.Component {
                     Date: "",
                     NSW: 0,
                     VIC: 0,
-                    isTodaysData: false,
+                    dataDate: "",
                     topSuburbs: [],
                     topFollowedSuburbs: []
                 },
@@ -44,10 +44,6 @@ class DashboardCardCovid19 extends React.Component {
     render() {
         let NSWStr = this.state.dataCovid19.Australia.NSW
         let VICStr = this.state.dataCovid19.Australia.VIC
-        let loadAgainCation = ""
-        if (!this.state.dataCovid19.Australia.isTodaysData) {
-            loadAgainCation = " " + intl.get("covid19Yesterday")
-        }
         return (
             <Card style={{
                 width: '18rem',
@@ -65,9 +61,8 @@ class DashboardCardCovid19 extends React.Component {
                             loaded={this.state.loaded}
                             dataCovid19={this.state.dataCovid19}
                             NSWStr={NSWStr}
-                            loadAgainCation={loadAgainCation}
+                            dataDate={this.state.dataCovid19.Australia.dataDate}
                             VICStr={VICStr}
-                            isTodaysData={this.state.dataCovid19.Australia.isTodaysData}
                             topSuburbs={this.state.dataCovid19.Australia.topSuburbs}
                             topFollowedSuburbs={this.state.dataCovid19.Australia.topFollowedSuburbs}
                         />
@@ -93,13 +88,11 @@ class DashboardCardCovid19 extends React.Component {
         let NSWCases = 0;
         let VICCases = 0;
 
-        homePageInstance.get("/covid19/au.do?days=1&dataVersion=0")
+        homePageInstance.get("/covid19/auBrief.do?days=1&dataVersion=0&top=3&followedSuburbs=" + followedPostcodes.join(","))
             .then(response => {
-                    let dataSize = response.data.dataByDay.size
-                    let isTodaysData = dataSize === 1
-                    let topSuburbs = response.data.dataByDay[0].caseByPostcode.filter((_, i) => i <= 2)
-                    let topFollowedSuburbs = response.data.dataByDay[0].caseByPostcode
-                        .filter(item => followedPostcodes.includes(item.postcode))
+                    let dataDate = response.data.dataByDay[0].dateDisplay
+                    let topSuburbs = response.data.dataByDay[0].caseByPostcodeTops
+                    let topFollowedSuburbs = response.data.dataByDay[0].caseByPostcodeFollowed
                         .map(data => ({
                             suburb: this.getFollowedSuburbByPostcode(data.postcode),
                             cases: data.cases
@@ -113,7 +106,7 @@ class DashboardCardCovid19 extends React.Component {
                     if (vicList.length > 0) {
                         VICCases = vicList[0].cases
                     }
-                    this.fetchWorld(AuDate, NSWCases, VICCases, isTodaysData, topSuburbs, topFollowedSuburbs)
+                    this.fetchWorld(AuDate, NSWCases, VICCases, dataDate, topSuburbs, topFollowedSuburbs)
                 }
             )
             .catch(error => {
@@ -131,7 +124,7 @@ class DashboardCardCovid19 extends React.Component {
         return found
     }
 
-    fetchWorld(lAuDate, lNSWCases, lVICCases, isTodaysData, topSuburbs, topFollowedSuburbs) {
+    fetchWorld(lAuDate, lNSWCases, lVICCases, dateDate, topSuburbs, topFollowedSuburbs) {
         const requestOptions = {
             method: 'GET',
             redirect: 'follow'
@@ -152,7 +145,7 @@ class DashboardCardCovid19 extends React.Component {
                             Date: lAuDate,
                             NSW: lNSWCases,
                             VIC: lVICCases,
-                            isTodaysData: isTodaysData,
+                            dataDate: dateDate,
                             topSuburbs: topSuburbs,
                             topFollowedSuburbs: topFollowedSuburbs
                         },
@@ -188,7 +181,7 @@ function Covid19Content(props) {
                     {props.dataCovid19.Australia.Deaths}/
                                     <span className="Test">{props.dataCovid19.Australia.Tests}</span>
                                     <br/>
-                                    - {intl.get("newCasesInNSW")}:+{props.NSWStr} {props.loadAgainCation}<br/>
+                                    - {intl.get("newCasesInNSW")}:+{props.NSWStr} ({props.dataDate})<br/>
                                     - {intl.get("newCasesInVictoria")}:+{props.VICStr}<br/>
                                     - {intl.get("topSuburbs")}:<br/>
                                     <TopSuburbsDataToString topSuburbs={props.topSuburbs}/>
