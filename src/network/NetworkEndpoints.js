@@ -6,6 +6,14 @@ export function baseUrlHome() {
     }
 }
 
+export function baseUrlCovid() {
+    if (process.env.REACT_APP_SERVICE_COVID.startsWith("http")) {
+        return process.env.REACT_APP_SERVICE_COVID
+    } else {
+        return process.env.REACT_APP_SERVICE_DOMAIN + process.env.REACT_APP_SERVICE_COVID
+    }
+}
+
 export function baseUrlAuthentication() {
     if (process.env.REACT_APP_SERVICE_AUTHENTICATION.startsWith("http")) {
         return process.env.REACT_APP_SERVICE_AUTHENTICATION

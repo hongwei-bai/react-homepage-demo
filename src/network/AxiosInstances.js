@@ -1,12 +1,17 @@
 import {logInBackgroundStore, logInStore} from '../reducers/store';
 import axios from "axios";
-import {baseUrlAuthentication, baseUrlBlog, baseUrlFileServer, baseUrlHome} from "./NetworkEndpoints";
+import {baseUrlAuthentication, baseUrlBlog, baseUrlCovid, baseUrlFileServer, baseUrlHome} from "./NetworkEndpoints";
 import {REFRESHED_TOKEN, REFRESHING_TOKEN, STATUS_INIT} from "../reducers/LoginBackgroundReducer";
 import {executeLogOut, writeCookieJwt} from "../services/LoginService";
 import {AUTH_SUBCODE_NO_PERMISSION, AUTH_SUBCODE_TOKEN_EXPIRE} from "./AuthoriseSubCode";
 
 export const homePageInstance = axios.create({
     baseURL: baseUrlHome(),
+    withCredentials: true
+})
+
+export const covidInstance = axios.create({
+    baseURL: baseUrlCovid(),
     withCredentials: true
 })
 
@@ -27,6 +32,12 @@ export const fileServiceInstance = axios.create({
 
 homePageInstance.interceptors.request.use(function (config) {
     const jwt = require('../config/config.json').security.publicAccess.jwt
+    config.headers.Authorization = jwt ? `Bearer ${jwt}` : '';
+    return config;
+});
+
+covidInstance.interceptors.request.use(function (config) {
+    const jwt = require('../config/config.json').security.covidAccess.jwt
     config.headers.Authorization = jwt ? `Bearer ${jwt}` : '';
     return config;
 });

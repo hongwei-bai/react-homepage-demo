@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Card} from 'react-bootstrap';
 import {withRouter} from 'react-router-dom';
 import intl from 'react-intl-universal';
-import {homePageInstance} from "../../network/AxiosInstances";
+import {covidInstance, homePageInstance} from "../../network/AxiosInstances";
 import {logInBackgroundStore} from "../../reducers/store";
 import {STATUS_REFRESHED} from "../../reducers/LoginBackgroundReducer";
 import {followedPostcodes, followedSuburbs} from "./Covid19FollowedSuburbs";
@@ -23,11 +23,10 @@ class DashboardCardCovid19 extends React.Component {
                     Confirmed: 0,
                     Deaths: 0,
                     Tests: 0,
-                    Date: "",
+                    dataVersion: "N/A",
+                    total: 0,
                     NSW: 0,
                     VIC: 0,
-                    dataDate: "",
-                    topSuburbs: [],
                     topFollowedSuburbs: []
                 },
                 China: {
@@ -42,8 +41,8 @@ class DashboardCardCovid19 extends React.Component {
     }
 
     render() {
-        let NSWStr = this.state.dataCovid19.Australia.NSW
-        let VICStr = this.state.dataCovid19.Australia.VIC
+        let NSWStr = "+" + this.state.dataCovid19.Australia.NSW
+        let VICStr = "+" + this.state.dataCovid19.Australia.VIC
         return (
             <Card style={{
                 width: '18rem',
@@ -59,11 +58,10 @@ class DashboardCardCovid19 extends React.Component {
                         <Card.Title>{this.props.data.title}</Card.Title>
                         <Covid19Content
                             loaded={this.state.loaded}
-                            dataCovid19={this.state.dataCovid19}
+                            dataVersion={this.state.dataCovid19.Australia.dataVersion}
+                            total={this.state.dataCovid19.Australia.total}
                             NSWStr={NSWStr}
-                            dataDate={this.state.dataCovid19.Australia.dataDate}
                             VICStr={VICStr}
-                            topSuburbs={this.state.dataCovid19.Australia.topSuburbs}
                             topFollowedSuburbs={this.state.dataCovid19.Australia.topFollowedSuburbs}
                         />
                         <Button variant="primary" disabled>{intl.get("details")}</Button>
@@ -84,33 +82,45 @@ class DashboardCardCovid19 extends React.Component {
 
     getSummary() {
         this.setState({loaded: false})
-        let AuDate = "";
-        let NSWCases = 0;
-        let VICCases = 0;
 
-        homePageInstance.get("/covid19/auBrief.do?days=1&dataVersion=0&top=3&followedSuburbs=" + followedPostcodes.join(","))
+        covidInstance.get("/covid-v2/au/raw.do?dataVersion=0&followedSuburbs=" + followedPostcodes.join(","))
             .then(response => {
-                    let dataDate = response.data.dataByDay[0].dateDisplay
-                    let topSuburbs = response.data.dataByDay[0].caseByPostcodeTops
-                    let topFollowedSuburbs = response.data.dataByDay[0].caseByPostcodeFollowed
+                    let dataVersion = response.data.dataVersion
+                    let nswCases = response.data.stateData[0].newCases
+                    let vicCases = response.data.stateData[4].newCases
+                    let total = response.data.nationData.newCases
+                    let topFollowedSuburbs = response.data.lgaData[0].lga
                         .map(data => ({
                             suburb: this.getFollowedSuburbByPostcode(data.postcode),
                             cases: data.cases
                         }))
-                    AuDate = response.data.dataByDay[0].dateDisplay
-                    let nswList = response.data.dataByDay[0].caseByState.filter(item => item.stateCode === 'NSW')
-                    if (nswList.length > 0) {
-                        NSWCases = nswList[0].cases
+                    let data = {
+                        Australia: {
+                            dataVersion: dataVersion,
+                            total: total,
+                            NSW: nswCases,
+                            VIC: vicCases,
+                            topFollowedSuburbs: topFollowedSuburbs
+                        }
                     }
-                    let vicList = response.data.dataByDay[0].caseByState.filter(item => item.stateCode === 'VIC')
-                    if (vicList.length > 0) {
-                        VICCases = vicList[0].cases
-                    }
-                    this.fetchWorld(AuDate, NSWCases, VICCases, dataDate, topSuburbs, topFollowedSuburbs)
+                    this.setState({loaded: true})
+                    this.setState({dataCovid19: data});
+                    this.render();
                 }
             )
             .catch(error => {
-                this.fetchWorld(intl.get("covid19LoadError"), 0, 0, true)
+                let data = {
+                    Australia: {
+                        dateVersion: "N/A",
+                        total: 0,
+                        NSW: 0,
+                        VIC: 0,
+                        topFollowedSuburbs: []
+                    }
+                }
+                this.setState({loaded: true})
+                this.setState({dataCovid19: data});
+                this.render();
             });
     }
 
@@ -123,76 +133,17 @@ class DashboardCardCovid19 extends React.Component {
         })
         return found
     }
-
-    fetchWorld(lAuDate, lNSWCases, lVICCases, dateDate, topSuburbs, topFollowedSuburbs) {
-        const requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-        fetch("https://corona.lmao.ninja/v2/countries?sort=country", requestOptions)
-            .then(response => response.json())
-            .then(
-                result => {
-                    let dataAustralia = result.filter(item => item['country'] === 'Australia')[0]
-                    let dataChina = result.filter(item => item['country'] === 'China')[0]
-                    let data = {
-                        Australia: {
-                            NewConfirmed: dataAustralia['todayCases'],
-                            NewDeaths: dataAustralia['todayDeaths'],
-                            Confirmed: dataAustralia['cases'],
-                            Deaths: dataAustralia['deaths'],
-                            Tests: dataAustralia['tests'],
-                            Date: lAuDate,
-                            NSW: lNSWCases,
-                            VIC: lVICCases,
-                            dataDate: dateDate,
-                            topSuburbs: topSuburbs,
-                            topFollowedSuburbs: topFollowedSuburbs
-                        },
-                        China: {
-                            NewConfirmed: dataChina['todayCases'],
-                            NewDeaths: dataChina['todayDeaths'],
-                            Confirmed: dataChina['cases'],
-                            Deaths: dataChina['deaths'],
-                            Tests: dataChina['tests']
-                        },
-                    }
-                    this.setState({loaded: true})
-                    this.setState({dataCovid19: data});
-                    this.render();
-                }
-            )
-            .catch(error => console.log('error', error));
-    }
 }
 
 function Covid19Content(props) {
     if (props.loaded) {
         return (
             <Card.Text>
-                                <span>
-                                    {intl.get("newCases")}/{intl.get("newDeaths")}/{intl.get("totalCases")}/{intl.get("totalDeaths")}/{intl.get("totalTests")}<br/>
-                                </span>
                 <span className="Covid19Data">
-                                    {intl.get("newCasesInAustralia")}:
-                                    <span className="Today">+{props.dataCovid19.Australia.NewConfirmed}/+
-                                        {props.dataCovid19.Australia.NewDeaths}</span>/
-                    {props.dataCovid19.Australia.Confirmed}/
-                    {props.dataCovid19.Australia.Deaths}/
-                                    <span className="Test">{props.dataCovid19.Australia.Tests}</span>
-                                    <br/>
-                                    - {intl.get("newCasesInNSW")}:+{props.NSWStr} ({props.dataDate})<br/>
-                                    - {intl.get("newCasesInVictoria")}:+{props.VICStr}<br/>
-                                    - {intl.get("topSuburbs")}:<br/>
-                                    <TopSuburbsDataToString topSuburbs={props.topSuburbs}/>
+                                    - {intl.get("newCasesInAustralia")}:+{props.total} ({props.dataVersion})<br/>
+                                    - {intl.get("newCasesInNSW")}:{props.NSWStr}<br/>
+                                    - {intl.get("newCasesInVictoria")}:{props.VICStr}<br/>
                                     - {intl.get("topFollowedSuburbs")}:{topFollowedSuburbsDataToString(props.topFollowedSuburbs)}<br/>
-                    {intl.get("newCasesInChina")}:
-                                    <span className="Today">+{props.dataCovid19.China.NewConfirmed}/+
-                                        {props.dataCovid19.China.NewDeaths}</span>/
-                    {props.dataCovid19.China.Confirmed}/
-                    {props.dataCovid19.China.Deaths}/
-                                    <span className="Test">{props.dataCovid19.China.Tests}</span>
-                                    <br/>
                                 </span>
             </Card.Text>
         )
@@ -205,7 +156,7 @@ function Covid19Content(props) {
 
 function topFollowedSuburbsDataToString(topFollowedSuburbs) {
     let string = ""
-    if(typeof topFollowedSuburbs != "undefined" && topFollowedSuburbs.length > 0) {
+    if (typeof topFollowedSuburbs != "undefined" && topFollowedSuburbs.length > 0) {
         topFollowedSuburbs.forEach((item, i) => {
                 string += item.suburb + "(+" + item.cases + ")"
                 if (i < topFollowedSuburbs.length - 1) {
@@ -219,7 +170,7 @@ function topFollowedSuburbsDataToString(topFollowedSuburbs) {
 
 function TopSuburbsDataToString(props) {
     let list = []
-    if(typeof props.topSuburbs != "undefined" && props.topSuburbs.length > 0) {
+    if (typeof props.topSuburbs != "undefined" && props.topSuburbs.length > 0) {
         props.topSuburbs.forEach((item, i) => {
                 list[i] = " *" + item.postcode + " " + item.suburbBrief + " (+" + item.cases + ")"
             }
