@@ -80,14 +80,35 @@ class DashboardCardCovid19 extends React.Component {
         })
     }
 
+    getDateDisplay(dataVersion) {
+        let dateString = dataVersion.toString()
+        if (dateString.length === 10) {
+            let year = dateString.substring(0, 4)
+            let month = dateString.substring(4, 6)
+            let day = dateString.substring(6, 8)
+            return day + "/" + month + "/" + year
+        }
+        return dateString
+    }
+
     getSummary() {
         this.setState({loaded: false})
 
         covidInstance.get("/covid-v2/au/raw.do?dataVersion=0&followedSuburbs=" + followedPostcodes.join(","))
             .then(response => {
-                    let dataVersion = response.data.dataVersion
-                    let nswCases = response.data.stateData[0].newCases
-                    let vicCases = response.data.stateData[4].newCases
+                    let dataVersion = this.getDateDisplay(response.data.dataVersion)
+                    let nswCases = 0
+                    let vicCases = 0
+                    response.data.stateData.forEach(item => {
+                        if (item.state === "Nsw") {
+                            nswCases = item.newCases
+                        }
+                    })
+                    response.data.stateData.forEach(item => {
+                        if (item.state === "Vic") {
+                            vicCases = item.newCases
+                        }
+                    })
                     let total = response.data.nationData.newCases
                     let topFollowedSuburbs = response.data.lgaData[0].lga
                         .map(data => ({
